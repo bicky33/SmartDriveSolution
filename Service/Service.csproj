@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Base\" />
+    <Folder Include="CR\" />
+    <Folder Include="HR\" />
+    <Folder Include="Master\" />
+    <Folder Include="Partner\" />
+    <Folder Include="Payment\" />
+    <Folder Include="SO\" />
+    <Folder Include="User\" />
+  </ItemGroup>
+
+</Project>
