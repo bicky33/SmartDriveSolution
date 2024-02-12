@@ -1,0 +1,17 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/Contract/bin/Debug/net7.0
+/Contract/obj
+/Domain/bin/Debug/net7.0
+/Domain/obj
+/Persistence/bin/Debug/net7.0
+/Persistence/obj
+/Service/bin/Debug/net7.0
+/Service/obj
+/Service.Abstraction/bin/Debug/net7.0
+/Service.Abstraction/obj
+/WebApi/bin/Debug/net7.0
+/WebApi/obj
