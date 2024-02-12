@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Domain.Entities.Master;
+namespace Domain.Entities.HR;
 
 [Table("template_salary", Schema = "hr")]
 public partial class TemplateSalary
