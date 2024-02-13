@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Exceptions
 {
-    public class EntityNotFoundException : NotFoundException
+    public abstract class BadRequestException : Exception
     {
-        public EntityNotFoundException(int id, string message) : base($"Entity {message} with identifier {id} not found")
+        protected BadRequestException(string? message) : base(message)
         {
         }
     }
