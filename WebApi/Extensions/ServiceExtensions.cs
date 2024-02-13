@@ -1,5 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Repositories.Payment;
+using Microsoft.EntityFrameworkCore;
+using Persistence.Base;
 using Persistence.Repositories;
+using Service.Abstraction.Payment;
+using Service.Base;
 
 namespace WebApi.Extensions
 {
@@ -24,5 +28,11 @@ namespace WebApi.Extensions
             {
                 opts.UseSqlServer(configuration.GetConnectionString("SmartDriveDB"));
             });
+
+        public static void ConfigureRepositoryManager(this IServiceCollection services) =>
+        services.AddScoped<IRepositoryPaymentManager, RepositoryPaymentManager>();
+
+        public static void ConfigureServiceManager(this IServiceCollection services) =>
+          services.AddScoped<IServicePaymentManager, ServicePaymentManager>();
     }
 }

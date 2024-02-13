@@ -1,20 +1,27 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>Service</RootNamespace>
+    <AssemblyName>Service</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Base\" />
     <Folder Include="CR\" />
     <Folder Include="HR\" />
     <Folder Include="Master\" />
     <Folder Include="Partner\" />
-    <Folder Include="Payment\" />
     <Folder Include="SO\" />
     <Folder Include="User\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Contract\Contract.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
+    <PackageReference Include="Mapster" Version="7.4.0" />
   </ItemGroup>
 
 </Project>

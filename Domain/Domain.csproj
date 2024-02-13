@@ -4,6 +4,8 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AssemblyName>Domain</AssemblyName>
+    <RootNamespace>Domain</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +15,6 @@
     <Folder Include="Repositories\HR\" />
     <Folder Include="Repositories\Master\" />
     <Folder Include="Repositories\Partner\" />
-    <Folder Include="Repositories\Payment\" />
     <Folder Include="Repositories\SO\" />
     <Folder Include="Repositories\User\" />
   </ItemGroup>
