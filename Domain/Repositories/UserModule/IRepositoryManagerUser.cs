@@ -12,5 +12,6 @@ namespace Domain.Repositories.UserModule
     {
         IRepositoryEntityBase<User> UserRepository { get; }
         IUnitOfWorks UnitOfWork { get; }
+        IRepositoryBusinessEntity<BusinessEntity> BusinessEntityRepository { get; }
     }
 }

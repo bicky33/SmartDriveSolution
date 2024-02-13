@@ -11,5 +11,6 @@ namespace Service.Abstraction.User
     public interface IServiceManagerUser
     {
         IServiceEntityBase<UserDto> UserService { get; }
+        IServiceBusinessEntity BusinessEntityService {  get; }
     }
 }

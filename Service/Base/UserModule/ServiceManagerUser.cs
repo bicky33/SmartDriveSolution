@@ -14,13 +14,18 @@ namespace Service.Base.UserModule
     public class ServiceManagerUser : IServiceManagerUser
     {
         private readonly Lazy<IServiceEntityBase<UserDto>> _userService;
+        private readonly Lazy<IServiceBusinessEntity> _businessEntityService;
 
         public ServiceManagerUser(IRepositoryManagerUser repositoryUser)
         {
             _userService = new Lazy<IServiceEntityBase<UserDto>>(
                 () => new UserService(repositoryUser));
+            _businessEntityService = new Lazy<IServiceBusinessEntity>(
+                () => new BusinessEntityService(repositoryUser));
         }
 
         public IServiceEntityBase<UserDto> UserService => _userService.Value;
+
+        public IServiceBusinessEntity BusinessEntityService => _businessEntityService.Value;
     }
 }

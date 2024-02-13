@@ -5,7 +5,7 @@ using Service.Abstraction.User;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace WebApi.Controllers.UserController
+namespace WebApi.Controllers.UserModule
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -37,8 +37,11 @@ namespace WebApi.Controllers.UserController
 
         // POST api/<UserController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post()
         {
+            var bus = await _userService.BusinessEntityService.CreateBusinessEntity();
+
+            return Ok(bus);
         }
 
         // PUT api/<UserController>/5

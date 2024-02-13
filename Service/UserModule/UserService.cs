@@ -37,7 +37,7 @@ namespace Service.UserModule
             var user = await _repositoryManager.UserRepository.GetEntityById(id, false);
             if(user == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, "user");
             }
 
             _repositoryManager.UserRepository.DeleteEntity(user);
@@ -58,7 +58,7 @@ namespace Service.UserModule
             var user = await _repositoryManager.UserRepository.GetEntityById(id, trackChanges);
             if (user == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, "user");
             }
 
             var userDto = user.Adapt<UserDto>();
@@ -70,7 +70,7 @@ namespace Service.UserModule
             var user = await _repositoryManager.UserRepository.GetEntityById(id, true);
             if (user == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, "user");
             }
 
             user.UserName = entity.UserName;
