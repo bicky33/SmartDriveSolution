@@ -4,17 +4,18 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AssemblyName>Domain</AssemblyName>
+    <RootNamespace>Domain</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Enum\" />
+    <Folder Include="Exceptions\UserModule\" />
     <Folder Include="Interface\" />
     <Folder Include="Repositories\CR\" />
     <Folder Include="Repositories\HR\" />
     <Folder Include="Repositories\Master\" />
     <Folder Include="Repositories\Payment\" />
     <Folder Include="Repositories\SO\" />
-    <Folder Include="Repositories\User\" />
   </ItemGroup>
 
   <ItemGroup>
