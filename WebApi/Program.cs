@@ -13,6 +13,12 @@ builder.Services.ConfigureDbContext(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//builder.Services.ConfigureCors();
+builder.Services.AddCors();
+builder.Services.ConfigureDbContext(builder.Configuration);
+builder.Services.ConfigureRepositoryUser();
+builder.Services.ConfigureServiceUser();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
