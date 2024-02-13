@@ -43,7 +43,7 @@ namespace WebApi.Controllers.Payment
             if (bankDto == null) 
                 return BadRequest("Bank object is not valid"); 
              
-            _serviceManager.BankService.CreateAsync(bankDto); 
+        await    _serviceManager.BankService.CreateAsync(bankDto); 
             return CreatedAtAction(nameof(GetBankById), new { id = bankDto.BankEntityid }, bankDto);
         }
 

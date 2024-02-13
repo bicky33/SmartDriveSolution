@@ -1,5 +1,6 @@
 ﻿using Contract.DTO.Payment;
 using Domain.Entities.Payment;
+using Domain.Exceptions;
 using Domain.Repositories.Base;
 using Domain.Repositories.Payment;
 using Mapster;
@@ -26,25 +27,46 @@ namespace Service.Payment
             return fintech.Adapt<FintechDto>();
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             //TODO remove bank first, then remove BussinessEntity 
-            throw new NotImplementedException();
+            var fintech = await _repositoryManager.FintechRepository.GetEntityById(id, true);
+            if (fintech == null)
+            {
+                throw new EntityNotFoundException(id);
+            }
+            _repositoryManager.FintechRepository.DeleteEntity(fintech);
+            await _repositoryManager.UnitOfWorks.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<FintechDto>> GetAllAsync(bool trackChanges)
+        public async Task<IEnumerable<FintechDto>> GetAllAsync(bool trackChanges)
         {
-            throw new NotImplementedException();
+            var fintech = await _repositoryManager.FintechRepository.GetAllEntity(false);
+            var fintechDto = fintech.Adapt<IEnumerable<FintechDto>>();
+
+            return fintechDto;
         }
 
-        public Task<FintechDto> GetByIdAsync(int id, bool trackChanges)
+        public async Task<FintechDto> GetByIdAsync(int id, bool trackChanges)
         {
-            throw new NotImplementedException();
+            var fintech = await _repositoryManager.BankRepository.GetEntityById(id, false);
+            if (fintech == null)
+                throw new EntityNotFoundException(id);
+            var dto = fintech.Adapt<FintechDto>();
+            return dto;
         }
 
-        public Task<FintechDto> UpdateAsync(int id, FintechDto entity)
+        public async Task<FintechDto> UpdateAsync(int id, FintechDto entity)
         {
-            throw new NotImplementedException();
+            var fintech = await _repositoryManager.FintechRepository.GetEntityById(id, true);
+            if (fintech == null)
+                throw new EntityNotFoundException(id);
+
+            fintech.FintName = entity.FintName;
+            fintech.FintDesc = entity.FintDesc;
+            await _repositoryManager.UnitOfWorks.SaveChangesAsync();
+
+            return entity;
         }
     }
 }

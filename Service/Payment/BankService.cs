@@ -55,12 +55,10 @@ namespace Service.Payment
         public async Task<BankDto> GetByIdAsync(int id, bool trackChanges)
         {
             var categoy = await _repositoryManager.BankRepository.GetEntityById(id, false);
+
             if (categoy == null)
-            {
                 throw new EntityNotFoundException(id);
 
-
-            }
             var dto = categoy.Adapt<BankDto>();
             return dto;
         }
@@ -68,11 +66,9 @@ namespace Service.Payment
         public async Task<BankDto> UpdateAsync(int id, BankDto entity)
         {
             var category = await _repositoryManager.BankRepository.GetEntityById(id, true);
-            if (category == null)
-            {
-                throw new EntityNotFoundException(id);
 
-            }
+            if (category == null)
+                throw new EntityNotFoundException(id);
 
             category.BankName = entity.BankName;
             category.BankDesc = entity.BankDesc;

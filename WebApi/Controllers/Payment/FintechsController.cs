@@ -5,6 +5,7 @@ using Domain.Repositories.Base;
 using Domain.Repositories.Payment;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
+using Service.Abstraction.Payment;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,11 +15,11 @@ namespace WebApi.Controllers.Payment
     [ApiController]
     public class FintechsController : ControllerBase
     {
-        private readonly IRepositoryPaymentManager _repositoryManager;
+        private readonly IServicePaymentManager _serviceManager;
 
-        public FintechsController(IRepositoryPaymentManager repositoryManager)
+        public FintechsController(IServicePaymentManager serviceManager)
         {
-            _repositoryManager = repositoryManager;
+            _serviceManager = serviceManager;
         }
 
 
@@ -26,20 +27,16 @@ namespace WebApi.Controllers.Payment
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Fintech>>> GetFintechs()
         {
-            var fintechs = await _repositoryManager.FintechRepository.GetAllEntity(false);
-            var fintechDto = fintechs.Adapt<IEnumerable<FintechDto>>();
-            return Ok(fintechDto);
+            var banks = await _serviceManager.FintechService.GetAllAsync(false);
+            return Ok(banks);
         }
 
         // GET api/<FintechsController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<FintechDto>> GetFintechById(int id)
         {
-            var fintech = _repositoryManager.FintechRepository.GetEntityById(id, false);
-            if (fintech == null)
-                return NotFound("ID your are looking for is not exist");
-            var fintechDto = fintech.Adapt<FintechDto>();
-            return Ok(fintechDto);
+            var bank = await _serviceManager.FintechService.GetByIdAsync(id, false);
+            return Ok(bank);
         }
 
         // POST api/<FintechsController>
@@ -47,28 +44,19 @@ namespace WebApi.Controllers.Payment
         public async Task<IActionResult> Post([FromBody] FintechDto fintechDto)
         {
             if (fintechDto == null)
-            {
                 return BadRequest("Bank object is not valid");
-            }
-            var fintech = fintechDto.Adapt<Fintech>();
-            _repositoryManager.FintechRepository.CreateEntity(fintech);
-            await _repositoryManager.UnitOfWorks.SaveChangesAsync();
 
-            return Ok(fintechDto);
+            await _serviceManager.FintechService.CreateAsync(fintechDto);
+            return CreatedAtAction(nameof(GetFintechById), new { id = fintechDto.FintEntityid }, fintechDto);
+
         }
 
         // PUT api/<FintechsController>/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] FintechDto fintechDto)
         {
-            var fintech = await _repositoryManager.FintechRepository.GetEntityById(id, false);
-            if (fintech == null)
-                return NotFound("ID your are looking for is not exist");
-
-            fintech.FintName = fintechDto.FintName;
-            fintech.FintDesc = fintechDto.FintDesc;
-
-            return Ok(fintech);
+            await _serviceManager.FintechService.UpdateAsync(id, fintechDto);
+            return Ok(fintechDto);
 
         }
 
@@ -76,14 +64,7 @@ namespace WebApi.Controllers.Payment
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var fintech = _repositoryManager.FintechRepository.GetEntityById(id, false);
-            if (fintech == null)
-                return NotFound("ID your are looking for is not exist");
-
-            var fintechDto = fintech.Adapt<Fintech>();
-            _repositoryManager.FintechRepository.DeleteEntity(fintechDto);
-            await _repositoryManager.UnitOfWorks.SaveChangesAsync();
-
+            await _serviceManager.FintechService.DeleteAsync(id);
             return Ok($"ID {id} Succesfully deleted");
 
         }
