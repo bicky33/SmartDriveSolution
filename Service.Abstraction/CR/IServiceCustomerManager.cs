@@ -9,5 +9,6 @@ namespace Service.Abstraction.CR
     public interface IServiceCustomerManager
     {
         ICustomerRequestService CustomerRequestService { get; }
+        ICustomerInscAssetService CustomerInscAssetService { get; }
     }
 }
