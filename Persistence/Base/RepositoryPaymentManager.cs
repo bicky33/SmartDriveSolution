@@ -2,7 +2,7 @@
 using Domain.Entities.Payment;
 using Domain.Repositories.Base;
 using Domain.Repositories.Payment;
-using Northwind.Domain.Repositories;
+using Domain.Repositories;
 using Persistence.Repositories;
 using Persistence.Repositories.Payment;
 using System;
@@ -24,7 +24,7 @@ namespace Persistence.Base
         {
             _unitOfWorks = new Lazy<IUnitOfWorks>(() => new UnitOfWorks(dbContext));
             _bankRepository = new Lazy<IRepositoryEntityBase<Bank>>(() => new BankRepository(dbContext));
-            _fintechRepository= new Lazy<IRepositoryEntityBase<Fintech>>(() => new FintechRepository(dbContext));
+            _fintechRepository = new Lazy<IRepositoryEntityBase<Fintech>>(() => new FintechRepository(dbContext));
             //_userAccountRepository= new Lazy<IRepositoryEntityBase<UserAccount>>(() => new UserAccountRepository(dbContext));
             //_paymentTransactionRepository = new Lazy<IRepositoryEntityBase<PaymentTransaction>>(() => new PaymentTransactionRepository(dbContext));
             ////_categoryDetailRepository = new Lazy<IRepositoryEntityBase<CategoryDetail>>(() => new CategoryDetailRepository(dbContext));

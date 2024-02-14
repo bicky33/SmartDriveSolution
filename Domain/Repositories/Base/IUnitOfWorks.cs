@@ -1,4 +1,4 @@
-﻿namespace Northwind.Domain.Repositories
+﻿namespace Domain.Repositories
 {
     public interface IUnitOfWorks
     {

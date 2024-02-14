@@ -33,7 +33,7 @@ namespace Service.Payment
             var fintech = await _repositoryManager.FintechRepository.GetEntityById(id, true);
             if (fintech == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, "Fintech");
             }
             _repositoryManager.FintechRepository.DeleteEntity(fintech);
             await _repositoryManager.UnitOfWorks.SaveChangesAsync();
@@ -51,22 +51,21 @@ namespace Service.Payment
         {
             var fintech = await _repositoryManager.BankRepository.GetEntityById(id, false);
             if (fintech == null)
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, "Fintech");
             var dto = fintech.Adapt<FintechDto>();
             return dto;
         }
 
-        public async Task<FintechDto> UpdateAsync(int id, FintechDto entity)
+        public async Task UpdateAsync(int id, FintechDto entity)
         {
             var fintech = await _repositoryManager.FintechRepository.GetEntityById(id, true);
             if (fintech == null)
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, "Fintech");
 
             fintech.FintName = entity.FintName;
             fintech.FintDesc = entity.FintDesc;
             await _repositoryManager.UnitOfWorks.SaveChangesAsync();
-
-            return entity;
+             
         }
     }
 }

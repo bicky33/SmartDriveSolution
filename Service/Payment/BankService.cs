@@ -1,15 +1,9 @@
 ﻿using Contract.DTO.Payment;
-using Domain.Entities.Master;
 using Domain.Entities.Payment;
 using Domain.Exceptions;
 using Domain.Repositories.Payment;
 using Mapster;
 using Service.Abstraction.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.Payment
 {
@@ -38,7 +32,7 @@ namespace Service.Payment
             var category = await _repositoryManager.BankRepository.GetEntityById(id, false);
             if (category == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, "Bank");
             }
             _repositoryManager.BankRepository.DeleteEntity(category);
             await _repositoryManager.UnitOfWorks.SaveChangesAsync();
@@ -57,24 +51,24 @@ namespace Service.Payment
             var categoy = await _repositoryManager.BankRepository.GetEntityById(id, false);
 
             if (categoy == null)
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, "Bank");
 
             var dto = categoy.Adapt<BankDto>();
             return dto;
         }
 
-        public async Task<BankDto> UpdateAsync(int id, BankDto entity)
+        public async Task UpdateAsync(int id, BankDto entity)
         {
             var category = await _repositoryManager.BankRepository.GetEntityById(id, true);
 
             if (category == null)
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, "Bank");
 
             category.BankName = entity.BankName;
             category.BankDesc = entity.BankDesc;
             await _repositoryManager.UnitOfWorks.SaveChangesAsync();
 
-            return entity;
         }
+
     }
 }

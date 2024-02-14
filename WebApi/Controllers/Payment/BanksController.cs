@@ -3,7 +3,7 @@ using Domain.Entities.Master;
 using Domain.Entities.Payment;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
-using Northwind.Domain.Repositories;
+using Domain.Repositories;
 using NuGet.Protocol;
 using Service.Abstraction.Payment;
 

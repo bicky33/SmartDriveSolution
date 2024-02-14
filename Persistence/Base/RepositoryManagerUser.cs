@@ -1,13 +1,9 @@
 ﻿using Domain.Entities.Users;
 using Domain.Repositories.Base;
 using Domain.Repositories.UserModule;
+using Domain.Repositories;
 using Persistence.Repositories;
 using Persistence.Repositories.UserModule;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence.Base
 {

@@ -1,10 +1,5 @@
-﻿using Domain.Repositories.Base;
+﻿using Domain.Repositories;
 using Persistence.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence
 {

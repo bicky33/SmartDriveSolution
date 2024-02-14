@@ -25,7 +25,7 @@ namespace Service.Payment
             throw new NotImplementedException();
         }
 
-        public Task<PaymentTransactionDto> UpdateAsync(int id, PaymentTransactionDto entity)
+        public Task UpdateAsync(int id, PaymentTransactionDto entity)
         {
             throw new NotImplementedException();
         }
