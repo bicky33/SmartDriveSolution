@@ -4,6 +4,8 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>WebApi</AssemblyName>
+    <RootNamespace>WebApi</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,12 +26,11 @@
   <ItemGroup>
     <Folder Include="Controllers\CR\" />
     <Folder Include="Controllers\HR\" />
-    <Folder Include="Controllers\Master\" />
     <Folder Include="Controllers\Partner\" />
     <Folder Include="Controllers\Payment\" />
     <Folder Include="Controllers\SO\" />
     <Folder Include="Controllers\User\" />
-    <Folder Include="Resources\" />
+    <Folder Include="Resources\Images\" />
   </ItemGroup>
 
   <ItemGroup>

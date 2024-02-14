@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Persistence.Repositories;
 using System.Linq.Expressions;
 
-
 namespace Persistence.Base
 {
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
@@ -22,6 +21,6 @@ namespace Persistence.Base
         public IQueryable<T> GetAll(bool trackChanges) => trackChanges ? _dbContext.Set<T>().AsNoTracking() : _dbContext.Set<T>();
 
         public IQueryable<T> GetByCondition(Expression<Func<T, bool>> expressions, bool trackChanges) =>
-            trackChanges ? _dbContext.Set<T>().AsNoTracking().Where(expressions) : _dbContext.Set<T>().Where(expressions);
+            !trackChanges ? _dbContext.Set<T>().AsNoTracking().Where(expressions) : _dbContext.Set<T>().Where(expressions);
     }
 }

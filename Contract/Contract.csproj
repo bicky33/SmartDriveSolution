@@ -4,6 +4,8 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AssemblyName>Contract</AssemblyName>
+    <RootNamespace>Contract</RootNamespace>
   </PropertyGroup>
 
 	<ItemGroup>
@@ -13,7 +15,6 @@
 	<ItemGroup>
     <Folder Include="DTO\CR\" />
     <Folder Include="DTO\HR\" />
-    <Folder Include="DTO\Master\" />
     <Folder Include="DTO\Partner\" />
     <Folder Include="DTO\Payment\" />
     <Folder Include="DTO\SO\" />
