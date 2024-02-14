@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repositories.CR
 {
-    public class CustomerRepositoryManager : ICustomerRepositoryManager
+    public class RepositoryCustomerManager : IRepositoryCustomerManager
     {
         private readonly Lazy<ICustomerUnitOfWork> _customerUnitOfWork;
         private readonly Lazy<ICustomerRequestRepository> _customerRequestRepository;
 
-        public CustomerRepositoryManager(SmartDriveContext dbContext)
+        public RepositoryCustomerManager(SmartDriveContext dbContext)
         {
             _customerUnitOfWork = new Lazy<ICustomerUnitOfWork>(() => new CustomerUnitOfWork(dbContext));
             _customerRequestRepository = new Lazy<ICustomerRequestRepository>(() => new CustomerRequestRepository(dbContext));

@@ -28,12 +28,18 @@ namespace Persistence.Repositories.CR
 
         public async Task<IEnumerable<CustomerRequest>> GetAllEntity(bool trackChanges)
         {
-            return await GetAll(trackChanges).OrderBy(x => x.CreqEntityid).ToListAsync();
+            return await GetAll(trackChanges).OrderBy(x => x.CreqEntityid)
+                .Include(x => x.CreqCustEntity)
+                .Include(x => x.CustomerInscAsset)
+                .ToListAsync();
         }
 
         public async Task<CustomerRequest> GetEntityById(int id, bool trackChanges)
         {
-            return await GetByCondition(x => x.CreqEntityid.Equals(id), trackChanges).SingleOrDefaultAsync();
+            return await GetByCondition(x => x.CreqEntityid.Equals(id), trackChanges)
+                .Include(x => x.CreqCustEntity)
+                .Include(x => x.CustomerInscAsset)
+                .SingleOrDefaultAsync();
         }
     }
 }

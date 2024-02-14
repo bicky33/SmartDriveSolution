@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Repositories.CR
 {
-    public interface ICustomerRepositoryManager
+    public interface IRepositoryCustomerManager
     {
         ICustomerRequestRepository CustomerRequestRepository { get; }
         ICustomerUnitOfWork CustomerUnitOfWork { get; }

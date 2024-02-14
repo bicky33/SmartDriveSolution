@@ -1,4 +1,4 @@
-﻿using Contract.DTO.CR.Request;
+﻿using Contract.DTO.CR.Response;
 using Domain.Entities.CR;
 using Domain.Exceptions;
 using Domain.Repositories.CR;
@@ -14,47 +14,48 @@ namespace Service.CR
 {
     public class CustomerRequestService : ICustomerRequestService
     {
-        private readonly ICustomerRepositoryManager _customerRepositoryManager;
+        private readonly IRepositoryCustomerManager _repositoryCustomerManager;
 
-        public CustomerRequestService(ICustomerRepositoryManager customerRepositoryManager)
+        public CustomerRequestService(IRepositoryCustomerManager repositoryCustomerManager)
         {
-            _customerRepositoryManager = customerRepositoryManager;
+            _repositoryCustomerManager = repositoryCustomerManager;
         }
 
         public async Task<CustomerRequestDto> CreateAsync(CustomerRequestDto entity)
         {
             var customerRequest = entity.Adapt<CustomerRequest>();
-            _customerRepositoryManager.CustomerRequestRepository.CreateEntity(customerRequest);
-            await _customerRepositoryManager.CustomerUnitOfWork.SaveChangesAsync();
+            _repositoryCustomerManager.CustomerRequestRepository.CreateEntity(customerRequest);
+            await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
 
             return customerRequest.Adapt<CustomerRequestDto>();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var customerRequest = await _customerRepositoryManager.CustomerRequestRepository.GetEntityById(id, false);
+            var customerRequest = await _repositoryCustomerManager.CustomerRequestRepository.GetEntityById(id, false);
             if (customerRequest == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, "CustomerRequest");
             }
 
-            _customerRepositoryManager.CustomerRequestRepository.DeleteEntity(customerRequest);
-            await _customerRepositoryManager.CustomerUnitOfWork.SaveChangesAsync();
+            _repositoryCustomerManager.CustomerRequestRepository.DeleteEntity(customerRequest);
+            await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<CustomerRequestDto>> GetAllAsync(bool trackChanges)
         {
-            var customerRequest = await _customerRepositoryManager.CustomerRequestRepository.GetAllEntity(false);
+            var customerRequest = await _repositoryCustomerManager.CustomerRequestRepository.GetAllEntity(false);
             var customerRequestDto = customerRequest.Adapt<IEnumerable<CustomerRequestDto>>();
+            
             return customerRequestDto;
         }
 
         public async Task<CustomerRequestDto> GetByIdAsync(int id, bool trackChanges)
         {
-            var customerRequest = await _customerRepositoryManager.CustomerRequestRepository.GetEntityById(id, false);
+            var customerRequest = await _repositoryCustomerManager.CustomerRequestRepository.GetEntityById(id, false);
             if(customerRequest == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, "CustomerRequest");
             }
             var customerRequestDto = customerRequest.Adapt<CustomerRequestDto>();
             return customerRequestDto;
@@ -62,16 +63,16 @@ namespace Service.CR
 
         public async Task<CustomerRequestDto> UpdateAsync(int id, CustomerRequestDto entity)
         {
-            var customerRequest = await _customerRepositoryManager.CustomerRequestRepository.GetEntityById(id, false);
+            var customerRequest = await _repositoryCustomerManager.CustomerRequestRepository.GetEntityById(id, true);
             if(customerRequest == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, "CustomerRequest");
             }
             customerRequest.CreqStatus = entity.CreqStatus;
             customerRequest.CreqType = entity.CreqType;
             customerRequest.CreqModifiedDate = DateTime.Now;
 
-            await _customerRepositoryManager.CustomerUnitOfWork.SaveChangesAsync();
+            await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
 
             return customerRequest.Adapt<CustomerRequestDto>();
 

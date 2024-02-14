@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Service.Abstraction.CR
 {
-    public interface ICustomerServiceManager
+    public interface IServiceCustomerManager
     {
         ICustomerRequestService CustomerRequestService { get; }
     }

@@ -30,9 +30,9 @@ namespace WebApi.Extensions
             });
 
         public static void ConfigureCustomerRepositoryManager(this IServiceCollection services) =>
-            services.AddScoped<ICustomerRepositoryManager, CustomerRepositoryManager>();
+            services.AddScoped<IRepositoryCustomerManager, RepositoryCustomerManager>();
 
         public static void ConfigureCustomerServiceManager(this IServiceCollection services) =>
-            services.AddScoped<ICustomerServiceManager, CustomerServiceManager>();
+            services.AddScoped<IServiceCustomerManager, ServiceCustomerManager>();
     }
 }

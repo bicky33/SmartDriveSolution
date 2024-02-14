@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Service.CR
 {
-    public class CustomerServiceManager : ICustomerServiceManager
+    public class ServiceCustomerManager : IServiceCustomerManager
     {
         private readonly Lazy<ICustomerRequestService> _customerRequestService;
-        public CustomerServiceManager(ICustomerRepositoryManager customerRepositoryManager)
+        public ServiceCustomerManager(IRepositoryCustomerManager customerRepositoryManager)
         {
             _customerRequestService = new Lazy<ICustomerRequestService>(() => new CustomerRequestService(customerRepositoryManager));
         }

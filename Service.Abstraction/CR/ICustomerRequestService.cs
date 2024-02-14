@@ -1,4 +1,4 @@
-﻿using Contract.DTO.CR.Request;
+﻿using Contract.DTO.CR.Response;
 using Service.Abstraction.Base;
 using System;
 using System.Collections.Generic;
