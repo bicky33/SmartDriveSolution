@@ -18,7 +18,6 @@
     <Folder Include="DTO\Master\" />
     <Folder Include="DTO\Partner\" />
     <Folder Include="DTO\SO\" />
-    <Folder Include="DTO\User\" />
     <Folder Include="Records\" />
   </ItemGroup>
 
