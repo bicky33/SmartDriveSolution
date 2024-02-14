@@ -28,7 +28,7 @@ namespace Persistence.Repositories.Master
 
         public async Task<CarSeries> GetEntityById(int id, bool trackChanges)
         {
-            return await GetByCondition(cb => cb.CarsId.Equals(id), trackChanges).SingleOrDefaultAsync();
+            return await GetByCondition(cs => cs.CarsId.Equals(id), trackChanges).SingleOrDefaultAsync();
         }
     }
 }
