@@ -9,9 +9,11 @@
     <Folder Include="HR\" />
     <Folder Include="CR\" />
     <Folder Include="Partner\" />
-    <Folder Include="SO\" />
     <Folder Include="Payment\" />
     <Folder Include="User\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Contract\Contract.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,14 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Enum\" />
     <Folder Include="Interface\" />
     <Folder Include="Repositories\CR\" />
     <Folder Include="Repositories\HR\" />
     <Folder Include="Repositories\Master\" />
     <Folder Include="Repositories\Partner\" />
     <Folder Include="Repositories\Payment\" />
-    <Folder Include="Repositories\SO\" />
     <Folder Include="Repositories\User\" />
   </ItemGroup>
 

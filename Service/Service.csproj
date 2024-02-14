@@ -13,8 +13,17 @@
     <Folder Include="Master\" />
     <Folder Include="Partner\" />
     <Folder Include="Payment\" />
-    <Folder Include="SO\" />
     <Folder Include="User\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Contract\Contract.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
   </ItemGroup>
 
 </Project>

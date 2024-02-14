@@ -16,9 +16,12 @@
     <Folder Include="DTO\Master\" />
     <Folder Include="DTO\Partner\" />
     <Folder Include="DTO\Payment\" />
-    <Folder Include="DTO\SO\" />
     <Folder Include="DTO\User\" />
     <Folder Include="Records\" />
   </ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Domain\Domain.csproj" />
+	</ItemGroup>
 
 </Project>
