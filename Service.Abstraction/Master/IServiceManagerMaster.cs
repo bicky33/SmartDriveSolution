@@ -1,6 +1,5 @@
 ﻿using Contract.DTO.Master;
 using Service.Abstraction.Base;
-using Service.Abstraction.Base.Master;
 
 namespace Service.Abstraction.Master
 {

@@ -4,7 +4,7 @@ using Domain.Exceptions;
 using Domain.Repositories.Master;
 using Mapster;
 using Service.Abstraction.Base;
-using Service.Abstraction.Base.Master;
+using Service.Abstraction.Master;
 
 namespace Service.Master
 {

@@ -27,7 +27,7 @@ namespace WebApi.Controllers.Master
         }
 
         // GET api/<CarSeriesController>/5
-        [HttpGet("{id}", Name = "GetCategoryByID")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategoryByID(int id)
         {
             var category = await _serviceManagerMaster.CategoryService.GetByIdAsync(id, false);

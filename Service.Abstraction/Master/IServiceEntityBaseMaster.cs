@@ -1,4 +1,4 @@
-﻿namespace Service.Abstraction.Base
+﻿namespace Service.Abstraction.Master
 {
     public interface IServiceEntityBaseMaster<T>
     {

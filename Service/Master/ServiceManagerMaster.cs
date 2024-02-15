@@ -1,7 +1,6 @@
 ﻿using Contract.DTO.Master;
 using Domain.Repositories.Master;
 using Service.Abstraction.Base;
-using Service.Abstraction.Base.Master;
 using Service.Abstraction.Master;
 
 namespace Service.Master

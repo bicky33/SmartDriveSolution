@@ -1,4 +1,4 @@
-﻿namespace Domain.Repositories.Base.Master
+﻿namespace Domain.Repositories.Master
 {
     public interface IRepositoryEntityBaseMaster<T> where T : class
     {

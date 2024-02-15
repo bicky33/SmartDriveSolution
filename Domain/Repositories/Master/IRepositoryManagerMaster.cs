@@ -1,6 +1,5 @@
 ﻿using Domain.Entities.Master;
 using Domain.Repositories.Base;
-using Domain.Repositories.Base.Master;
 
 namespace Domain.Repositories.Master
 {

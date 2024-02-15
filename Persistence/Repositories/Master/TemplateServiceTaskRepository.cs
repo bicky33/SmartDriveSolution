@@ -1,5 +1,5 @@
 ﻿using Domain.Entities.Master;
-using Domain.Repositories.Base;
+using Domain.Repositories.Master;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
 

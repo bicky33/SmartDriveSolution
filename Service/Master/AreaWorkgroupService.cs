@@ -2,7 +2,7 @@
 using Domain.Entities.Master;
 using Domain.Repositories.Master;
 using Mapster;
-using Service.Abstraction.Base;
+using Service.Abstraction.Master;
 
 namespace Service.Master
 {

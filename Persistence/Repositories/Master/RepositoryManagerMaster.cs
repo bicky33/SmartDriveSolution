@@ -1,6 +1,5 @@
 ﻿using Domain.Entities.Master;
 using Domain.Repositories.Base;
-using Domain.Repositories.Base.Master;
 using Domain.Repositories.Master;
 
 namespace Persistence.Repositories.Master
