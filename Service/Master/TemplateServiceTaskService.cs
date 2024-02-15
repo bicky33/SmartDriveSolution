@@ -31,7 +31,7 @@ namespace Service.Master
             var templateServiceTask = await _repositoryManagerMaster.TemplateServiceTaskRepository.GetEntityById(id, false);
             if (templateServiceTask == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(templateServiceTask));
             }
             _repositoryManagerMaster.TemplateServiceTaskRepository.DeleteEntity(templateServiceTask);
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
@@ -56,7 +56,7 @@ namespace Service.Master
             var templateServiceTask = await _repositoryManagerMaster.TemplateServiceTaskRepository.GetEntityById(id, false);
             if (templateServiceTask == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(templateServiceTask));
             }
             var templateServiceTaskResponse = templateServiceTask.Adapt<TemplateServiceTaskResponse>();
             return templateServiceTaskResponse;
@@ -67,18 +67,18 @@ namespace Service.Master
             var templateServiceTask = await _repositoryManagerMaster.TemplateServiceTaskRepository.GetTestaByTestaTetyID(id, false);
             if (templateServiceTask == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(templateServiceTask));
             }
             var templateServiceTaskResponse = templateServiceTask.Adapt<TemplateServiceTaskResponse>();
             return templateServiceTaskResponse;
         }
 
-        public async Task<TemplateServiceTaskResponse> UpdateAsync(int id, TemplateServiceTaskResponse entity)
+        public async Task UpdateAsync(int id, TemplateServiceTaskResponse entity)
         {
             var templateServiceTask = await _repositoryManagerMaster.TemplateServiceTaskRepository.GetEntityById(id, true);
             if (templateServiceTask == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(entity));
             }
             templateServiceTask.TestaId = entity.TestaId;
             templateServiceTask.TestaName = entity.TestaName;
@@ -86,7 +86,6 @@ namespace Service.Master
             templateServiceTask.TestaTetyId = entity.TestaTetyId;
 
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
-            return templateServiceTask.Adapt<TemplateServiceTaskResponse>();
         }
     }
 }

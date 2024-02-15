@@ -30,7 +30,7 @@ namespace Service.Master
             var provinsi = await _repositoryManagerMaster.ProvinsiRepository.GetEntityById(id, false);
             if (provinsi == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, "Data Not Found");
             }
             _repositoryManagerMaster.ProvinsiRepository.DeleteEntity(provinsi);
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
@@ -48,25 +48,24 @@ namespace Service.Master
             var provinsi = await _repositoryManagerMaster.ProvinsiRepository.GetEntityById(id, false);
             if (provinsi == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(provinsi));
             }
             var provinsiResponse = provinsi.Adapt<ProvinsiResponse>();
             return provinsiResponse;
         }
 
-        public async Task<ProvinsiResponse> UpdateAsync(int id, ProvinsiResponse entity)
+        public async Task UpdateAsync(int id, ProvinsiResponse entity)
         {
             var provinsi = await _repositoryManagerMaster.ProvinsiRepository.GetEntityById(id, true);
             if (provinsi == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(entity));
             }
             provinsi.ProvId = entity.ProvId;
             provinsi.ProvName = entity.ProvName;
             provinsi.ProvZonesId = entity.ProvZonesId;
 
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
-            return provinsi.Adapt<ProvinsiResponse>();
         }
     }
 }

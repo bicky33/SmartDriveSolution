@@ -30,7 +30,7 @@ namespace Service.Master
             var temi = await _repositoryManagerMaster.TemplateInsurancePremiRepository.GetEntityById(id, false);
             if (temi == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(temi));
             }
             _repositoryManagerMaster.TemplateInsurancePremiRepository.DeleteEntity(temi);
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
@@ -48,18 +48,18 @@ namespace Service.Master
             var temi = await _repositoryManagerMaster.TemplateInsurancePremiRepository.GetEntityById(id, false);
             if (temi == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(temi));
             }
             var temiResponse = temi.Adapt<TemplateInsurancePremiResponse>();
             return temiResponse;
         }
 
-        public async Task<TemplateInsurancePremiResponse> UpdateAsync(int id, TemplateInsurancePremiResponse entity)
+        public async Task UpdateAsync(int id, TemplateInsurancePremiResponse entity)
         {
             var temi = await _repositoryManagerMaster.TemplateInsurancePremiRepository.GetEntityById(id, true);
             if (temi == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(entity));
             }
             temi.TemiId = entity.TemiId;
             temi.TemiName = entity.TemiName;
@@ -72,7 +72,6 @@ namespace Service.Master
             temi.TemiCateId = entity.TemiCateId;
 
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
-            return temi.Adapt<TemplateInsurancePremiResponse>();
         }
     }
 }

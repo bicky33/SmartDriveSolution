@@ -30,7 +30,7 @@ namespace Service.Master
             var carSeries = await _repositoryManagerMaster.CarSeriesRepository.GetEntityById(id, false);
             if (carSeries == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(carSeries));
             }
             _repositoryManagerMaster.CarSeriesRepository.DeleteEntity(carSeries);
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
@@ -48,18 +48,18 @@ namespace Service.Master
             var carSeries = await _repositoryManagerMaster.CarSeriesRepository.GetEntityById(id, false);
             if (carSeries == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(carSeries));
             }
             var carSeriesResponse = carSeries.Adapt<CarSeriesResponse>();
             return carSeriesResponse;
         }
 
-        public async Task<CarSeriesResponse> UpdateAsync(int id, CarSeriesResponse entity)
+        public async Task UpdateAsync(int id, CarSeriesResponse entity)
         {
             var carSeries = await _repositoryManagerMaster.CarSeriesRepository.GetEntityById(id, true);
             if (carSeries == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(entity));
             }
 
             carSeries.CarsName = entity.CarsName;
@@ -68,7 +68,6 @@ namespace Service.Master
 
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
 
-            return carSeries.Adapt<CarSeriesResponse>();
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Service.Master
             var zone = await _repositoryManagerMaster.ZoneRepository.GetEntityById(id, false);
             if (zone == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(zone));
             }
             _repositoryManagerMaster.ZoneRepository.DeleteEntity(zone);
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
@@ -48,24 +48,23 @@ namespace Service.Master
             var zone = await _repositoryManagerMaster.ZoneRepository.GetEntityById(id, false);
             if (zone == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(zone));
             }
             var zoneResponse = zone.Adapt<ZoneResponse>();
             return zoneResponse;
         }
 
-        public async Task<ZoneResponse> UpdateAsync(int id, ZoneResponse entity)
+        public async Task UpdateAsync(int id, ZoneResponse entity)
         {
             var zone = await _repositoryManagerMaster.ZoneRepository.GetEntityById(id, true);
             if (zone == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(entity));
             }
             zone.ZonesId = entity.ZonesId;
             zone.ZonesName = entity.ZonesName;
 
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
-            return zone.Adapt<ZoneResponse>();
         }
     }
 }

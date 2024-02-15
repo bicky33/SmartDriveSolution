@@ -30,7 +30,7 @@ namespace Service.Master
             var templateType = await _repositoryManagerMaster.TemplateTypeRepository.GetEntityById(id, false);
             if (templateType == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(templateType));
             }
             _repositoryManagerMaster.TemplateTypeRepository.DeleteEntity(templateType);
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
@@ -48,25 +48,24 @@ namespace Service.Master
             var templateType = await _repositoryManagerMaster.TemplateTypeRepository.GetEntityById(id, false);
             if (templateType == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(templateType));
             }
             var templateTypeResponse = templateType.Adapt<TemplateTypeResponse>();
             return templateTypeResponse;
         }
 
-        public async Task<TemplateTypeResponse> UpdateAsync(int id, TemplateTypeResponse entity)
+        public async Task UpdateAsync(int id, TemplateTypeResponse entity)
         {
             var templateType = await _repositoryManagerMaster.TemplateTypeRepository.GetEntityById(id, true);
             if (templateType == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(entity));
             }
             templateType.TetyId = entity.TetyId;
             templateType.TetyName = entity.TetyName.ToString();
             templateType.TetyGroup = entity.TetyGroup.ToString();
 
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
-            return templateType.Adapt<TemplateTypeResponse>();
         }
     }
 }

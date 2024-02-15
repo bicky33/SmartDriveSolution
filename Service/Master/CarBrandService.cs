@@ -30,7 +30,7 @@ namespace Service.Master
             var carBrand = await _repositoryManagerMaster.CarBrandRepository.GetEntityById(id, false);
             if (carBrand == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(carBrand));
             }
             _repositoryManagerMaster.CarBrandRepository.DeleteEntity(carBrand);
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
@@ -48,26 +48,24 @@ namespace Service.Master
             var carBrand = await _repositoryManagerMaster.CarBrandRepository.GetEntityById(id, false);
             if (carBrand == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(carBrand));
             }
             var carBrandResponse = carBrand.Adapt<CarBrandResponse>();
             return carBrandResponse;
         }
 
-        public async Task<CarBrandResponse> UpdateAsync(int id, CarBrandResponse entity)
+        public async Task UpdateAsync(int id, CarBrandResponse entity)
         {
             var carBrand = await _repositoryManagerMaster.CarBrandRepository.GetEntityById(id, true);
             if (carBrand == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(entity));
             }
 
             carBrand.CabrId = entity.CabrId;
             carBrand.CabrName = entity.CabrName;
 
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
-
-            return carBrand.Adapt<CarBrandResponse>();
         }
     }
 }

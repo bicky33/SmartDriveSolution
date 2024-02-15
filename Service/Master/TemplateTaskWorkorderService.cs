@@ -30,7 +30,7 @@ namespace Service.Master
             var templateTaskWorkorder = await _repositoryManagerMaster.TemplateTaskWorkorderRepository.GetEntityById(id, false);
             if (templateTaskWorkorder == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(templateTaskWorkorder));
             }
             _repositoryManagerMaster.TemplateTaskWorkorderRepository.DeleteEntity(templateTaskWorkorder);
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
@@ -48,25 +48,24 @@ namespace Service.Master
             var templateTaskWorkorder = await _repositoryManagerMaster.TemplateTaskWorkorderRepository.GetEntityById(id, false);
             if (templateTaskWorkorder == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(templateTaskWorkorder));
             }
             var templateTaskWorkorderResponse = templateTaskWorkorder.Adapt<TemplateTaskWorkorderResponse>();
             return templateTaskWorkorderResponse;
         }
 
-        public async Task<TemplateTaskWorkorderResponse> UpdateAsync(int id, TemplateTaskWorkorderResponse entity)
+        public async Task UpdateAsync(int id, TemplateTaskWorkorderResponse entity)
         {
             var templateTaskWorkorder = await _repositoryManagerMaster.TemplateTaskWorkorderRepository.GetEntityById(id, true);
             if (templateTaskWorkorder == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(entity));
             }
             templateTaskWorkorder.TewoId = entity.TewoId;
             templateTaskWorkorder.TewoName = entity.TewoName;
             templateTaskWorkorder.TewoTestaId = entity.TewoTestaId;
 
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
-            return templateTaskWorkorder.Adapt<TemplateTaskWorkorderResponse>();
         }
     }
 }

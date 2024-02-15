@@ -30,7 +30,7 @@ namespace Service.Master
             var category = await _repositoryManagerMaster.CategoryRepository.GetEntityById(id, false);
             if (category == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(category));
             }
             _repositoryManagerMaster.CategoryRepository.DeleteEntity(category);
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
@@ -48,24 +48,23 @@ namespace Service.Master
             var category = await _repositoryManagerMaster.CategoryRepository.GetEntityById(id, false);
             if (category == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(category));
             }
             var categoryResponse = category.Adapt<CategoryResponse>();
             return categoryResponse;
         }
 
-        public async Task<CategoryResponse> UpdateAsync(int id, CategoryResponse entity)
+        public async Task UpdateAsync(int id, CategoryResponse entity)
         {
             var category = await _repositoryManagerMaster.CategoryRepository.GetEntityById(id, true);
             if (category == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(entity));
             }
             category.CateId = entity.CateId;
             category.CateName = entity.CateName;
 
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
-            return category.Adapt<CategoryResponse>();
         }
     }
 }
