@@ -20,7 +20,7 @@ namespace WebApi.Controllers.Master
 
         // GET: api/<CarSeriesController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TemplateType>>> GetAllTemplateType()
+        public async Task<ActionResult<IEnumerable<TemplateType>>> Get()
         {
             var templateTypes = await _serviceManagerMaster.TemplateTypeService.GetAllAsync(false);
             return Ok(templateTypes);
@@ -28,7 +28,7 @@ namespace WebApi.Controllers.Master
 
         // GET api/<CarSeriesController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Zone>> GetTemplateTypeByID(int id)
+        public async Task<ActionResult<Zone>> Get(int id)
         {
             var templateType = await _serviceManagerMaster.TemplateTypeService.GetByIdAsync(id, false);
             return Ok(templateType);
@@ -36,27 +36,27 @@ namespace WebApi.Controllers.Master
 
         // POST api/<CarSeriesController>
         [HttpPost]
-        public async Task<IActionResult> CreateTemplateType([FromBody] TemplateTypeResponse request)
+        public async Task<IActionResult> Create([FromBody] TemplateTypeResponse request)
         {
             if (request == null)
             {
                 return BadRequest("Zone Request is NOT valid");
             }
             var templateType = await _serviceManagerMaster.TemplateTypeService.CreateAsync(request);
-            return CreatedAtAction(nameof(GetTemplateTypeByID), new { id = templateType.TetyId }, templateType);
+            return CreatedAtAction(nameof(Get), new { id = templateType.TetyId }, templateType);
         }
 
         // PUT api/<CarSeriesController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTemplateType(int id, [FromBody] TemplateTypeResponse request)
+        public async Task<IActionResult> Update(int id, [FromBody] TemplateTypeResponse request)
         {
             await _serviceManagerMaster.TemplateTypeService.UpdateAsync(id, request);
-            return CreatedAtAction(nameof(GetTemplateTypeByID), new { id = request.TetyId }, request);
+            return CreatedAtAction(nameof(Get), new { id = request.TetyId }, request);
         }
 
         // DELETE api/<CarSeriesController>/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTemplateType(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             await _serviceManagerMaster.TemplateTypeService.DeleteAsync(id);
 

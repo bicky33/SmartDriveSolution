@@ -20,14 +20,14 @@ namespace WebApi.Controllers.Master
 
         // GET: api/<CarSeriesController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TemplateServiceTask>>> GetAllTemplateServiceTask()
+        public async Task<ActionResult<IEnumerable<TemplateServiceTask>>> Get()
         {
             var templateServiceTask = await _serviceManagerMaster.TemplateServiceTaskService.GetAllAsync(false);
             return Ok(templateServiceTask);
         }
         // GET: api/<CarSeriesController>
-        [HttpGet("getalltesta/{id}")]
-        public async Task<ActionResult<IEnumerable<TemplateServiceTask>>> GetAllTestaByTestaTetyID(int id)
+        [HttpGet("testa/{id}")]
+        public async Task<ActionResult<IEnumerable<TemplateServiceTask>>> GetTesta(int id)
         {
             var templateServiceTask = await _serviceManagerMaster.TemplateServiceTaskService.GetAllTestaAsync(id,false);
             return Ok(templateServiceTask);
@@ -35,17 +35,9 @@ namespace WebApi.Controllers.Master
 
         // GET api/<CarSeriesController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TemplateServiceTask>> GetTemplateServiceTaskByID(int id)
+        public async Task<ActionResult<TemplateServiceTask>> Get(int id)
         {
             var templateServiceTask = await _serviceManagerMaster.TemplateServiceTaskService.GetByIdAsync(id, false);
-            return Ok(templateServiceTask);
-        }
-
-        // GET api/<CarSeriesController>/5
-        [HttpGet("gettesta/{id}")]
-        public async Task<ActionResult<TemplateServiceTask>> GetTestaByTestaTetyID(int id)
-        {
-            var templateServiceTask = await _serviceManagerMaster.TemplateServiceTaskService.GetTestaByTestaTetyIdAsync(id, false);
             return Ok(templateServiceTask);
         }
 
@@ -58,20 +50,20 @@ namespace WebApi.Controllers.Master
                 return BadRequest("TemplateServiceTask Request is NOT valid");
             }
             var templateServiceTask = await _serviceManagerMaster.TemplateServiceTaskService.CreateAsync(request);
-            return CreatedAtAction(nameof(GetTemplateServiceTaskByID), new { id = templateServiceTask.TestaId }, templateServiceTask);
+            return CreatedAtAction(nameof(Get), new { id = templateServiceTask.TestaId }, templateServiceTask);
         }
 
         // PUT api/<CarSeriesController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTemplateServiceTask(int id, [FromBody] TemplateServiceTaskResponse request)
+        public async Task<IActionResult> Update(int id, [FromBody] TemplateServiceTaskResponse request)
         {
             await _serviceManagerMaster.TemplateServiceTaskService.UpdateAsync(id, request);
-            return CreatedAtAction(nameof(GetTemplateServiceTaskByID), new { id = request.TestaId }, request);
+            return CreatedAtAction(nameof(Get), new { id = request.TestaId }, request);
         }
 
         // DELETE api/<CarSeriesController>/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTemplateServiceTask(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             await _serviceManagerMaster.TemplateServiceTaskService.DeleteAsync(id);
 

@@ -20,15 +20,15 @@ namespace WebApi.Controllers.Master
 
         // GET: api/<CarSeriesController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<City>>> GetAllCity()
+        public async Task<ActionResult<IEnumerable<City>>> Get()
         {
             var city = await _serviceManagerMaster.CityService.GetAllAsync(false);
             return Ok(city);
         }
 
         // GET api/<CarSeriesController>/5
-        [HttpGet("{id}", Name = "GetCityByID")]
-        public async Task<ActionResult<City>> GetCityByID(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<City>> Get(int id)
         {
             var city = await _serviceManagerMaster.CityService.GetByIdAsync(id, false);
             return Ok(city);
@@ -36,27 +36,27 @@ namespace WebApi.Controllers.Master
 
         // POST api/<CarSeriesController>
         [HttpPost]
-        public async Task<IActionResult> CreateCity([FromBody] CityResponse request)
+        public async Task<IActionResult> Create([FromBody] CityResponse request)
         {
             if (request == null)
             {
                 return BadRequest("City Request is NOT valid");
             }
             var city = await _serviceManagerMaster.CityService.CreateAsync(request);
-            return CreatedAtAction(nameof(GetCityByID), new { id = city.CityId }, city);
+            return CreatedAtAction(nameof(Get), new { id = city.CityId }, city);
         }
 
         // PUT api/<CarSeriesController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCity(int id, [FromBody] CityResponse request)
+        public async Task<IActionResult> Update(int id, [FromBody] CityResponse request)
         {
             await _serviceManagerMaster.CityService.UpdateAsync(id, request);
-            return CreatedAtAction(nameof(GetCityByID), new { id = request.CityId }, request);
+            return CreatedAtAction(nameof(Get), new { id = request.CityId }, request);
         }
 
         // DELETE api/<CarSeriesController>/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCity(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             await _serviceManagerMaster.CityService.DeleteAsync(id);
 

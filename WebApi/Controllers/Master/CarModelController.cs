@@ -20,15 +20,15 @@ namespace WebApi.Controllers.Master
 
         // GET: api/<CarModelController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CarModel>>> GetAllCarModel()
+        public async Task<ActionResult<IEnumerable<CarModel>>> Get()
         {
             var carModels = await _serviceManagerMaster.CarModelService.GetAllAsync(false);
             return Ok(carModels);
         }
 
         // GET api/<CarModelController>/5
-        [HttpGet("{id}", Name = "GetCarModelByID")]
-        public async Task<ActionResult<CarModel>> GetCarModelByID(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CarModel>> Get(int id)
         {
             var carModel = await _serviceManagerMaster.CarModelService.GetByIdAsync(id, false);
             return Ok(carModel);
@@ -36,19 +36,19 @@ namespace WebApi.Controllers.Master
 
         // POST api/<CarModelController>
         [HttpPost]
-        public async Task<IActionResult> CreateCarModel([FromBody] CarModelResponse request)
+        public async Task<IActionResult> Create([FromBody] CarModelResponse request)
         {
             if (request == null)
             {
                 return BadRequest("Car Brand Request is NOT valid");
             }
             var carModel = await _serviceManagerMaster.CarModelService.CreateAsync(request);
-            return CreatedAtAction(nameof(GetCarModelByID), new { id = carModel.CarmId }, carModel);
+            return CreatedAtAction(nameof(Get), new { id = carModel.CarmId }, carModel);
         }
 
         // PUT api/<CarModelController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCarModel(int id, [FromBody] CarModelResponse request)
+        public async Task<IActionResult> Update(int id, [FromBody] CarModelResponse request)
         {
             await _serviceManagerMaster.CarModelService.UpdateAsync(id, request);
             return NoContent();
@@ -56,7 +56,7 @@ namespace WebApi.Controllers.Master
 
         // DELETE api/<CarModelController>/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCarModel(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             await _serviceManagerMaster.CarModelService.DeleteAsync(id);
 

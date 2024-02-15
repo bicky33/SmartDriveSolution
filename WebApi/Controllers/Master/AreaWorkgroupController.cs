@@ -20,7 +20,7 @@ namespace WebApi.Controllers.Master
 
         // GET: api/<CarSeriesController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AreaWorkgroup>>> GetAllInsuranceType()
+        public async Task<ActionResult<IEnumerable<AreaWorkgroup>>> Get()
         {
             var areaWorkgroups = await _serviceManagerMaster.AreaWorkgroupService.GetAllAsyncMaster(false);
             return Ok(areaWorkgroups);
@@ -28,7 +28,7 @@ namespace WebApi.Controllers.Master
 
         // GET api/<CarSeriesController>/5
         [HttpGet("{name}")]
-        public async Task<ActionResult<AreaWorkgroup>> GetInsuranceTypeByName(string name)
+        public async Task<ActionResult<AreaWorkgroup>> Get(string name)
         {
             var areaWorkgroup = await _serviceManagerMaster.AreaWorkgroupService.GetByNameAsyncMaster(name, false);
             return Ok(areaWorkgroup);
@@ -36,22 +36,23 @@ namespace WebApi.Controllers.Master
 
         // POST api/<CarSeriesController>
         [HttpPost]
-        public async Task<IActionResult> CreateInsuranceType([FromBody] AreaWorkgroupResponse request)
+        public async Task<IActionResult> Create([FromBody] AreaWorkgroupResponse request)
         {
             if (request == null)
             {
                 return BadRequest("AreaWorkgroup Request is NOT valid");
             }
             var areaWorkgroup = await _serviceManagerMaster.AreaWorkgroupService.CreateAsyncMaster(request);
-            return CreatedAtAction(nameof(GetInsuranceTypeByName), new { name = areaWorkgroup.ArwgCode}, areaWorkgroup);
+            return CreatedAtAction(nameof(Get), new { name = areaWorkgroup.ArwgCode}, areaWorkgroup);
         }
 
         // PUT api/<CarSeriesController>/5
         [HttpPut("{name}")]
-        public async Task<IActionResult> UpdateInsuranceType(string name, [FromBody] AreaWorkgroupResponse request)
+        public async Task<IActionResult> Update(string name, [FromBody] AreaWorkgroupResponse request)
         {
             await _serviceManagerMaster.AreaWorkgroupService.UpdateAsyncMaster(name, request);
-            return CreatedAtAction(nameof(GetInsuranceTypeByName), new { name = request.ArwgCode }, request);
+            // return CreatedAtAction(nameof(Get), new { name = request.ArwgCode }, request);
+            return NoContent();
         }
 
         // DELETE api/<CarSeriesController>/5

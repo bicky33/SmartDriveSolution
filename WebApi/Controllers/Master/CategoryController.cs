@@ -20,7 +20,7 @@ namespace WebApi.Controllers.Master
 
         // GET: api/<CarSeriesController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetAllCategory()
+        public async Task<ActionResult<IEnumerable<Category>>> Get()
         {
             var categories = await _serviceManagerMaster.CategoryService.GetAllAsync(false);
             return Ok(categories);
@@ -28,7 +28,7 @@ namespace WebApi.Controllers.Master
 
         // GET api/<CarSeriesController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategoryByID(int id)
+        public async Task<ActionResult<Category>> Get(int id)
         {
             var category = await _serviceManagerMaster.CategoryService.GetByIdAsync(id, false);
             return Ok(category);
@@ -36,27 +36,27 @@ namespace WebApi.Controllers.Master
 
         // POST api/<CarSeriesController>
         [HttpPost]
-        public async Task<IActionResult> CreateCategory([FromBody] CategoryResponse request)
+        public async Task<IActionResult> Create([FromBody] CategoryResponse request)
         {
             if (request == null)
             {
                 return BadRequest("Category Request is NOT valid");
             }
             var category = await _serviceManagerMaster.CategoryService.CreateAsync(request);
-            return CreatedAtAction(nameof(GetCategoryByID), new { id = category.CateId }, category);
+            return CreatedAtAction(nameof(Get), new { id = category.CateId }, category);
         }
 
         // PUT api/<CarSeriesController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryResponse request)
+        public async Task<IActionResult> Update(int id, [FromBody] CategoryResponse request)
         {
             await _serviceManagerMaster.CategoryService.UpdateAsync(id, request);
-            return CreatedAtAction(nameof(GetCategoryByID), new { id = request.CateId }, request);
+            return CreatedAtAction(nameof(Get), new { id = request.CateId }, request);
         }
 
         // DELETE api/<CarSeriesController>/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             await _serviceManagerMaster.CategoryService.DeleteAsync(id);
 

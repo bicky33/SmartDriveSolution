@@ -20,15 +20,15 @@ namespace WebApi.Controllers.Master
 
         // GET: api/<CarSeriesController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Provinsi>>> GetAllProvinsi()
+        public async Task<ActionResult<IEnumerable<Provinsi>>> Get()
         {
             var provinsi = await _serviceManagerMaster.ProvinsiService.GetAllAsync(false);
             return Ok(provinsi);
         }
 
         // GET api/<CarSeriesController>/5
-        [HttpGet("{id}", Name = "GetProvinsiByID")]
-        public async Task<ActionResult<Provinsi>> GetProvinsiByID(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Provinsi>> Get(int id)
         {
             var provinsi = await _serviceManagerMaster.ProvinsiService.GetByIdAsync(id, false);
             return Ok(provinsi);
@@ -36,27 +36,27 @@ namespace WebApi.Controllers.Master
 
         // POST api/<CarSeriesController>
         [HttpPost]
-        public async Task<IActionResult> CreateProvinsi([FromBody] ProvinsiResponse request)
+        public async Task<IActionResult> Create([FromBody] ProvinsiResponse request)
         {
             if (request == null)
             {
                 return BadRequest("Provinsi Request is NOT valid");
             }
             var provinsi = await _serviceManagerMaster.ProvinsiService.CreateAsync(request);
-            return CreatedAtAction(nameof(GetProvinsiByID), new { id = provinsi.ProvId }, provinsi);
+            return CreatedAtAction(nameof(Get), new { id = provinsi.ProvId }, provinsi);
         }
 
         // PUT api/<CarSeriesController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProvinsi(int id, [FromBody] ProvinsiResponse request)
+        public async Task<IActionResult> Update(int id, [FromBody] ProvinsiResponse request)
         {
             await _serviceManagerMaster.ProvinsiService.UpdateAsync(id, request);
-            return CreatedAtAction(nameof(GetProvinsiByID), new { id = request.ProvId }, request);
+            return CreatedAtAction(nameof(Get), new { id = request.ProvId }, request);
         }
 
         // DELETE api/<CarSeriesController>/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProvinsi(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             await _serviceManagerMaster.ProvinsiService.DeleteAsync(id);
 

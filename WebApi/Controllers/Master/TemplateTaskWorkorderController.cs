@@ -20,7 +20,7 @@ namespace WebApi.Controllers.Master
 
         // GET: api/<CarSeriesController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TemplateTaskWorkorder>>> GetAllTemplateTaskWorkorder()
+        public async Task<ActionResult<IEnumerable<TemplateTaskWorkorder>>> Get()
         {
             var templateTaskWorkorder = await _serviceManagerMaster.TemplateTaskWorkorderService.GetAllAsync(false);
             return Ok(templateTaskWorkorder);
@@ -28,7 +28,7 @@ namespace WebApi.Controllers.Master
 
         // GET api/<CarSeriesController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TemplateTaskWorkorder>> GetTemplateTaskWorkorderByID(int id)
+        public async Task<ActionResult<TemplateTaskWorkorder>> Get(int id)
         {
             var templateTaskWorkorder = await _serviceManagerMaster.TemplateTaskWorkorderService.GetByIdAsync(id, false);
             return Ok(templateTaskWorkorder);
@@ -36,27 +36,27 @@ namespace WebApi.Controllers.Master
 
         // POST api/<CarSeriesController>
         [HttpPost]
-        public async Task<IActionResult> CreateTemplateTaskWorkorder([FromBody] TemplateTaskWorkorderResponse request)
+        public async Task<IActionResult> Create([FromBody] TemplateTaskWorkorderResponse request)
         {
             if (request == null)
             {
                 return BadRequest("TemplateTaskWorkorder Request is NOT valid");
             }
             var templateTaskWorkorder = await _serviceManagerMaster.TemplateTaskWorkorderService.CreateAsync(request);
-            return CreatedAtAction(nameof(GetTemplateTaskWorkorderByID), new { id = templateTaskWorkorder.TewoId }, templateTaskWorkorder);
+            return CreatedAtAction(nameof(Get), new { id = templateTaskWorkorder.TewoId }, templateTaskWorkorder);
         }
 
         // PUT api/<CarSeriesController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTemplateTaskWorkorder(int id, [FromBody] TemplateTaskWorkorderResponse request)
+        public async Task<IActionResult> Update(int id, [FromBody] TemplateTaskWorkorderResponse request)
         {
             await _serviceManagerMaster.TemplateTaskWorkorderService.UpdateAsync(id, request);
-            return CreatedAtAction(nameof(GetTemplateTaskWorkorderByID), new { id = request.TewoId }, request);
+            return CreatedAtAction(nameof(Get), new { id = request.TewoId }, request);
         }
 
         // DELETE api/<CarSeriesController>/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTemplateTaskWorkorder(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             await _serviceManagerMaster.TemplateTaskWorkorderService.DeleteAsync(id);
 

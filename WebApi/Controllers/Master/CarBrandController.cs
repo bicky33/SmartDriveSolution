@@ -20,15 +20,15 @@ namespace WebApi.Controllers.Master
 
         // GET: api/<CarBrandController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CarBrand>>> GetAllCarBrand()
+        public async Task<ActionResult<IEnumerable<CarBrand>>> Get()
         {
             var carBrands = await _serviceManagerMaster.CarBrandService.GetAllAsync(false);
             return Ok(carBrands);
         }
 
         // GET api/<CarBrandController>/5
-        [HttpGet("{id}", Name = "GetByID")]
-        public async Task<ActionResult<CarBrand>> GetByID(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CarBrand>> Get(int id)
         {
             var carBrand = await _serviceManagerMaster.CarBrandService.GetByIdAsync(id, false);
             return Ok(carBrand);
@@ -36,27 +36,28 @@ namespace WebApi.Controllers.Master
 
         // POST api/<CarBrandController>
         [HttpPost]
-        public async Task<IActionResult> CreateCarBrand([FromBody] CarBrandResponse request)
+        public async Task<IActionResult> Create([FromBody] CarBrandResponse request)
         {
             if (request == null)
             {
                 return BadRequest("Car Brand Request is NOT valid");
             }
             var carBrand = await _serviceManagerMaster.CarBrandService.CreateAsync(request);
-            return CreatedAtAction(nameof(GetByID), new { id = carBrand.CabrId }, carBrand);
+            return CreatedAtAction(nameof(Get), new { id = carBrand.CabrId }, carBrand);
         }
 
         // PUT api/<CarBrandController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCarBrand(int id, [FromBody] CarBrandResponse request)
+        public async Task<IActionResult> Update(int id, [FromBody] CarBrandResponse request)
         {
             await _serviceManagerMaster.CarBrandService.UpdateAsync(id, request);
-            return CreatedAtAction(nameof(GetByID), new { id = request.CabrId }, request);
+            //return CreatedAtAction(nameof(Get), new { id = request.CabrId }, request);
+            return NoContent();
         }
 
         // DELETE api/<CarBrandController>/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCarBrand(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             await _serviceManagerMaster.CarBrandService.DeleteAsync(id);
 

@@ -20,7 +20,7 @@ namespace WebApi.Controllers.Master
 
         // GET: api/<CarSeriesController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<InsuranceType>>> GetAllInsuranceType()
+        public async Task<ActionResult<IEnumerable<InsuranceType>>> Get()
         {
             var insuranceTypes = await _serviceManagerMaster.InsuranceTypeService.GetAllAsyncMaster(false);
             return Ok(insuranceTypes);
@@ -28,7 +28,7 @@ namespace WebApi.Controllers.Master
 
         // GET api/<CarSeriesController>/5
         [HttpGet("{name}")]
-        public async Task<ActionResult<Category>> GetInsuranceTypeByName(string name)
+        public async Task<ActionResult<Category>> Get(string name)
         {
             var insuranceType = await _serviceManagerMaster.InsuranceTypeService.GetByNameAsyncMaster(name, false);
             return Ok(insuranceType);
@@ -36,27 +36,27 @@ namespace WebApi.Controllers.Master
 
         // POST api/<CarSeriesController>
         [HttpPost]
-        public async Task<IActionResult> CreateInsuranceType([FromBody] InsuranceTypeResponse request)
+        public async Task<IActionResult> Create([FromBody] InsuranceTypeResponse request)
         {
             if (request == null)
             {
                 return BadRequest("Category Request is NOT valid");
             }
             var insuranceType = await _serviceManagerMaster.InsuranceTypeService.CreateAsyncMaster(request);
-            return CreatedAtAction(nameof(GetInsuranceTypeByName), new { id = insuranceType.IntyName}, insuranceType);
+            return CreatedAtAction(nameof(Get), new { id = insuranceType.IntyName}, insuranceType);
         }
 
         // PUT api/<CarSeriesController>/5
         [HttpPut("{name}")]
-        public async Task<IActionResult> UpdateInsuranceType(string name, [FromBody] InsuranceTypeResponse request)
+        public async Task<IActionResult> Update(string name, [FromBody] InsuranceTypeResponse request)
         {
             await _serviceManagerMaster.InsuranceTypeService.UpdateAsyncMaster(name, request);
-            return CreatedAtAction(nameof(GetInsuranceTypeByName), new { name = request.IntyName }, request);
+            return CreatedAtAction(nameof(Get), new { name = request.IntyName }, request);
         }
 
         // DELETE api/<CarSeriesController>/5
         [HttpDelete("{name}")]
-        public async Task<IActionResult> DeleteInsuranceType(string name)
+        public async Task<IActionResult> Delete(string name)
         {
             await _serviceManagerMaster.InsuranceTypeService.DeleteAsyncMaster(name);
 
