@@ -12,6 +12,7 @@ namespace Domain.Repositories.CR
     {
         ICustomerRequestRepository CustomerRequestRepository { get; }
         IRepositoryEntityBase<CustomerInscAsset> CustomerInscAssetRepository { get; }
+        IRepositoryEntityBase<CustomerClaim> CustomerClaimRepository { get; }
         ICustomerUnitOfWork CustomerUnitOfWork { get; }
     }
 }

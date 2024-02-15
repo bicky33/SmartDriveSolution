@@ -14,12 +14,14 @@ namespace Persistence.Repositories.CR
         private readonly Lazy<ICustomerUnitOfWork> _customerUnitOfWork;
         private readonly Lazy<ICustomerRequestRepository> _customerRequestRepository;
         private readonly Lazy<IRepositoryEntityBase<CustomerInscAsset>> _customerInscAssetRepository;
+        private readonly Lazy<IRepositoryEntityBase<CustomerClaim>> _customerClaimRepository;
 
         public RepositoryCustomerManager(SmartDriveContext dbContext)
         {
             _customerUnitOfWork = new Lazy<ICustomerUnitOfWork>(() => new CustomerUnitOfWork(dbContext));
             _customerRequestRepository = new Lazy<ICustomerRequestRepository>(() => new CustomerRequestRepository(dbContext));
             _customerInscAssetRepository = new Lazy<IRepositoryEntityBase<CustomerInscAsset>>(() => new CustomerInscAssetsRepository(dbContext));
+            _customerClaimRepository = new Lazy<IRepositoryEntityBase<CustomerClaim>>(() => new CustomerClaimRepository(dbContext));
         }
 
         public ICustomerRequestRepository CustomerRequestRepository => _customerRequestRepository.Value;
@@ -27,5 +29,7 @@ namespace Persistence.Repositories.CR
         public ICustomerUnitOfWork CustomerUnitOfWork => _customerUnitOfWork.Value;
 
         public IRepositoryEntityBase<CustomerInscAsset> CustomerInscAssetRepository => _customerInscAssetRepository.Value;
+
+        public IRepositoryEntityBase<CustomerClaim> CustomerClaimRepository => _customerClaimRepository.Value;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Contract.DTO.CR.Response;
+using Domain.Entities.CR;
 using Service.Abstraction.Base;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Service.Abstraction.CR
 {
-    public interface ICustomerInscAssetService : IServiceEntityBase<CustomerInscAssetDto>
+    public interface ICustomerClaimService : IServiceEntityBase<CustomerClaimDto>
     {
     }
 }

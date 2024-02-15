@@ -18,7 +18,6 @@ builder.Services.ConfigureCustomerServiceManager();
 
 //builder.Services.ConfigureCors();
 builder.Services.AddCors();
-builder.Services.ConfigureDbContext(builder.Configuration);
 builder.Services.ConfigureRepositoryUser();
 builder.Services.ConfigureServiceUser();
 

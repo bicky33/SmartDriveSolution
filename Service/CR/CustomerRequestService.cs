@@ -2,6 +2,7 @@
 using Domain.Entities.CR;
 using Domain.Exceptions;
 using Domain.Repositories.CR;
+using Domain.Repositories.UserModule;
 using Mapster;
 using Service.Abstraction.CR;
 using System;
@@ -15,15 +16,21 @@ namespace Service.CR
     public class CustomerRequestService : ICustomerRequestService
     {
         private readonly IRepositoryCustomerManager _repositoryCustomerManager;
+        private readonly IRepositoryManagerUser _repositoryManagerUser;
 
-        public CustomerRequestService(IRepositoryCustomerManager repositoryCustomerManager)
+        public CustomerRequestService(IRepositoryCustomerManager repositoryCustomerManager, IRepositoryManagerUser repositoryManagerUser)
         {
             _repositoryCustomerManager = repositoryCustomerManager;
+            _repositoryManagerUser = repositoryManagerUser;
         }
 
         public async Task<CustomerRequestDto> CreateAsync(CustomerRequestDto entity)
         {
+            var businessEntity = _repositoryManagerUser.BusinessEntityRepository.CreateEntity();
+            await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
+
             var customerRequest = entity.Adapt<CustomerRequest>();
+            customerRequest.CreqEntityid = businessEntity.Entityid;
             _repositoryCustomerManager.CustomerRequestRepository.CreateEntity(customerRequest);
             await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
 
@@ -61,7 +68,7 @@ namespace Service.CR
             return customerRequestDto;
         }
 
-        public async Task<CustomerRequestDto> UpdateAsync(int id, CustomerRequestDto entity)
+        public async Task UpdateAsync(int id, CustomerRequestDto entity)
         {
             var customerRequest = await _repositoryCustomerManager.CustomerRequestRepository.GetEntityById(id, true);
             if(customerRequest == null)
@@ -73,9 +80,6 @@ namespace Service.CR
             customerRequest.CreqModifiedDate = DateTime.Now;
 
             await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
-
-            return customerRequest.Adapt<CustomerRequestDto>();
-
         }
     }
 }

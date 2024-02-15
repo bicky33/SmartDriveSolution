@@ -61,5 +61,29 @@ namespace Service.CR
             var customerInscAssetDto = customerInscAsset.Adapt<CustomerInscAssetDto>();
             return customerInscAssetDto;
         }
+
+        public async Task UpdateAsync(int id, CustomerInscAssetDto entity)
+        {
+            var customerInscAsset = await _repositoryCustomerManager.CustomerInscAssetRepository.GetEntityById(id, true);
+            if (customerInscAsset == null)
+            {
+                throw new EntityNotFoundException(id, "CustomerInscAsset");
+            }
+
+            customerInscAsset.CiasPoliceNumber = entity.CiasPoliceNumber;
+            customerInscAsset.CiasYear = entity.CiasYear;
+            customerInscAsset.CiasStartdate = entity.CiasStartdate;
+            customerInscAsset.CiasEnddate = entity.CiasEnddate;
+            customerInscAsset.CiasCurrentPrice = entity.CiasCurrentPrice;
+            customerInscAsset.CiasInsurancePrice = entity.CiasInsurancePrice;
+            customerInscAsset.CiasTotalPremi = entity.CiasTotalPremi;
+            customerInscAsset.CiasPaidType = entity.CiasPaidType;
+            customerInscAsset.CiasIsNewChar = entity.CiasIsNewChar;
+            customerInscAsset.CiasCarsId = entity.CiasCarsId;
+            customerInscAsset.CiasIntyName = entity.CiasIntyName;
+            customerInscAsset.CiasCityId = entity.CiasCityId;
+
+            await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
+        }
     }
 }

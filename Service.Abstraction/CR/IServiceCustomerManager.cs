@@ -10,5 +10,6 @@ namespace Service.Abstraction.CR
     {
         ICustomerRequestService CustomerRequestService { get; }
         ICustomerInscAssetService CustomerInscAssetService { get; }
+        ICustomerClaimService CustomerClaimService { get; }
     }
 }

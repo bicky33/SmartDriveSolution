@@ -43,6 +43,15 @@ namespace WebApi.Controllers.CR
             return CreatedAtAction(nameof(GetCustomerInscAssetById), new { id = customerInscAsset.CiasCreqEntityid }, customerInscAsset);
         }
 
+        // PUT api/<CustomerRequestController>/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCustomerInscAsset(int id, [FromBody] CustomerInscAssetUpdateDto customerInscAssetDto)
+        {
+            await _serviceCustomerManager.CustomerInscAssetService.UpdateAsync(id, customerInscAssetDto.Adapt<CustomerInscAssetDto>());
+            return NoContent();
+
+        }
+
         // DELETE api/<CustomerInscAssetController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCustomerInscAsset(int id)
