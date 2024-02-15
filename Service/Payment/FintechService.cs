@@ -3,6 +3,7 @@ using Domain.Entities.Payment;
 using Domain.Exceptions;
 using Domain.Repositories.Base;
 using Domain.Repositories.Payment;
+using Domain.Repositories.UserModule;
 using Mapster;
 using Service.Abstraction.Base;
 
@@ -11,17 +12,23 @@ namespace Service.Payment
     public class FintechService : IServiceEntityBase<FintechDto>
     {
         private readonly IRepositoryPaymentManager _repositoryManager;
+        private readonly IRepositoryManagerUser _repositoryManagerUser;
 
-        public FintechService(IRepositoryPaymentManager repositoryManager)
+        public FintechService(IRepositoryPaymentManager repositoryManager, IRepositoryManagerUser repositoryManagerUser)
         {
             _repositoryManager = repositoryManager;
+            _repositoryManagerUser = repositoryManagerUser;
         }
 
         public async Task<FintechDto> CreateAsync(FintechDto entity)
         {
             //TODO create BussinessEntity first,
             //then apply it to bank id (fintech.entitiyId= BussinessEntityId)
+            var bussinessEntity = _repositoryManagerUser.BusinessEntityRepository.CreateEntity();
+            await _repositoryManager.UnitOfWorks.SaveChangesAsync();
+
             var fintech = entity.Adapt<Fintech>();
+            fintech.FintEntityid = bussinessEntity.Entityid;
             _repositoryManager.FintechRepository.CreateEntity(fintech);
             await _repositoryManager.UnitOfWorks.SaveChangesAsync();
             return fintech.Adapt<FintechDto>();
@@ -65,7 +72,7 @@ namespace Service.Payment
             fintech.FintName = entity.FintName;
             fintech.FintDesc = entity.FintDesc;
             await _repositoryManager.UnitOfWorks.SaveChangesAsync();
-             
+
         }
     }
 }

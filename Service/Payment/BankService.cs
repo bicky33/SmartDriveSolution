@@ -2,27 +2,35 @@
 using Domain.Entities.Payment;
 using Domain.Exceptions;
 using Domain.Repositories.Payment;
+using Domain.Repositories.UserModule;
 using Mapster;
 using Service.Abstraction.Base;
+using Service.Abstraction.User;
 
 namespace Service.Payment
 {
     public class BankService : IServiceEntityBase<BankDto>
     {
         private readonly IRepositoryPaymentManager _repositoryManager;
+        private readonly IRepositoryManagerUser _repositoryManagerUser;
 
-        public BankService(IRepositoryPaymentManager repositoryManager)
+        public BankService(IRepositoryPaymentManager repositoryManager, IRepositoryManagerUser repositoryManagerUser)
         {
             _repositoryManager = repositoryManager;
+            _repositoryManagerUser = repositoryManagerUser;
         }
 
         public async Task<BankDto> CreateAsync(BankDto entity)
         {
-            //TODO create BussinessEntity first,
-            //then apply it to bank id (bank.entitiyId= BussinessEntityId)
+            var bussinessEntity = _repositoryManagerUser
+                .BusinessEntityRepository.CreateEntity();
+            await _repositoryManager.UnitOfWorks.SaveChangesAsync();
+
             var bank = entity.Adapt<Bank>();
+            bank.BankEntityid = bussinessEntity.Entityid;
             _repositoryManager.BankRepository.CreateEntity(bank);
             await _repositoryManager.UnitOfWorks.SaveChangesAsync();
+
             return bank.Adapt<BankDto>();
         }
 
@@ -40,7 +48,7 @@ namespace Service.Payment
 
         public async Task<IEnumerable<BankDto>> GetAllAsync(bool trackChanges)
         {
-            var categories = await _repositoryManager.BankRepository.GetAllEntity(false);
+            var categories = await _repositoryManager.BankRepository.GetAllEntity(trackChanges);
             var categoryDto = categories.Adapt<IEnumerable<BankDto>>();
 
             return categoryDto;
@@ -48,12 +56,12 @@ namespace Service.Payment
 
         public async Task<BankDto> GetByIdAsync(int id, bool trackChanges)
         {
-            var categoy = await _repositoryManager.BankRepository.GetEntityById(id, false);
+            var bank = await _repositoryManager.BankRepository.GetEntityById(id, trackChanges);
 
-            if (categoy == null)
+            if (bank == null)
                 throw new EntityNotFoundException(id, "Bank");
 
-            var dto = categoy.Adapt<BankDto>();
+            var dto = bank.Adapt<BankDto>();
             return dto;
         }
 

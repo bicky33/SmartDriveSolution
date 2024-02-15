@@ -40,26 +40,26 @@ namespace WebApi.Controllers.Payment
         [HttpPost]
         public async Task<IActionResult> CreateBank([FromBody] BankDto bankDto)
         {
-            if (bankDto == null) 
-                return BadRequest("Bank object is not valid"); 
-             
-        await    _serviceManager.BankService.CreateAsync(bankDto); 
+            if (bankDto == null)
+                return BadRequest("Bank object is not valid");
+
+            await _serviceManager.BankService.CreateAsync(bankDto);
             return CreatedAtAction(nameof(GetBankById), new { id = bankDto.BankEntityid }, bankDto);
         }
 
         // PUT api/<BanksController>/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] BankDto bankDto)
-        { 
-            await _serviceManager.BankService.UpdateAsync(id, bankDto); 
+        {
+            await _serviceManager.BankService.UpdateAsync(id, bankDto);
             return Ok(bankDto);
         }
 
         // DELETE api/<BanksController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
-        { 
-            await _serviceManager.BankService.DeleteAsync(id); 
+        {
+            await _serviceManager.BankService.DeleteAsync(id);
             return Ok($"ID {id} Succesfully deleted");
         }
     }

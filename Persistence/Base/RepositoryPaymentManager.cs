@@ -23,11 +23,11 @@ namespace Persistence.Base
         public RepositoryPaymentManager(SmartDriveContext dbContext)
         {
             _unitOfWorks = new Lazy<IUnitOfWorks>(() => new UnitOfWorks(dbContext));
+
             _bankRepository = new Lazy<IRepositoryEntityBase<Bank>>(() => new BankRepository(dbContext));
             _fintechRepository = new Lazy<IRepositoryEntityBase<Fintech>>(() => new FintechRepository(dbContext));
-            //_userAccountRepository= new Lazy<IRepositoryEntityBase<UserAccount>>(() => new UserAccountRepository(dbContext));
-            //_paymentTransactionRepository = new Lazy<IRepositoryEntityBase<PaymentTransaction>>(() => new PaymentTransactionRepository(dbContext));
-            ////_categoryDetailRepository = new Lazy<IRepositoryEntityBase<CategoryDetail>>(() => new CategoryDetailRepository(dbContext));
+            _userAccountRepository = new Lazy<IRepositoryEntityBase<UserAccount>>(() => new UserAccountRepository(dbContext));
+            _paymentTransactionRepository = new Lazy<IRepositoryEntityBase<PaymentTransaction>>(() => new PaymentTransactionRepository(dbContext)); 
         }
         public IRepositoryEntityBase<Bank> BankRepository => _bankRepository.Value;
 

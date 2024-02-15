@@ -1,5 +1,6 @@
 ﻿using Contract.DTO.Payment;
 using Domain.Entities.Payment;
+using Domain.Repositories.Base;
 using Service.Abstraction.Base;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Service.Abstraction.Payment
         IServiceEntityBase<BankDto> BankService { get; }
         IServiceEntityBase<FintechDto> FintechService { get; }
         IServiceEntityBase<UserAccountDto> UserAccountService { get; }
-        IServiceEntityBase<PaymentTransactionDto> PaymentTransactionService { get; }
+        IServiceEntityPaymentTransaction PaymentTransactionService { get; }
 
     }
 }
