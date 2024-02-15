@@ -1,8 +1,12 @@
 ﻿using Domain.Repositories.Master;
+using Domain.Repositories.UserModule;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Base;
 using Persistence.Repositories;
 using Persistence.Repositories.Master;
 using Service.Abstraction.Master;
+using Service.Abstraction.User;
+using Service.Base.UserModule;
 using Service.Master;
 
 namespace WebApi.Extensions
@@ -30,7 +34,14 @@ namespace WebApi.Extensions
                 opts.UseSqlServer(configuration.GetConnectionString("SmartDriveDB"));
             });
 
-        public static void ConfigureRepositoryManagerMaster(this IServiceCollection services) => services.AddScoped<IRepositoryManagerMaster, RepositoryManagerMaster>();
-        public static void ConfigureServiceManagerMaster(this IServiceCollection services) => services.AddScoped<IServiceManagerMaster, ServiceManagerMaster>();
+        public static void ConfigureRepository(this IServiceCollection services)  {
+            services.AddScoped<IRepositoryManagerMaster, RepositoryManagerMaster>();
+            services.AddScoped<IRepositoryManagerUser, RepositoryManagerUser>();
+        }
+        public static void ConfigureService(this IServiceCollection services) {
+            services.AddScoped<IServiceManagerMaster, ServiceManagerMaster>();
+            services.AddScoped<IServiceManagerUser, ServiceManagerUser>();
+        }
+
     }
 }
