@@ -21,6 +21,7 @@ namespace Service.Master
         private readonly Lazy<IServiceEntityBase<TemplateTypeResponse>> _templateTypeService;
         private readonly Lazy<IServiceTemplateServiceTask> _templateServiceTaskService;
         private readonly Lazy<IServiceEntityBase<TemplateTaskWorkorderResponse>> _templateTaskWorkorderService;
+        private readonly Lazy<IServiceEntityBase<TemplateInsurancePremiResponse>> _templateInsurancePremiService;
 
         public ServiceManagerMaster(IRepositoryManagerMaster repositoryManager)
         {
@@ -37,6 +38,7 @@ namespace Service.Master
             _templateTypeService = new Lazy<IServiceEntityBase<TemplateTypeResponse>>(() => new TemplateTypeService(repositoryManager));
             _templateServiceTaskService = new Lazy<IServiceTemplateServiceTask>(() => new TemplateServiceTaskService(repositoryManager));
             _templateTaskWorkorderService = new Lazy<IServiceEntityBase<TemplateTaskWorkorderResponse>>(() => new TemplateTaskWorkorderService(repositoryManager));
+            _templateInsurancePremiService= new Lazy<IServiceEntityBase<TemplateInsurancePremiResponse>>(() => new TemplateInsurancePremiService(repositoryManager));
         }
 
         public IServiceEntityBase<CarBrandResponse> CarBrandService => _carBrandService.Value;
@@ -63,5 +65,7 @@ namespace Service.Master
         public IServiceTemplateServiceTask TemplateServiceTaskService => _templateServiceTaskService.Value;
 
         public IServiceEntityBase<TemplateTaskWorkorderResponse> TemplateTaskWorkorderService => _templateTaskWorkorderService.Value;
+
+        public IServiceEntityBase<TemplateInsurancePremiResponse> TemplateInsurancePremiService => _templateInsurancePremiService.Value;
     }
 }

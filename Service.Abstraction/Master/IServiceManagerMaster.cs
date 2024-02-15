@@ -19,5 +19,6 @@ namespace Service.Abstraction.Master
         IServiceEntityBase<TemplateTypeResponse> TemplateTypeService { get; }
         IServiceTemplateServiceTask TemplateServiceTaskService { get; }
         IServiceEntityBase<TemplateTaskWorkorderResponse> TemplateTaskWorkorderService { get; }
+        IServiceEntityBase<TemplateInsurancePremiResponse> TemplateInsurancePremiService { get; }
     }
 }
