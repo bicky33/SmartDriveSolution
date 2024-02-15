@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repositories.SO
 {
-    public class ServiceOrderRepository : RepositoryBase<ServiceOrder>, IRepositoryEntityBase<ServiceOrder,string>
+    public class ServiceOrderRepository : RepositoryBase<ServiceOrder>, IRepositorySOEntityBase<ServiceOrder,string>
     {
         public ServiceOrderRepository(SmartDriveContext dbContext) : base(dbContext)
         {

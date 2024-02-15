@@ -11,9 +11,9 @@ namespace WebApi.Controllers.SO
     [ApiController]
     public class ServiceOrderTaskController : ControllerBase
     {
-        private readonly IServiceManager _serviceManager;
+        private readonly IServiceSOManager _serviceManager;
 
-        public ServiceOrderTaskController(IServiceManager serviceManager)
+        public ServiceOrderTaskController(IServiceSOManager serviceManager)
         {
             _serviceManager = serviceManager;
         }

@@ -9,7 +9,7 @@ namespace Contract.DTO.SO
 
         public DateTime? ServCreatedOn { get; init; }
 
-        public EnumModuleServiceOrder.SERVTYPE? ServType { get; init; }
+        public string? ServType { get; init; }
 
         public string? ServInsuranceNo { get; init; }
 
@@ -19,7 +19,7 @@ namespace Contract.DTO.SO
 
         public DateTime? ServEnddate { get; init; }
 
-        public EnumModuleServiceOrder.SERVSTATUS? ServStatus { get; init; }
+        public string? ServStatus { get; init; }
 
         public int? ServServId { get; init; }
 

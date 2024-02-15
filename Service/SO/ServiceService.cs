@@ -7,11 +7,11 @@ using Service.Abstraction.SO;
 
 namespace Service.SO
 {
-    public class ServiceService : IServiceEntityBase<ServiceDto,ServiceDtoCreate,int>
+    public class ServiceService : IServiceSOEntityBase<ServiceDto,ServiceDtoCreate,int>
     {
-        private readonly IRepositoryManager _repositoryManager;
+        private readonly IRepositorySOManager _repositoryManager;
 
-        public ServiceService(IRepositoryManager repositoryManager)
+        public ServiceService(IRepositorySOManager repositoryManager)
         {
             _repositoryManager = repositoryManager;
         }

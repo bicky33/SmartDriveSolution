@@ -8,13 +8,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Contract.DTO.SO
 {
-    public class ClaimAssetEvidenceDto
+    public class ClaimAssetEvidenceDtoCreate
     {
-        [Required]
-        public int CaevId { get; init; }
+        public int? CaevId { get; init; }
 
         public string? CaevFilename { get; init; }
 
@@ -24,6 +24,7 @@ namespace Contract.DTO.SO
 
         public string? CaevUrl { get; init; }
 
+        [StringLength(15)]
         public string? CaevNote { get; init; }
 
         public int? CaevPartEntityid { get; init; }
@@ -34,9 +35,9 @@ namespace Contract.DTO.SO
 
         public DateTime? CaevCreatedDate { get; init; }
 
-        //public Partner? CaevPartEntity { get; set; }
+        [Required]
+        public IFormFile Photo { get; set; }
 
-        public ServiceOrderDto? CaevSero { get; set; }
 
     }
 }

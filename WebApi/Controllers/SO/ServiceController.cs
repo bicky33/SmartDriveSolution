@@ -11,9 +11,9 @@ namespace WebApi.Controllers.SO
     [ApiController]
     public class ServiceController : ControllerBase
     {
-        private readonly IServiceManager _serviceManager;
+        private readonly IServiceSOManager _serviceManager;
 
-        public ServiceController(IServiceManager serviceManager)
+        public ServiceController(IServiceSOManager serviceManager)
         {
             _serviceManager = serviceManager;
         }
@@ -25,7 +25,7 @@ namespace WebApi.Controllers.SO
             return Ok(categoryDtos);
         }
 
-        // GET api/<ServiceControlle>/5
+        // GET api/<ServiceController>/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetServiceById(int id)
         {
@@ -33,12 +33,12 @@ namespace WebApi.Controllers.SO
             return Ok(categoryDto);
         }
 
-        // POST api/<ServiceControlle>
+        // POST api/<ServiceController>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ServiceDtoCreate serviceDto)
         {
             if (serviceDto == null)
-                return BadRequest("Category object is not valid");
+                return BadRequest("Service object is not valid");
 
             var newServiceDto = await _serviceManager.ServiceService.CreateAsync(serviceDto);
 

@@ -15,12 +15,12 @@ using Service.Base;
 
 namespace Service.SO
 {
-    public class ServiceRequest :IServiceRequestBase
+    public class ServiceRequest :IServiceRequestSOBase
     {
-        private readonly IRepositoryManager _repositoryManager;
-        private readonly IServiceManager _serviceManager;
+        private readonly IRepositorySOManager _repositoryManager;
+        private readonly IServiceSOManager _serviceManager;
 
-        public ServiceRequest(IRepositoryManager repositoryManager, IServiceManager serviceManager)
+        public ServiceRequest(IRepositorySOManager repositoryManager, IServiceSOManager serviceManager)
         {
             _repositoryManager = repositoryManager;
             _serviceManager = serviceManager;
@@ -36,8 +36,8 @@ namespace Service.SO
                 ServCustEntityid = createServicePolisDto.CreqId,
                 ServStartdate = createServicePolisDto.PolisStartDate,
                 ServEnddate = createServicePolisDto.PolisEndDate,
-                ServType = EnumModuleServiceOrder.SERVTYPE.FEASIBILITY,
-                ServStatus = EnumModuleServiceOrder.SERVSTATUS.INACTIVE
+                ServType = EnumModuleServiceOrder.SERVTYPE.FEASIBILITY.ToString(),
+                ServStatus = EnumModuleServiceOrder.SERVSTATUS.INACTIVE.ToString()
             };
             var newServiceDtoCreate = await _serviceManager.ServiceService.CreateAsync(serviceDtoCreate);
 
@@ -46,8 +46,8 @@ namespace Service.SO
             {
                 SeroId = await _repositoryManager.UnitOfWork.GenerateSeroId(EnumModuleServiceOrder.SERVTYPE.FEASIBILITY),
                 SeroAgentEntityid = createServicePolisDto.AgentId,
-                SeroOrdtType = EnumModuleServiceOrder.SEROORDTTYPE.CREATE,
-                SeroStatus = EnumModuleServiceOrder.SEROSTATUS.OPEN,
+                SeroOrdtType = EnumModuleServiceOrder.SEROORDTTYPE.CREATE.ToString(),
+                SeroStatus = EnumModuleServiceOrder.SEROSTATUS.OPEN.ToString(),
                 SeroServId = newServiceDtoCreate.ServId
             };
             var newServiceOrderDtoCreate = await _serviceManager.ServiceOrderService.CreateAsync(serviceOrderDtoCreate);
@@ -77,7 +77,7 @@ namespace Service.SO
                     SeotName=task.value,
                     SeotStartdate=DateTime.Today,
                     SeotEnddate=DateTime.Today.AddDays(5),
-                    SeotStatus=EnumModuleServiceOrder.SEOTSTATUS.INPROGRESS,
+                    SeotStatus=EnumModuleServiceOrder.SEOTSTATUS.INPROGRESS.ToString(),
                     SeotSeroId= newServiceOrderDtoCreate.SeroId,
                     SeotArwgCode= areaWorkgroupCode,
                 };

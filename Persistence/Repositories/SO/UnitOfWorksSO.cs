@@ -1,18 +1,18 @@
 ﻿using Domain.Entities.HR;
 using Domain.Entities.SO;
 using Domain.Enum;
+using Domain.Exceptions;
 using Domain.Repositories.SO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Persistence.Repositories.SO
 {
-    public class UnitOfWorks : IUnitOfWorks
+    public class UnitOfWorksSO : IUnitOfWorksSO
     {
-        public static int SeroIdCounter { get; set; } = 0;
         private readonly SmartDriveContext _dbContext;
 
-        public UnitOfWorks(SmartDriveContext dbContext)
+        public UnitOfWorksSO(SmartDriveContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -47,7 +47,7 @@ namespace Persistence.Repositories.SO
             // add to counter
             var counter = Int32.Parse(newSubstring);
 
-            // tambah counter
+            // add counter
             counter++;
 
             // construct seroId
@@ -55,12 +55,6 @@ namespace Persistence.Repositories.SO
 
             // add service type
             seroId += key;
-            //if (serviceType == EnumModuleServiceOrder.SERVTYPE.FEASIBILITY)
-            //    seroId += "FS";
-            //else if (serviceType == EnumModuleServiceOrder.SERVTYPE.POLIS)
-            //    seroId += "PL";
-            //else if(serviceType == EnumModuleServiceOrder.SERVTYPE.CLAIM)
-            //    seroId += "CL";
 
             // add counter
             seroId += counter.ToString().PadLeft(4, '0');
@@ -73,8 +67,18 @@ namespace Persistence.Repositories.SO
             return seroId;
         }
 
-        public Task<int> SaveChangesAsync() =>
-             _dbContext.SaveChangesAsync();
+        public async Task<int> SaveChangesAsync()
+        {
+            try
+            {
+                var res= await _dbContext.SaveChangesAsync();
+                return res;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         public async Task<string> GetAgentAreaWorkgroup(int agentId)
         {
@@ -85,26 +89,7 @@ namespace Persistence.Repositories.SO
         }
         public void Debugging()
         {
-
-            EnumModuleServiceOrder.SERVTYPE serviceType = EnumModuleServiceOrder.SERVTYPE.FEASIBILITY;
-            // get filter key
-            var key = "";
-            switch (serviceType)
-            {
-                case EnumModuleServiceOrder.SERVTYPE.FEASIBILITY:
-                    key = "FS";
-                    break;
-                case EnumModuleServiceOrder.SERVTYPE.POLIS:
-                    key = "PL";
-                    break;
-                case EnumModuleServiceOrder.SERVTYPE.CLAIM:
-                    key = "CL";
-                    break;
-            }
-            var includes = _dbContext.ServiceOrders.Include(so => so.SeroServ);
-            var filter=includes.Where(c => c.SeroId.StartsWith(key));
-            var res = filter.OrderBy(c=>c.SeroId);
-            var result = res.Last();
+            throw new NotImplementedException();
         }
     }
 }

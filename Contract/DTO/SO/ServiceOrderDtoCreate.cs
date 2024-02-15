@@ -7,9 +7,9 @@ namespace Contract.DTO.SO
     {
         public string? SeroId { get; init; } = null!;
 
-        public EnumModuleServiceOrder.SEROORDTTYPE? SeroOrdtType { get; init; }
+        public string? SeroOrdtType { get; init; }
 
-        public EnumModuleServiceOrder.SEROSTATUS? SeroStatus { get; init; }
+        public string? SeroStatus { get; init; }
 
         public string? SeroReason { get; init; }
 

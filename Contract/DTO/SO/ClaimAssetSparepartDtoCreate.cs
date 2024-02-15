@@ -11,10 +11,9 @@ using System.Threading.Tasks;
 
 namespace Contract.DTO.SO
 {
-    public class ClaimAssetSparepartDto
+    public class ClaimAssetSparepartDtoCreate
     {
-        [Required]
-        public int CaspId { get; init; }
+        public int? CaspId { get; init; }
 
         public string? CaspItemName { get; init; }
 
@@ -29,9 +28,5 @@ namespace Contract.DTO.SO
         public string? CaspSeroId { get; init; }
 
         public DateTime? CaspCreatedDate { get; init; }
-
-        //public Partner? CaspPartEntity { get; set; }
-
-        public ServiceOrderDto? CaspSero { get; set; }
     }
 }

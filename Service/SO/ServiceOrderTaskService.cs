@@ -6,11 +6,11 @@ using Service.Abstraction.SO;
 
 namespace ServiceOrderTask.SO
 {
-    public class ServiceOrderTaskService : IServiceEntityBase<ServiceOrderTaskDto,ServiceOrderTaskDtoCreate,int>
+    public class ServiceOrderTaskService : IServiceSOEntityBase<ServiceOrderTaskDto,ServiceOrderTaskDtoCreate,int>
     {
-        private readonly IRepositoryManager _repositoryManager;
+        private readonly IRepositorySOManager _repositoryManager;
 
-        public ServiceOrderTaskService(IRepositoryManager repositoryManager)
+        public ServiceOrderTaskService(IRepositorySOManager repositoryManager)
         {
             _repositoryManager = repositoryManager;
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Repositories.SO    
 {
-    public interface IRepositoryEntityBase<TEntity, TID> where TEntity : class
+    public interface IRepositorySOEntityBase<TEntity, TID> where TEntity : class
     {
         Task<IEnumerable<TEntity>> GetAllEntity(bool trackChanges);
 

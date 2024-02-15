@@ -17,7 +17,7 @@ namespace Contract.DTO.SO
 
         public DateTime? SeotActualEnddate { get; init; }
 
-        public EnumModuleServiceOrder.SEOTSTATUS? SeotStatus { get; init; }
+        public string? SeotStatus { get; init; }
 
         public string? SeotArwgCode { get; init; }
 

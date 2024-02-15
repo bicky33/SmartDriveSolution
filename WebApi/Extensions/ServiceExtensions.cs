@@ -30,14 +30,14 @@ namespace WebApi.Extensions
             });
         // register repository manager
         public static void ConfigureRepositoryManager(this IServiceCollection services) =>
-            services.AddScoped<IRepositoryManager, RepositoryManager>();
+            services.AddScoped<IRepositorySOManager, RepositorySOManager>();
 
         // register service Manager
         public static void ConfigureServiceManager(this IServiceCollection services) =>
-            services.AddScoped<IServiceManager, ServiceManager>();
+            services.AddScoped<IServiceSOManager, ServiceSOManager>();
 
         // register service request manager
         public static void ConfigureServiceRequestManager(this IServiceCollection services) =>
-            services.AddScoped<IServiceRequestManager, ServiceRequestManager>();
+            services.AddScoped<IServiceRequestSOManager, ServiceRequestSOManager>();
     }
 }

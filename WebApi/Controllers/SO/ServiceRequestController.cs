@@ -10,9 +10,9 @@ namespace WebApi.Controllers.SO
     [ApiController]
     public class ServiceRequestController : ControllerBase
     {
-        private readonly IServiceRequestManager _serviceRequestManager;
+        private readonly IServiceRequestSOManager _serviceRequestManager;
 
-        public ServiceRequestController(IServiceRequestManager serviceRequestManager)
+        public ServiceRequestController(IServiceRequestSOManager serviceRequestManager)
         {
             _serviceRequestManager = serviceRequestManager;
         }

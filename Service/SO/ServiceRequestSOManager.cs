@@ -12,14 +12,14 @@ using ServiceOrderTask.SO;
 
 namespace Service.Base
 {
-    public class ServiceRequestManager : IServiceRequestManager
+    public class ServiceRequestSOManager : IServiceRequestSOManager
     {
-        private readonly IServiceRequestBase _serviceRequest;
-        public ServiceRequestManager(IRepositoryManager repositoryManager,IServiceManager serviceManager)
+        private readonly IServiceRequestSOBase _serviceRequest;
+        public ServiceRequestSOManager(IRepositorySOManager repositoryManager,IServiceSOManager serviceManager)
         {
             _serviceRequest = new ServiceRequest(repositoryManager,serviceManager);
         }
 
-        public IServiceRequestBase ServiceRequest => _serviceRequest;
+        public IServiceRequestSOBase ServiceRequest => _serviceRequest;
     }
 }

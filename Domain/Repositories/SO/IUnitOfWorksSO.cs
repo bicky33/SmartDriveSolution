@@ -3,7 +3,7 @@ using Domain.Enum;
 
 namespace Domain.Repositories.SO
 {
-    public interface IUnitOfWorks
+    public interface IUnitOfWorksSO
     {
         public Task<int> SaveChangesAsync();
         public Task<string> GenerateSeroId(EnumModuleServiceOrder.SERVTYPE serviceType);

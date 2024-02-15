@@ -11,15 +11,15 @@ namespace WebApi.Controllers.SO
     [ApiController]
     public class ServiceOrderWorkorderController : ControllerBase
     {
-        private readonly IServiceManager _serviceManager;
+        private readonly IServiceSOManager _serviceManager;
 
-        public ServiceOrderWorkorderController(IServiceManager serviceManager)
+        public ServiceOrderWorkorderController(IServiceSOManager serviceManager)
         {
             _serviceManager = serviceManager;
         }
         // GET: api/<ServiceControlle>
         [HttpGet]
-        public async Task<IActionResult> GetServiceOrderTasks()
+        public async Task<IActionResult> GetServiceOrderWorkorders()
         {
             var serviceOrderDto = await _serviceManager.ServiceOrderWorkorderService.GetAllAsync(true);
             return Ok(serviceOrderDto);
