@@ -1,6 +1,7 @@
 ﻿using Contract.DTO.Master;
 using Domain.Repositories.Master;
 using Service.Abstraction.Base;
+using Service.Abstraction.Base.Master;
 using Service.Abstraction.Master;
 
 namespace Service.Master
@@ -17,6 +18,9 @@ namespace Service.Master
         private readonly Lazy<IServiceEntityBaseMaster<InsuranceTypeResponse>> _insuranceTypeService;
         private readonly Lazy<IServiceEntityBaseMaster<RegionPLatResponse>> _regionPlatService;
         private readonly Lazy<IServiceEntityBaseMaster<AreaWorkgroupResponse>> _areaWorkgroupService;
+        private readonly Lazy<IServiceEntityBase<TemplateTypeResponse>> _templateTypeService;
+        private readonly Lazy<IServiceTemplateServiceTask> _templateServiceTaskService;
+        private readonly Lazy<IServiceEntityBase<TemplateTaskWorkorderResponse>> _templateTaskWorkorderService;
 
         public ServiceManagerMaster(IRepositoryManagerMaster repositoryManager)
         {
@@ -30,6 +34,9 @@ namespace Service.Master
             _insuranceTypeService = new Lazy<IServiceEntityBaseMaster<InsuranceTypeResponse>>(() => new InsuranceTypeService(repositoryManager));
             _regionPlatService = new Lazy<IServiceEntityBaseMaster<RegionPLatResponse>>(() => new RegionPlatService(repositoryManager));
             _areaWorkgroupService = new Lazy<IServiceEntityBaseMaster<AreaWorkgroupResponse>>(() => new AreaWorkgroupService(repositoryManager));
+            _templateTypeService = new Lazy<IServiceEntityBase<TemplateTypeResponse>>(() => new TemplateTypeService(repositoryManager));
+            _templateServiceTaskService = new Lazy<IServiceTemplateServiceTask>(() => new TemplateServiceTaskService(repositoryManager));
+            _templateTaskWorkorderService = new Lazy<IServiceEntityBase<TemplateTaskWorkorderResponse>>(() => new TemplateTaskWorkorderService(repositoryManager));
         }
 
         public IServiceEntityBase<CarBrandResponse> CarBrandService => _carBrandService.Value;
@@ -50,5 +57,11 @@ namespace Service.Master
         public IServiceEntityBaseMaster<RegionPLatResponse> RegionPlatService => _regionPlatService.Value;
 
         public IServiceEntityBaseMaster<AreaWorkgroupResponse> AreaWorkgroupService => _areaWorkgroupService.Value;
+
+        public IServiceEntityBase<TemplateTypeResponse> TemplateTypeService => _templateTypeService.Value;
+
+        public IServiceTemplateServiceTask TemplateServiceTaskService => _templateServiceTaskService.Value;
+
+        public IServiceEntityBase<TemplateTaskWorkorderResponse> TemplateTaskWorkorderService => _templateTaskWorkorderService.Value;
     }
 }

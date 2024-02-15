@@ -16,6 +16,9 @@ namespace Domain.Repositories.Master
         IRepositoryEntityBase<City> CityRepository { get; }
         IRepositoryEntityBaseMaster<RegionPlat> RegionPlatRepository { get; }
         IRepositoryEntityBaseMaster<AreaWorkgroup> AreaWorkgroupRepository { get; }
+        IRepositoryEntityBase<TemplateType> TemplateTypeRepository { get; }
+        IRepositoryTemplateServiceTask TemplateServiceTaskRepository { get; }
+        IRepositoryEntityBase<TemplateTaskWorkorder> TemplateTaskWorkorderRepository { get; }
         IUnitOfWorks UnitOfWork { get; }
     }
 }

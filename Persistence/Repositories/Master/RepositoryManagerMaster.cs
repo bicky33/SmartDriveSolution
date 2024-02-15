@@ -18,6 +18,9 @@ namespace Persistence.Repositories.Master
         private readonly Lazy<IRepositoryEntityBaseMaster<InsuranceType>> _insuranceType;
         private readonly Lazy<IRepositoryEntityBaseMaster<RegionPlat>> _regionPlat;
         private readonly Lazy<IRepositoryEntityBaseMaster<AreaWorkgroup>> _areaWorkgroup;
+        private readonly Lazy<IRepositoryEntityBase<TemplateType>> _templateType;
+        private readonly Lazy<IRepositoryTemplateServiceTask> _templateServiceTask;
+        private readonly Lazy<IRepositoryEntityBase<TemplateTaskWorkorder>> _templateTaskWorkorder;
 
         public RepositoryManagerMaster(SmartDriveContext _context)
         {
@@ -32,6 +35,9 @@ namespace Persistence.Repositories.Master
             _insuranceType = new Lazy<IRepositoryEntityBaseMaster<InsuranceType>>(() => new InsuranceTypeRepository(_context));
             _regionPlat = new Lazy<IRepositoryEntityBaseMaster<RegionPlat>>(() => new RegionPlatRepository(_context));
             _areaWorkgroup = new Lazy<IRepositoryEntityBaseMaster<AreaWorkgroup>>(() => new AreaWorkgroupRepository(_context));
+            _templateType = new Lazy<IRepositoryEntityBase<TemplateType>>(() => new TemplateTypeRepository(_context));
+            _templateServiceTask = new Lazy<IRepositoryTemplateServiceTask>(() => new TemplateServiceTaskRepository(_context));
+            _templateTaskWorkorder = new Lazy<IRepositoryEntityBase<TemplateTaskWorkorder>>(() => new TemplateTaskWorkorderRepository(_context));
         }
 
         public IUnitOfWorks UnitOfWork => _unitOfWorks.Value;
@@ -53,5 +59,11 @@ namespace Persistence.Repositories.Master
         public IRepositoryEntityBaseMaster<RegionPlat> RegionPlatRepository => _regionPlat.Value;
 
         public IRepositoryEntityBaseMaster<AreaWorkgroup> AreaWorkgroupRepository => _areaWorkgroup.Value;
+
+        public IRepositoryEntityBase<TemplateType> TemplateTypeRepository => _templateType.Value;
+
+        public IRepositoryTemplateServiceTask TemplateServiceTaskRepository => _templateServiceTask.Value;
+
+        public IRepositoryEntityBase<TemplateTaskWorkorder> TemplateTaskWorkorderRepository => _templateTaskWorkorder.Value;
     }
 }

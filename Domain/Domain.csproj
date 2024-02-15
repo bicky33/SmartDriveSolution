@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Enum\" />
     <Folder Include="Interface\" />
     <Folder Include="Repositories\CR\" />
     <Folder Include="Repositories\HR\" />

@@ -1,5 +1,6 @@
 ﻿using Contract.DTO.Master;
 using Service.Abstraction.Base;
+using Service.Abstraction.Base.Master;
 
 namespace Service.Abstraction.Master
 {
@@ -15,5 +16,8 @@ namespace Service.Abstraction.Master
         IServiceEntityBaseMaster<InsuranceTypeResponse> InsuranceTypeService { get; }
         IServiceEntityBaseMaster<RegionPLatResponse> RegionPlatService { get; }
         IServiceEntityBaseMaster<AreaWorkgroupResponse> AreaWorkgroupService { get; }
+        IServiceEntityBase<TemplateTypeResponse> TemplateTypeService { get; }
+        IServiceTemplateServiceTask TemplateServiceTaskService { get; }
+        IServiceEntityBase<TemplateTaskWorkorderResponse> TemplateTaskWorkorderService { get; }
     }
 }
