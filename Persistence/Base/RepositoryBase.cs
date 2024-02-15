@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Persistence.Repositories;
 using System.Linq.Expressions;
 
-
 namespace Persistence.Base
 {
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class

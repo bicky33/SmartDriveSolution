@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -7,11 +7,16 @@
     <AssemblyName>Service</AssemblyName>
     <RootNamespace>Service</RootNamespace>
   </PropertyGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="Mapster" Version="7.4.0" />
+	</ItemGroup>
 
-  <ItemGroup>
+
+	<ItemGroup>
+    <Folder Include="Base\" />
     <Folder Include="CR\" />
     <Folder Include="HR\" />
-    <Folder Include="Master\" />
     <Folder Include="Partner\" />
     <Folder Include="Payment\" />
     <Folder Include="SO\" />

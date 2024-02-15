@@ -7,7 +7,6 @@
     <RootNamespace>Service.Abstraction</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Master\" />
     <Folder Include="HR\" />
     <Folder Include="CR\" />
     <Folder Include="Partner\" />

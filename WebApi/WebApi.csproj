@@ -26,12 +26,11 @@
   <ItemGroup>
     <Folder Include="Controllers\CR\" />
     <Folder Include="Controllers\HR\" />
-    <Folder Include="Controllers\Master\" />
     <Folder Include="Controllers\Partner\" />
     <Folder Include="Controllers\Payment\" />
     <Folder Include="Controllers\SO\" />
-    <Folder Include="Resources\" />
-    <Folder Include="Resources\" />
+    <Folder Include="Controllers\User\" />
+    <Folder Include="Resources\Images\" />
   </ItemGroup>
 
   <ItemGroup>

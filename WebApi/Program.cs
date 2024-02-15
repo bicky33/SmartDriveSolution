@@ -14,11 +14,10 @@ builder.Services.AddTransient<GlobalHandlingException>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//builder.Services.ConfigureCors();
-builder.Services.AddCors();
+builder.Services.ConfigureCors();
 builder.Services.ConfigureDbContext(builder.Configuration);
-builder.Services.ConfigureRepositoryUser();
-builder.Services.ConfigureServiceUser();
+builder.Services.ConfigureRepository();
+builder.Services.ConfigureService();
 
 var app = builder.Build();
 
@@ -45,4 +44,5 @@ app.UseStaticFiles(
 );
 
 app.MapControllers();
+
 app.Run();
