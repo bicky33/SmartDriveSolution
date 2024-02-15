@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Base\" />
     <Folder Include="CR\" />
     <Folder Include="HR\" />
     <Folder Include="Master\" />

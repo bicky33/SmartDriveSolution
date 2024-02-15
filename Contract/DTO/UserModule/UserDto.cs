@@ -40,6 +40,6 @@ namespace Contract.DTO.UserModule
 
         public DateTime? UserModifiedDate { get; set; }
 
-        public ICollection<UserRoleDto>? Roles { get; set; }
+        public ICollection<UserRoleDto>? UserRoles { get; set; }
     }
 }

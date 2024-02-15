@@ -12,5 +12,7 @@ namespace Service.Abstraction.User
     {
         IServiceEntityBase<UserDto> UserService { get; }
         IServiceBusinessEntity BusinessEntityService {  get; }
+        IServiceUserRole UserRoleService {  get; }
+        IServiceLogin LoginService { get; }
     }
 }

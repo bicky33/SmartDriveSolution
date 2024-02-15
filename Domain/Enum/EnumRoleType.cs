@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Enum.User
+namespace Domain.Enum
 {
     public static class EnumRoleType
     {

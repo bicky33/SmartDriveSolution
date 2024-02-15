@@ -1,10 +1,13 @@
-﻿using Domain.Repositories.UserModule;
+﻿using Domain.Authentication;
+using Domain.Repositories.UserModule;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Base;
+using Microsoft.IdentityModel.Tokens;
 using Persistence.Repositories;
 using Persistence.Repositories.UserModule;
 using Service.Abstraction.User;
-using Service.Base.UserModule;
+using Service.UserModule;
+using System.Text;
 
 namespace WebApi.Extensions
 {
@@ -35,5 +38,22 @@ namespace WebApi.Extensions
         public static void ConfigureServiceUser(this IServiceCollection services) =>
             services.AddScoped<IServiceManagerUser, ServiceManagerUser>();
 
+        public static void ConfigureJwtGenerator(this IServiceCollection services, IConfiguration configuration) {
+            services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
+            services.AddScoped<JwtTokenGenerator>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.MapInboundClaims = false;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("JwtSettings:Secret").Value)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero,
+                };
+            });
+        }
     }
 }

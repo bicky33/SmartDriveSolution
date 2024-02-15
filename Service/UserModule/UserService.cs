@@ -23,13 +23,53 @@ namespace Service.UserModule
 
         public async Task<UserDto> CreateAsync(UserDto entity)
         {
-            entity.UserPassword = BCrypt.Net.BCrypt.HashPassword(entity.UserPassword);
-            var user = entity.Adapt<User>();
+            var checkUsername = await _repositoryManager.UserRepository.GetUserByUsername(entity.UserName, false);
+
+            if(checkUsername != null) {
+                throw new EntityBadRequestException("username already exist");
+            }
+
+            //businessentity
+            var businessEntity = _repositoryManager.BusinessEntityRepository.CreateEntity();
+            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+
+            //var user = entity.Adapt<User>();
+
+            ////assign businessentity
+            //user.UserEntityid = businessEntity.Entityid;
+
+            ////hash password
+            //user.UserPassword = BCrypt.Net.BCrypt.HashPassword(user.UserPassword);
+
+            ////modifieddate
+            //user.UserModifiedDate = DateTime.Now;
+
+            ////set null userroles
+            //user.UserRoles = null;
+
+            var user = new User()
+            {
+                UserEntityid = businessEntity.Entityid,
+                UserName = entity.UserName,
+                UserPassword = BCrypt.Net.BCrypt.HashPassword(entity.UserPassword),
+                UserFullName = entity.UserFullName,
+                UserEmail = entity.UserEmail,
+                UserBirthPlace = entity.UserBirthPlace,
+                UserBirthDate = entity.UserBirthDate,
+                UserNationalId = entity.UserNationalId,
+                UserNpwp = entity.UserNpwp,
+                UserModifiedDate = DateTime.Now,
+                UserRoles = null
+            };
 
             _repositoryManager.UserRepository.CreateEntity(user);
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            //return user.Adapt<UserDto>();
 
-            return user.Adapt<UserDto>();
+            //var mapsterConfig = TypeAdapterConfig<User, UserDto>.NewConfig().Ignore(dest => dest.UserPassword);
+            var mapsterConfig = TypeAdapterConfig.GlobalSettings.Clone();
+            mapsterConfig.Default.Ignore("UserPassword");
+            return user.Adapt<UserDto>(mapsterConfig);
         }
 
         public async Task DeleteAsync(int id)
@@ -73,8 +113,15 @@ namespace Service.UserModule
                 throw new EntityNotFoundException(id, "user");
             }
 
+            var checkUsername = await _repositoryManager.UserRepository.GetUserByUsername(entity.UserName, false);
+
+            if (checkUsername != null && user.UserName != checkUsername.UserName)
+            {
+                throw new EntityBadRequestException("username already exist");
+            }
+
             user.UserName = entity.UserName;
-            user.UserPassword = entity.UserPassword;
+            user.UserPassword = BCrypt.Net.BCrypt.HashPassword(entity.UserPassword);
             user.UserFullName = entity.UserFullName;
             user.UserEmail = entity.UserEmail;
             user.UserBirthPlace = entity.UserBirthPlace;
@@ -83,6 +130,7 @@ namespace Service.UserModule
             user.UserNpwp = entity.UserNpwp;
             user.UserPhoto = entity.UserPhoto;
             user.UserModifiedDate = DateTime.Now;
+            //user.UserRoles = null;
 
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
         }

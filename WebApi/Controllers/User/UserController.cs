@@ -1,5 +1,6 @@
 ﻿using Contract.DTO.UserModule;
 using Domain.Entities.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.User;
 
@@ -12,48 +13,63 @@ namespace WebApi.Controllers.UserModule
     public class UserController : ControllerBase
     {
 
-        private readonly IServiceManagerUser _userService;
+        private readonly IServiceManagerUser _serviceManager;
 
-        public UserController(IServiceManagerUser userService)
+        public UserController(IServiceManagerUser serviceManager)
         {
-            _userService = userService;
+            _serviceManager = serviceManager;
         }
 
         // GET: api/<UserController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> Get()
+        [Authorize(Roles = "EM")]
+        public async Task<ActionResult<IEnumerable<UserDto>>> Get()
         {
-            var users = await _userService.UserService.GetAllAsync(false);
+            var users = await _serviceManager.UserService.GetAllAsync(false);
 
             return Ok(users);
         }
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            var user = await _serviceManager.UserService.GetByIdAsync(id, false);
+
+            return Ok(user);
         }
 
         // POST api/<UserController>
         [HttpPost]
-        public async Task<IActionResult> Post()
+        public async Task<IActionResult> Post([FromBody] UserDto body)
         {
-            var bus = await _userService.BusinessEntityService.CreateBusinessEntity();
+            if(body == null)
+            {
+                return BadRequest();
+            }
 
-            return Ok(bus);
+            var create = await _serviceManager.UserService.CreateAsync(body);
+
+            return Ok(create);
         }
 
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(int id, [FromBody] UserDto body)
         {
+            await _serviceManager.UserService.UpdateAsync(id, body);
+
+            return Ok(body);
         }
 
         // DELETE api/<UserController>/5
+        [Authorize(Roles = "PC")]
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            await _serviceManager.UserService.DeleteAsync(id);
+
+            return NoContent();
         }
     }
 }
