@@ -4,15 +4,17 @@ using Domain.Exceptions;
 using Domain.Repositories.UserModule;
 using Mapster;
 using Service.Abstraction.Base;
+using Service.Abstraction.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Service.UserModule
 {
-    public class UserService : IServiceEntityBase<UserDto>
+    public class UserService : IServiceUser
     {
         private readonly IRepositoryManagerUser _repositoryManager;
 
@@ -32,20 +34,6 @@ namespace Service.UserModule
             //businessentity
             var businessEntity = _repositoryManager.BusinessEntityRepository.CreateEntity();
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
-
-            //var user = entity.Adapt<User>();
-
-            ////assign businessentity
-            //user.UserEntityid = businessEntity.Entityid;
-
-            ////hash password
-            //user.UserPassword = BCrypt.Net.BCrypt.HashPassword(user.UserPassword);
-
-            ////modifieddate
-            //user.UserModifiedDate = DateTime.Now;
-
-            ////set null userroles
-            //user.UserRoles = null;
 
             var user = new User()
             {
@@ -131,6 +119,73 @@ namespace Service.UserModule
             user.UserPhoto = entity.UserPhoto;
             user.UserModifiedDate = DateTime.Now;
             //user.UserRoles = null;
+
+            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task UpdatePhoto(int id, UserEditProfileRequestDto entity)
+        {
+            var user = await _repositoryManager.UserRepository.GetEntityById(id, true);
+            if (user == null)
+            {
+                throw new EntityNotFoundException(id, "user");
+            }
+
+            var checkUsername = await _repositoryManager.UserRepository.GetUserByUsername(entity.UserName, false);
+
+            if (checkUsername != null && user.UserName != checkUsername.UserName)
+            {
+                throw new EntityBadRequestException("username already exist");
+            }
+            // save photo
+            if(entity.UserPhoto != null)
+            {
+                var file = entity.UserPhoto;
+                var folderName = Path.Combine("Resources", "Images", "Users");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                if (file.Length > 0)
+                {
+                    var fileName = user.UserEntityid.ToString() + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName);
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+
+                    //user.UserPhoto = fileName;
+                    //user.UserName = entity.UserName;
+                    //user.UserFullName = entity.UserFullName;
+                    //user.UserBirthPlace = entity.UserBirthPlace;
+                    //user.UserBirthDate = entity.UserBirthDate;
+
+                    if (!string.IsNullOrWhiteSpace(fileName))
+                    {
+                        user.UserPhoto = fileName;
+                    }
+                }
+            }
+
+
+            if (!string.IsNullOrWhiteSpace(entity.UserName))
+            {
+                user.UserName = entity.UserName;
+            }
+
+            if (!string.IsNullOrWhiteSpace(entity.UserFullName))
+            {
+                user.UserFullName = entity.UserFullName;
+            }
+
+            if (!string.IsNullOrWhiteSpace(entity.UserBirthPlace))
+            {
+                user.UserBirthPlace = entity.UserBirthPlace;
+            }
+
+            if (entity.UserBirthDate != null)
+            {
+                user.UserBirthDate = entity.UserBirthDate;
+            }
 
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
         }

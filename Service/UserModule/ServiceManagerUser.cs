@@ -13,7 +13,7 @@ namespace Service.UserModule
 {
     public class ServiceManagerUser : IServiceManagerUser
     {
-        private readonly Lazy<IServiceEntityBase<UserDto>> _userService;
+        private readonly Lazy<IServiceUser> _userService;
         private readonly Lazy<IServiceBusinessEntity> _businessEntityService;
         private readonly Lazy<IServiceUserRole> _userRoleService;
         private readonly Lazy<IServiceUserPhone> _userPhoneService;
@@ -22,7 +22,7 @@ namespace Service.UserModule
 
         public ServiceManagerUser(IRepositoryManagerUser repositoryUser, JwtTokenGenerator jwtGenerator)
         {
-            _userService = new Lazy<IServiceEntityBase<UserDto>>(
+            _userService = new Lazy<IServiceUser>(
                 () => new UserService(repositoryUser));
             _businessEntityService = new Lazy<IServiceBusinessEntity>(
                 () => new BusinessEntityService(repositoryUser));
@@ -36,7 +36,7 @@ namespace Service.UserModule
                 () => new UserAddressService(repositoryUser));
         }
 
-        public IServiceEntityBase<UserDto> UserService => _userService.Value;
+        public IServiceUser UserService => _userService.Value;
 
         public IServiceBusinessEntity BusinessEntityService => _businessEntityService.Value;
 

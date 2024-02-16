@@ -71,5 +71,14 @@ namespace WebApi.Controllers.UserModule
 
             return NoContent();
         }
+
+        // PUT api/<UserController>/5
+        [HttpPatch("UpdateProfile/{id}")]
+        public async Task<IActionResult> UpdateProfile(int id, [FromForm] UserEditProfileRequestDto body)
+        {
+            await _serviceManager.UserService.UpdatePhoto(id, body);
+
+            return Ok(body);
+        }
     }
 }
