@@ -18,7 +18,7 @@ namespace WebApi.Controllers.Payment
         }
         // GET: api/<PaymentTransactionsController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PaymentTransactionDto>>> Get()
+        public async Task<ActionResult<IEnumerable<PaymentTransactionDto>>> GetAllPayment()
         {
             var dto = await _serviceManager.PaymentTransactionService.GetAllAsync(false);
             return Ok(dto);
@@ -33,7 +33,7 @@ namespace WebApi.Controllers.Payment
 
         // POST api/<PaymentTransactionsController>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] PaymentTransactionDto paymentDto)
+        public async Task<IActionResult> Post([FromBody] PaymentTransactionCreateDto paymentDto)
         {
             if (paymentDto == null)
                 return BadRequest("Bank object is not valid");

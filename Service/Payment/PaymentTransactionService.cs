@@ -17,7 +17,7 @@ namespace Service.Payment
             _repositoryPaymentManager = repositoryPaymentManager;
         }
 
-        public async Task<PaymentTransactionDto> CreateAsync(PaymentTransactionDto entity)
+        public async Task<PaymentTransactionDto> CreateAsync(PaymentTransactionCreateDto entity)
         {
             var sendToTrx = entity.Adapt<PaymentTransaction>();
             var lastTrxNoToInt = 0000;
@@ -33,6 +33,8 @@ namespace Service.Payment
             }
             lastTrxNoToInt++;
 
+            //TODO Adding Credit and debet
+
             //First Transaction (Sender)
             sendToTrx.PatrTrxnoRev = null;
             string formattedCount = lastTrxNoToInt.ToString("0000");
@@ -41,6 +43,7 @@ namespace Service.Payment
             string formattedDate = $"{currentDate:yyyy-MM-dd}";
             string trxNoResult = $"trx{formattedDate}{formattedCount}";
             string invoiceNoResult = $"SAL-{formattedDate}";
+            sendToTrx.PatrDebet = entity.SendAmount;
             sendToTrx.PatrTrxno = trxNoResult;
             sendToTrx.PatrInvoiceNo = invoiceNoResult;
             _repositoryPaymentManager.PaymentTransactionRepository.CreateEntity(sendToTrx);
@@ -53,6 +56,7 @@ namespace Service.Payment
             sendFromTrx.PatrUsacAccountNoTo = sendToTrx.PatrUsacAccountNoTo;
             sendToTrx.PatrUsacAccountNoTo = "-";
             sendFromTrx.PatrUsacAccountNoFrom = "-";
+            sendFromTrx.PatrCredit = entity.SendAmount; 
             sendFromTrx.PatrTrxnoRev = trxNoResult;
             sendFromTrx.PatrInvoiceNo = sendToTrx.PatrInvoiceNo;
             string trxFromResult = $"trx{formattedDate}{newFormattedCount}";
@@ -63,10 +67,7 @@ namespace Service.Payment
             return sendFromTrx.Adapt<PaymentTransactionDto>();
         }
 
-        public Task DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+
 
         public async Task<IEnumerable<PaymentTransactionDto>> GetAllAsync(bool trackChanges)
         {
@@ -74,14 +75,9 @@ namespace Service.Payment
             return data.Adapt<IEnumerable<PaymentTransactionDto>>();
         }
 
-        public Task<PaymentTransactionDto> GetByIdAsync(int id, bool trackChanges)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<PaymentTransactionDto> UpdateAsync(int id, PaymentTransactionDto entity)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task<PaymentTransactionDto> GetByIdAsync(int id, bool trackChanges)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
