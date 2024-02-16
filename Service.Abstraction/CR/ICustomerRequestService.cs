@@ -10,5 +10,8 @@ namespace Service.Abstraction.CR
 {
     public interface ICustomerRequestService : IServiceEntityBase<CustomerRequestDto>
     {
+        Task<IEnumerable<CustomerRequestDto>> GetAllByUser(int userId, bool trackChanges);
+        Task<IEnumerable<CustomerRequestDto>> GetAllByEmployee(string eawgCode, bool trackChanges);
+        //Task<CustomerRequestDto> CreateByAgen(CustomerRequestDto entity);
     }
 }

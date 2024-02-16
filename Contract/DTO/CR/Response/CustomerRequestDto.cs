@@ -11,6 +11,7 @@ using Domain.Entities.Users;
 using Domain.Entities.CR;
 using Domain.Entities.SO;
 using Domain.Entities.Master;
+using Contract.DTO.UserModule;
 
 namespace Contract.DTO.CR.Response
 {
@@ -25,23 +26,8 @@ namespace Contract.DTO.CR.Response
         public int? CreqAgenEntityid { get; set; }
         public EmployeeAreWorkgroup? CreqAgenEntity { get; set; }
         public UserDto? CreqCustEntity { get; set; }
-        //public BusinessEntity? CreqEntity { get; set; } = null!;
         public CustomerClaim? CustomerClaim { get; set; }
         public CustomerInscAssetDto? CustomerInscAsset { get; set; }
         public ICollection<Service> Services { get; set; } = new List<Service>();
     }
-
-    public class UserDto
-    {
-        public int UserEntityid { get; set; }
-        public string? UserName { get; set; }
-        public string? UserPassword { get; set; }
-        public string? UserFullName { get; set; }
-        public string UserEmail { get; set; } = null!;
-        public string? UserBirthPlace { get; set; }
-        public DateTime? UserBirthDate { get; set; }
-        public string UserNationalId { get; set; } = null!;
-        public string? UserNpwp { get; set; }
-    }
-
 }

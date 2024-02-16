@@ -10,5 +10,7 @@ namespace Domain.Repositories.CR
 {
     public interface ICustomerRequestRepository : IRepositoryEntityBase<CustomerRequest>
     {
+        Task<IEnumerable<CustomerRequest>> GetAllByUserId(int userId, bool trackChanges);
+        Task<IEnumerable<CustomerRequest>> GetAllByEmployee(string eawgCode, bool trackChanges);
     }
 }

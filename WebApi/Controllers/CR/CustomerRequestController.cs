@@ -3,6 +3,7 @@ using Contract.DTO.CR.Response;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.CR;
+using Service.CR;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,8 +25,31 @@ namespace WebApi.Controllers.CR
         public async Task<ActionResult<IEnumerable<CustomerRequestDto>>> GetCustomerRequests()
         {
             var customerRequestDto = await _serviceCustomerManager.CustomerRequestService.GetAllAsync(false);
+            //var result = customerRequestDto.Adapt<IEnumerable<CustomerRequestGetDto>>();
             return Ok(customerRequestDto);
         }
+
+        [HttpGet("request")]
+        public async Task<ActionResult<IEnumerable<CustomerRequestDto>>> GetAllByUserOrEmployee(int userentityid, string arwgCode, string role)
+        {
+
+            if (role == "Customer")
+            {
+                var customerRequest = await _serviceCustomerManager.CustomerRequestService.GetAllByUser(userentityid, false);
+                //var result = customerRequest.Adapt<IEnumerable<CustomerRequestGetDto>>();
+                return Ok(customerRequest);
+
+            }
+            else if (role == "Employee")
+            {
+                var customerRequest = await _serviceCustomerManager.CustomerRequestService.GetAllByEmployee(arwgCode, false);
+                //var result = customerRequest.Adapt<IEnumerable<CustomerRequestGetDto>>();
+                return Ok(customerRequest);
+            }
+
+            return NoContent();
+        }
+
 
         // GET api/<CustomerRequestController>/5
         [HttpGet("{id}")]

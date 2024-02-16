@@ -1,10 +1,13 @@
 ﻿using Contract.DTO.CR.Response;
 using Domain.Entities.CR;
+using Domain.Entities.Users;
 using Domain.Exceptions;
 using Domain.Repositories.CR;
 using Domain.Repositories.UserModule;
 using Mapster;
+using Microsoft.AspNetCore.Components.Forms;
 using Service.Abstraction.CR;
+using Service.Abstraction.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +40,19 @@ namespace Service.CR
             return customerRequest.Adapt<CustomerRequestDto>();
         }
 
+        //public async Task<CustomerRequestDto> CreateByAgen(CustomerRequestDto entity)
+        //{
+        //    var newBusinessEntity = await _serviceManagerUser.BusinessEntityService.CreateBusinessEntity();
+        //    var newInscAsset = await _serviceCustomerManager.CustomerInscAssetService.CreateAsync(entity.CustomerInscAsset);
+
+        //    var customerRequest = entity.Adapt<CustomerRequest>();
+        //    customerRequest.CreqEntityid = newBusinessEntity.Entityid;
+        //    _repositoryCustomerManager.CustomerRequestRepository.CreateEntity(customerRequest);
+        //    await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
+
+        //    return customerRequest.Adapt<CustomerRequestDto>();
+        //}
+
         public async Task DeleteAsync(int id)
         {
             var customerRequest = await _repositoryCustomerManager.CustomerRequestRepository.GetEntityById(id, false);
@@ -54,6 +70,22 @@ namespace Service.CR
             var customerRequest = await _repositoryCustomerManager.CustomerRequestRepository.GetAllEntity(false);
             var customerRequestDto = customerRequest.Adapt<IEnumerable<CustomerRequestDto>>();
             
+            return customerRequestDto;
+        }
+
+        public async Task<IEnumerable<CustomerRequestDto>> GetAllByEmployee(string eawgCode, bool trackChanges)
+        {
+            var customerRequest = await _repositoryCustomerManager.CustomerRequestRepository.GetAllByEmployee(eawgCode, false);
+            var customerRequestDto = customerRequest.Adapt<IEnumerable<CustomerRequestDto>>();
+
+            return customerRequestDto;
+        }
+
+        public async Task<IEnumerable<CustomerRequestDto>> GetAllByUser(int userId, bool trackChanges)
+        {
+            var customerRequest = await _repositoryCustomerManager.CustomerRequestRepository.GetAllByUserId(userId, false);
+            var customerRequestDto = customerRequest.Adapt<IEnumerable<CustomerRequestDto>>();
+
             return customerRequestDto;
         }
 

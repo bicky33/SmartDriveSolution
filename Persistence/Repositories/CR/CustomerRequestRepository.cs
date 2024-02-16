@@ -26,10 +26,35 @@ namespace Persistence.Repositories.CR
             Delete(entity);
         }
 
+        public async Task<IEnumerable<CustomerRequest>> GetAllByEmployee(string eawgCode, bool trackChanges)
+        {
+            return await GetByCondition(x => x.CreqAgenEntity.EawgArwgCode.Equals(eawgCode), trackChanges)
+                .Include(x => x.CreqCustEntity)
+                .ThenInclude(c => c.UserPhones)
+                .Include(x => x.CreqCustEntity)
+                .ThenInclude(c => c.UserRoles)
+                .Include(x => x.CustomerInscAsset)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<CustomerRequest>> GetAllByUserId(int userId, bool trackChanges)
+        {
+            return await GetByCondition(x => x.CreqCustEntityid.Equals(userId), trackChanges)
+                .Include(x => x.CreqCustEntity)
+                .ThenInclude(c => c.UserPhones)
+                .Include(x => x.CreqCustEntity)
+                .ThenInclude(c => c.UserRoles)
+                .Include(x => x.CustomerInscAsset)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<CustomerRequest>> GetAllEntity(bool trackChanges)
         {
             return await GetAll(trackChanges).OrderBy(x => x.CreqEntityid)
                 .Include(x => x.CreqCustEntity)
+                .ThenInclude(c => c.UserPhones)
+                .Include(x => x.CreqCustEntity)
+                .ThenInclude(c => c.UserRoles)
                 .Include(x => x.CustomerInscAsset)
                 .ToListAsync();
         }
