@@ -66,7 +66,7 @@ namespace Service.SO
         {
             var claimAssetEvidence = await _repositoryManager.ClaimAssetEvidenceRepository.GetEntityById(id,false);
             if (claimAssetEvidence == null)
-                throw new EntityNotFoundException(id,"Claim Asset Evidence");
+                throw new EntityNotFoundExceptionSO(id,"Claim Asset Evidence");
             _repositoryManager.ClaimAssetEvidenceRepository.DeleteEntity(claimAssetEvidence);
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
         }
@@ -82,7 +82,7 @@ namespace Service.SO
         {
             var claimAssetEvidence = await _repositoryManager.ClaimAssetEvidenceRepository.GetEntityById(id, trackChanges); 
             if (claimAssetEvidence == null)
-                throw new EntityNotFoundException(id,"Claim Asset Evidence");
+                throw new EntityNotFoundExceptionSO(id,"Claim Asset Evidence");
 
             var ClaimAssetEvidenceDtos = claimAssetEvidence.Adapt<ClaimAssetEvidenceDto>();
             return ClaimAssetEvidenceDtos;
@@ -92,7 +92,7 @@ namespace Service.SO
         {
             var claimAssetEvidence = await _repositoryManager.ClaimAssetEvidenceRepository.GetEntityById(id, true);
             if (claimAssetEvidence == null)
-                throw new EntityNotFoundException(id,"Claim Asset Evidence");
+                throw new EntityNotFoundExceptionSO(id,"Claim Asset Evidence");
 
             claimAssetEvidence.CaevId = id;
             claimAssetEvidence.CaevFilename=entity.CaevFilename;

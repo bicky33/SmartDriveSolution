@@ -29,15 +29,15 @@ namespace WebApi.Extensions
                 opts.UseSqlServer(configuration.GetConnectionString("SmartDriveDB"));
             });
         // register repository manager
-        public static void ConfigureRepositoryManager(this IServiceCollection services) =>
+        public static void ConfigureRepositorySOManager(this IServiceCollection services) =>
             services.AddScoped<IRepositorySOManager, RepositorySOManager>();
 
         // register service Manager
-        public static void ConfigureServiceManager(this IServiceCollection services) =>
+        public static void ConfigureServiceSOManager(this IServiceCollection services) =>
             services.AddScoped<IServiceSOManager, ServiceSOManager>();
 
         // register service request manager
-        public static void ConfigureServiceRequestManager(this IServiceCollection services) =>
+        public static void ConfigureServiceRequestSOManager(this IServiceCollection services) =>
             services.AddScoped<IServiceRequestSOManager, ServiceRequestSOManager>();
     }
 }

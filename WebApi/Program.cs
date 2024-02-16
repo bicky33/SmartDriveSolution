@@ -9,9 +9,9 @@ builder.Services.AddControllers();
 builder.Services.ConfigureCors();
 builder.Services.ConfigureDbContext(builder.Configuration);
 builder.Services.AddTransient<GlobalHandlingException>();
-builder.Services.ConfigureRepositoryManager();
-builder.Services.ConfigureServiceManager();
-builder.Services.ConfigureServiceRequestManager();
+builder.Services.ConfigureRepositorySOManager();
+builder.Services.ConfigureServiceSOManager();
+builder.Services.ConfigureServiceRequestSOManager();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

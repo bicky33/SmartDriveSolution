@@ -27,7 +27,7 @@ namespace Service.SO
         {
             var serviceOrder = await _repositoryManager.ServiceOrderRepository.GetEntityById(id,false);
             if (serviceOrder == null)
-                throw new EntityNotFoundException(id,"Service Order");
+                throw new EntityNotFoundExceptionSO(id,"Service Order");
             _repositoryManager.ServiceOrderRepository.DeleteEntity(serviceOrder);
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
         }
@@ -43,7 +43,7 @@ namespace Service.SO
         {
             var serviceOrder = await _repositoryManager.ServiceOrderRepository.GetEntityById(id, trackChanges); 
             if (serviceOrder == null)
-                throw new EntityNotFoundException(id,"Service Order");
+                throw new EntityNotFoundExceptionSO(id,"Service Order");
 
             var ServiceOrderDtos = serviceOrder.Adapt<ServiceOrderDto>();
             return ServiceOrderDtos;
@@ -53,7 +53,7 @@ namespace Service.SO
         {
             var serviceOrder = await _repositoryManager.ServiceOrderRepository.GetEntityById(id, true);
             if (serviceOrder == null)
-                throw new EntityNotFoundException(id,"Service Order");
+                throw new EntityNotFoundExceptionSO(id,"Service Order");
 
             serviceOrder.SeroId = id;
             serviceOrder.SeroOrdtType=entity.SeroOrdtType.ToString();

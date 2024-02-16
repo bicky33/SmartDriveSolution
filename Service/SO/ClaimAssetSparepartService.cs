@@ -27,7 +27,7 @@ namespace Service.SO
         {
             var claimAssetSparepart = await _repositoryManager.ClaimAssetSparepartRepository.GetEntityById(id,false);
             if (claimAssetSparepart == null)
-                throw new EntityNotFoundException(id,"Claim Asset Sparepart");
+                throw new EntityNotFoundExceptionSO(id,"Claim Asset Sparepart");
             _repositoryManager.ClaimAssetSparepartRepository.DeleteEntity(claimAssetSparepart);
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
         }
@@ -43,7 +43,7 @@ namespace Service.SO
         {
             var claimAssetSparepart = await _repositoryManager.ClaimAssetSparepartRepository.GetEntityById(id, trackChanges); 
             if (claimAssetSparepart == null)
-                throw new EntityNotFoundException(id,"Claim Asset Sparepart");
+                throw new EntityNotFoundExceptionSO(id,"Claim Asset Sparepart");
 
             var ClaimAssetSparepartDtos = claimAssetSparepart.Adapt<ClaimAssetSparepartDto>();
             return ClaimAssetSparepartDtos;
@@ -53,7 +53,7 @@ namespace Service.SO
         {
             var claimAssetSparepart = await _repositoryManager.ClaimAssetSparepartRepository.GetEntityById(id, true);
             if (claimAssetSparepart == null)
-                throw new EntityNotFoundException(id,"Claim Asset Sparepart");
+                throw new EntityNotFoundExceptionSO(id,"Claim Asset Sparepart");
 
             claimAssetSparepart.CaspId = id;
             claimAssetSparepart.CaspItemName = entity.CaspItemName;

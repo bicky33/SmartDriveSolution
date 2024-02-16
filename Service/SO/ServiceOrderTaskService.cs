@@ -60,7 +60,7 @@ namespace ServiceOrderTask.SO
             services.SeotEnddate=entity.SeotEnddate;
             services.SeotActualStartdate=entity.SeotActualStartdate;
             services.SeotActualEnddate=entity.SeotActualEnddate;
-            services.SeotStatus=entity.SeotStatus.ToString();
+            services.SeotStatus=entity.SeotStatus;
             services.SeotArwgCode=entity.SeotArwgCode;
             services.SeotSeroId = entity.SeotSeroId;
 
