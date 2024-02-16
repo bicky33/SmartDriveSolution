@@ -1,12 +1,16 @@
-﻿using Domain.Entities.Partners;
+﻿using Domain.Entities.Master;
+using Domain.Entities.Partners;
+using Domain.Exceptions;
 using Domain.Repositories.Base;
+using Domain.Repositories.Partners;
+using Domain.RequestFeatured;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
 
 
 namespace Persistence.Repositories.Partners
 {
-    public class RepositoryPartner : RepositoryBase<Partner>, IRepositoryEntityBase<Partner>
+    public class RepositoryPartner : RepositoryBase<Partner>, IRepositoryPartner
     {
         public RepositoryPartner(SmartDriveContext dbContext) : base(dbContext)
         {
@@ -27,9 +31,18 @@ namespace Persistence.Repositories.Partners
             return await GetAll(trackChanges).OrderBy(c => c.PartEntityid).ToListAsync();
         }
 
-        public async Task<Partner?> GetEntityById(int id, bool trackChanges)
+        public async Task<Partner> GetEntityById(int id, bool trackChanges)
         {
-            return await GetByCondition(c => c.PartEntityid.Equals(id), trackChanges).SingleOrDefaultAsync();
+            var partner = await GetByCondition(c => c.PartEntityid.Equals(id), trackChanges).SingleOrDefaultAsync() 
+                ?? throw new EntityNotFoundException(id, nameof(Partner));
+            return partner;
+        }
+
+        public async Task<PagedList<Partner>> GetAllPaging(bool trackChanges, EntityParameter parameter)
+        {
+            var partners = string.IsNullOrEmpty(parameter.SearchBy) ? GetAll(trackChanges) : GetByCondition(c => c.PartName.StartsWith(parameter.SearchBy), trackChanges);
+            return PagedList<Partner>.ToPagedList(partners, parameter.PageNumber, parameter.PageSize);
+
         }
     }
 }

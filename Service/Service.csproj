@@ -12,7 +12,6 @@
     <Folder Include="CR\" />
     <Folder Include="HR\" />
     <Folder Include="Master\" />
-    <Folder Include="Partner\" />
     <Folder Include="Payment\" />
     <Folder Include="SO\" />
   </ItemGroup>

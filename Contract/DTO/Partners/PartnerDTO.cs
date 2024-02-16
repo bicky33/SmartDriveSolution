@@ -5,17 +5,18 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Enum;
 
 namespace Contract.DTO.Partners
 {
-    public record PartnerRequest(
+    public record PartnerDTO(
         int PartEntityid,
         string? PartName,
         string? PartAddress,
         DateTime? PartJoinDate,
         string? PartAccountNo,
         string? PartNpwp,
-        string? PartStatus,
-        int PartCityId
+        int PartCityId,
+        PartnerStatus PartStatus = PartnerStatus.ACTIVE
     );
 }

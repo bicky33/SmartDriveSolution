@@ -1,11 +1,19 @@
+using Contract.DTO.Partners;
+using Domain.Entities.Partners;
+using Domain.Enum;
+using Mapster;
 using Microsoft.Extensions.FileProviders;
+using System.Text.Json.Serialization;
 using WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(x =>
+{
+    x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 builder.Services.ConfigureCors();
 builder.Services.ConfigureDbContext(builder.Configuration);
 builder.Services.AddTransient<GlobalHandlingException>();
@@ -19,6 +27,9 @@ builder.Services.AddCors();
 builder.Services.ConfigureDbContext(builder.Configuration);
 builder.Services.ConfigureRepositoryUser();
 builder.Services.ConfigureServiceUser();
+builder.Services.ConfigureRepositoryPartner();
+builder.Services.ConfigureServicePartner();
+builder.Services.ConfigureMapster();
 
 var app = builder.Build();
 

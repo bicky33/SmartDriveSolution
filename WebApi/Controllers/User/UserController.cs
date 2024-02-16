@@ -5,7 +5,7 @@ using Service.Abstraction.User;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace WebApi.Controllers.UserModule
+namespace WebApi.Controllers.User
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -19,14 +19,14 @@ namespace WebApi.Controllers.UserModule
             _userService = userService;
         }
 
-        // GET: api/<UserController>
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> Get()
-        {
-            var users = await _userService.UserService.GetAllAsync(false);
+        //// GET: api/<UserController>
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<User>>> Get()
+        //{
+        //    var users = await _userService.UserService.GetAllAsync(false);
 
-            return Ok(users);
-        }
+        //    return Ok(users);
+        //}
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
