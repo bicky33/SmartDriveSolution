@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -11,7 +11,7 @@
   <ItemGroup>
     <Folder Include="Base\" />
     <Folder Include="HR\" />
-    <Folder Include="Master\" />
+	<Folder Include="Master\" />
     <Folder Include="Partner\" />
     <Folder Include="Payment\" />
     <Folder Include="SO\" />

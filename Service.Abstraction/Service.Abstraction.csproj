@@ -7,10 +7,8 @@
     <RootNamespace>Service.Abstraction</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Master\" />
     <Folder Include="HR\" />
     <Folder Include="Partner\" />
-    <Folder Include="SO\" />
     <Folder Include="Payment\" />
   </ItemGroup>
   <ItemGroup>

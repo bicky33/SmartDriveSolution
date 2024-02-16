@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 
 namespace Domain.Repositories.Base
 {
@@ -14,6 +9,7 @@ namespace Domain.Repositories.Base
         IQueryable<T> GetByCondition(Expression<Func<T, bool>> expressions, bool trackChanges);
 
         void Create(T entity);
+
         void Delete(T entity);
     }
 }

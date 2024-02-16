@@ -1,14 +1,23 @@
-﻿using Domain.Repositories.CR;
+﻿using Domain.Repositories.Master;
+using Domain.Repositories.CR;
 using Domain.Repositories.UserModule;
+using Domain.Repositories.SO;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
+using Persistence.SO;
 using Persistence.Repositories;
 using Persistence.Repositories.CR;
 using Service.Abstraction.CR;
 using Service.CR;
 using Persistence.Repositories.UserModule;
+using Persistence.Repositories.Master;
+using Persistence.Repositories.SO;
+using Service.Abstraction.Master;
+using Service.Abstraction.SO;
 using Service.Abstraction.User;
 using Service.Base.UserModule;
+using Service.Master;
+using Service.SO;
 
 namespace WebApi.Extensions
 {
@@ -28,22 +37,24 @@ namespace WebApi.Extensions
             services.Configure<IISOptions>(options =>
             {
             });
+
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration) =>
             services.AddDbContext<SmartDriveContext>(opts =>
             {
                 opts.UseSqlServer(configuration.GetConnectionString("SmartDriveDB"));
             });
 
-        public static void ConfigureCustomerRepositoryManager(this IServiceCollection services) =>
-            services.AddScoped<IRepositoryCustomerManager, RepositoryCustomerManager>();
-
-        public static void ConfigureCustomerServiceManager(this IServiceCollection services) =>
-            services.AddScoped<IServiceCustomerManager, ServiceCustomerManager>();
-
-        public static void ConfigureRepositoryUser(this IServiceCollection services) =>
+        public static void ConfigureRepository(this IServiceCollection services)  {
+            services.AddScoped<IRepositoryManagerMaster, RepositoryManagerMaster>();
             services.AddScoped<IRepositoryManagerUser, RepositoryManagerUser>();
-        public static void ConfigureServiceUser(this IServiceCollection services) =>
+            services.AddScoped<IRepositorySOManager, RepositorySOManager>();
+        }
+        public static void ConfigureService(this IServiceCollection services) {
+            services.AddScoped<IServiceManagerMaster, ServiceManagerMaster>();
             services.AddScoped<IServiceManagerUser, ServiceManagerUser>();
+            services.AddScoped<IServiceSOManager, ServiceSOManager>();
+            services.AddScoped<IServiceRequestSOManager, ServiceRequestSOManager>();
+        }
 
     }
 }

@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\HR\" />
-    <Folder Include="Controllers\Master\" />
+	  <Folder Include="Controllers\Master\" />
     <Folder Include="Controllers\Partner\" />
     <Folder Include="Controllers\Payment\" />
     <Folder Include="Controllers\SO\" />
