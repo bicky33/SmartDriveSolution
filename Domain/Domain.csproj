@@ -13,17 +13,15 @@
     <Folder Include="Interface\" />
     <Folder Include="Repositories\CR\" />
     <Folder Include="Repositories\HR\" />
-    <Folder Include="Repositories\Master\" />
     <Folder Include="Repositories\Partner\" />
     <Folder Include="Repositories\SO\" />
+    <Folder Include="Repositories\User\" />
+    <Folder Include="Repositories\User\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.15" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Contract\Contract.csproj" />
-  </ItemGroup>
+ 
 
 </Project>

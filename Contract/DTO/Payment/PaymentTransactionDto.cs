@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Contract.DTO.Payment
+﻿namespace Contract.DTO.Payment
 {
     public class PaymentTransactionDto
     {

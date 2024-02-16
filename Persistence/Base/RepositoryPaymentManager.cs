@@ -2,7 +2,6 @@
 using Domain.Entities.Payment;
 using Domain.Repositories.Base;
 using Domain.Repositories.Payment;
-using Domain.Repositories;
 using Persistence.Repositories;
 using Persistence.Repositories.Payment;
 using System;

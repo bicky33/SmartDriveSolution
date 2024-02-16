@@ -1,22 +1,22 @@
-﻿using Domain.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Repositories.Base;
 
 namespace Persistence.Repositories
 {
     public class UnitOfWorks : IUnitOfWorks
     {
-        private readonly SmartDriveContext _dbContext;
+        private readonly SmartDriveContext _context;
 
-        public UnitOfWorks(SmartDriveContext dbContext)
+        public UnitOfWorks(SmartDriveContext context)
         {
-            _dbContext = dbContext;
+            _context = context;
         }
 
-        public Task<int> SaveChangesAsync() => _dbContext.SaveChangesAsync();
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
 
+        //using lambda expression
+        /*public async Task<int> SaveChangesAsync() => _context.SaveChangesAsync();*/
     }
 }

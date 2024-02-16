@@ -1,9 +1,9 @@
 ﻿using Contract.DTO.Payment;
 using Domain.Entities.Payment;
-using Domain.Repositories.Base;
 using Domain.Repositories.Payment;
 using Mapster;
 using Service.Abstraction.Base;
+using Service.Abstraction.Payment;
 using System.Globalization;
 
 namespace Service.Payment

@@ -1,7 +1,6 @@
 ﻿using Domain.Entities.Users;
 using Domain.Repositories.Base;
 using Domain.Repositories.UserModule;
-using Domain.Repositories;
 using Persistence.Repositories;
 using Persistence.Repositories.UserModule;
 

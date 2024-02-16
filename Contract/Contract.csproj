@@ -15,10 +15,13 @@
 	<ItemGroup>
     <Folder Include="DTO\CR\" />
     <Folder Include="DTO\HR\" />
-    <Folder Include="DTO\Master\" />
     <Folder Include="DTO\Partner\" />
     <Folder Include="DTO\SO\" />
     <Folder Include="Records\" />
   </ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Domain\Domain.csproj" />
+	</ItemGroup>
 
 </Project>

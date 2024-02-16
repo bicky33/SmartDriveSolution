@@ -1,6 +1,5 @@
 ﻿using Contract.DTO.Payment;
 using Domain.Entities.Payment;
-using Domain.Repositories.Base;
 using Domain.Repositories.Payment;
 using Domain.Repositories.UserModule;
 using Service.Abstraction.Base;

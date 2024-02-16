@@ -1,8 +1,6 @@
 ﻿using Domain.Entities.Payment;
-using Domain.Repositories;
-using Domain.Repositories.Base;
 
-namespace Domain.Repositories
+namespace Domain.Repositories.Base
 {
     public interface IRepositoryManager
     {
