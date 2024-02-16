@@ -48,12 +48,14 @@ namespace WebApi.Extensions
             services.AddScoped<IRepositoryManagerMaster, RepositoryManagerMaster>();
             services.AddScoped<IRepositoryManagerUser, RepositoryManagerUser>();
             services.AddScoped<IRepositorySOManager, RepositorySOManager>();
+            services.AddScoped<IRepositoryCustomerManager, RepositoryCustomerManager>();
         }
         public static void ConfigureService(this IServiceCollection services) {
             services.AddScoped<IServiceManagerMaster, ServiceManagerMaster>();
             services.AddScoped<IServiceManagerUser, ServiceManagerUser>();
             services.AddScoped<IServiceSOManager, ServiceSOManager>();
             services.AddScoped<IServiceRequestSOManager, ServiceRequestSOManager>();
+            services.AddScoped<IServiceCustomerManager, ServiceCustomerManager>();
         }
 
     }
