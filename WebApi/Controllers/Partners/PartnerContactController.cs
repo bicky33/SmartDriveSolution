@@ -53,10 +53,10 @@ namespace WebApi.Controllers.Partners
         }
 
         // DELETE api/<PartnerContactController>/5
-        [HttpDelete("{pacoPatrnEntityid:int}/pacoUserEntityid")]
+        [HttpDelete("{pacoPatrnEntityid:int}/{pacoUserEntityid:int}")]
         public async Task<ActionResult> Delete(int pacoPatrnEntityid, int pacoUserEntityid)
         {
-            await _servicePartnerManager.ServicePartnerContact.DeleteAsync(int pacoPatrnEntityid, int pacoUserEntityid);
+            await _servicePartnerManager.ServicePartnerContact.DeleteAsync(pacoPatrnEntityid, pacoUserEntityid);
             return NoContent();
         }
     }

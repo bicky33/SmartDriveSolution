@@ -63,7 +63,7 @@ namespace WebApi.Controllers.Partners
         [HttpDelete("{pawoPatrEntityid:int}/{pawoUserEntityid:int}/{pawoArwgCode}")]
         public async Task<ActionResult> Delete(int pawoPatrEntityid, int pawoUserEntityid, string pawoArwgCode)
         {
-            await _servicePartnerManager.ServicePartnerAreaWorkgroup.DeleteAsync(PawoPatrEntityid, PawoArwgCode, PawoUserEntityid);
+            await _servicePartnerManager.ServicePartnerAreaWorkgroup.DeleteAsync(pawoPatrEntityid, pawoArwgCode, pawoUserEntityid);
             return NoContent();
         }
     }

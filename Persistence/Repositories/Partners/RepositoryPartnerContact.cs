@@ -1,16 +1,10 @@
 ﻿using Domain.Entities.Partners;
 using Domain.Entities.Users;
 using Domain.Exceptions;
-using Domain.Repositories.Base;
 using Domain.Repositories.Partners;
 using Domain.RequestFeatured;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence.Repositories.Partners
 {
@@ -79,8 +73,8 @@ namespace Persistence.Repositories.Partners
 
         public async Task<PartnerContact> GetEntityById(int pacoPatrnEntityid, int pacoUserEntityid, bool trackChanges)
         {
-            var partnerContact =  await GetByCondition(c => c.PacoPatrnEntity.Equals(pacoPatrnEntityid) && c.PacoUserEntityid.Equals(pacoUserEntityid), trackChanges)
-                .FirstOrDefaultAsync() ?? throw new EntityNotFoundException(pacoPatrnEntityid, nameof(PartnerContact));
+            var partnerContact = await GetByCondition(c => c.PacoPatrnEntityid.Equals(pacoPatrnEntityid) && c.PacoUserEntityid.Equals(pacoUserEntityid), trackChanges)
+                .SingleOrDefaultAsync() ?? throw new EntityNotFoundException(pacoPatrnEntityid, nameof(PartnerContact));
             return partnerContact;
         }
 

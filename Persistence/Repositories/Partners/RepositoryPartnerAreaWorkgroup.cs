@@ -125,11 +125,10 @@ namespace Persistence.Repositories.Partners
         }
         public async Task<PartnerAreaWorkgroup> GetEntityById(bool trackChanges, int partnerId, int userId, string areaWorkgroupCode)
         {
-            var result =  await GetByCondition(c =>
+            var result = await GetByCondition(c =>
                 c.PawoPatrEntityid.Equals(partnerId)
                 && c.PawoUserEntityid.Equals(userId) &&
-                c.PawoArwgCode.Equals(areaWorkgroupCode), trackChanges).FirstOrDefaultAsync() 
-                ?? throw new EntityNotFoundException(userId, nameof(PartnerAreaWorkgroup));
+                c.PawoArwgCode.Equals(areaWorkgroupCode), trackChanges).FirstOrDefaultAsync() ?? throw new EntityNotFoundException(partnerId, nameof(PartnerAreaWorkgroup));
             return result;
         }
 
