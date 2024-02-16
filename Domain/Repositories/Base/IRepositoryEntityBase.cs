@@ -11,7 +11,7 @@ namespace Domain.Repositories.Base
     {
         Task<IEnumerable<T>> GetAllEntity(bool trackChanges);
 
-        Task<T> GetEntityById(int? id, bool trackChanges);
+        Task<T> GetEntityById(int id, bool trackChanges);
 
         void CreateEntity(T entity);
 

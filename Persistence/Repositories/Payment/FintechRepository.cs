@@ -28,7 +28,7 @@ namespace Persistence.Repositories.Payment
 
         }
 
-        public async Task<Fintech> GetEntityById(int? id, bool trackChanges)
+        public async Task<Fintech> GetEntityById(int id, bool trackChanges)
         {
             return await GetByCondition(x => x.FintEntityid.Equals(id), trackChanges).SingleOrDefaultAsync();
 

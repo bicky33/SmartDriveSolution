@@ -26,7 +26,7 @@ namespace Persistence.Repositories.Payment
             return await GetAll(trackChanges).OrderBy(x => x.PatrTrxno).ToListAsync();
         }
 
-        public async Task<PaymentTransaction> GetEntityById(int? id, bool trackChanges)
+        public async Task<PaymentTransaction> GetEntityById(int id, bool trackChanges)
         {
             return await GetByCondition(x => x.PatrTrxno.Equals(id), trackChanges).SingleOrDefaultAsync();
 

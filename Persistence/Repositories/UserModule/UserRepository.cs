@@ -31,7 +31,7 @@ namespace Persistence.Repositories.UserModule
             return await GetAll(trackChanges).OrderBy(v => v.UserEntityid).ToListAsync();
         }
 
-        public async Task<User> GetEntityById(int? id, bool trackChanges)
+        public async Task<User> GetEntityById(int id, bool trackChanges)
         {
             return await GetByCondition(v => v.UserEntityid == id, trackChanges).SingleOrDefaultAsync();
         }
