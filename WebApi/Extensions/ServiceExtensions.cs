@@ -1,13 +1,18 @@
 ﻿using Domain.Repositories.Master;
 using Domain.Repositories.UserModule;
+using Domain.Repositories.SO;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
+using Persistence.SO;
 using Persistence.Repositories;
 using Persistence.Repositories.Master;
+using Persistence.Repositories.SO;
 using Service.Abstraction.Master;
+using Service.Abstraction.SO;
 using Service.Abstraction.User;
 using Service.Base.UserModule;
 using Service.Master;
+using Service.SO;
 
 namespace WebApi.Extensions
 {
@@ -37,10 +42,13 @@ namespace WebApi.Extensions
         public static void ConfigureRepository(this IServiceCollection services)  {
             services.AddScoped<IRepositoryManagerMaster, RepositoryManagerMaster>();
             services.AddScoped<IRepositoryManagerUser, RepositoryManagerUser>();
+            services.AddScoped<IRepositorySOManager, RepositorySOManager>();
         }
         public static void ConfigureService(this IServiceCollection services) {
             services.AddScoped<IServiceManagerMaster, ServiceManagerMaster>();
             services.AddScoped<IServiceManagerUser, ServiceManagerUser>();
+            services.AddScoped<IServiceSOManager, ServiceSOManager>();
+            services.AddScoped<IServiceRequestSOManager, ServiceRequestSOManager>();
         }
 
     }

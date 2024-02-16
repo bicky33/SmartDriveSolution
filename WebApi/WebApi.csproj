@@ -28,8 +28,8 @@
     <Folder Include="Controllers\HR\" />
     <Folder Include="Controllers\Partner\" />
     <Folder Include="Controllers\Payment\" />
-    <Folder Include="Controllers\SO\" />
     <Folder Include="Controllers\User\" />
+    <Folder Include="Controllers\SO\" />
     <Folder Include="Resources\Images\" />
   </ItemGroup>
 

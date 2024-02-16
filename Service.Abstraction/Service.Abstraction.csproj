@@ -10,12 +10,14 @@
     <Folder Include="HR\" />
     <Folder Include="CR\" />
     <Folder Include="Partner\" />
-    <Folder Include="SO\" />
     <Folder Include="Payment\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contract\Contract.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Contract\Contract.csproj" />
   </ItemGroup>
 
 </Project>
