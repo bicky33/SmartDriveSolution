@@ -4,16 +4,24 @@ using Domain.Enum;
 using Domain.Repositories.Partners;
 using Domain.Repositories.UserModule;
 using Mapster;
+using Domain.Repositories.SO;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
+using Persistence.SO;
 using Persistence.Repositories;
 using Persistence.Repositories.Partners;
 using Persistence.Repositories.UserModule;
 using Service.Abstraction.Partners;
+using Persistence.Repositories.Master;
+using Persistence.Repositories.SO;
+using Service.Abstraction.Master;
+using Service.Abstraction.SO;
 using Service.Abstraction.User;
 using Service.Base.UserModule;
 using Service.Partners;
 using System.Reflection;
+using Service.Master;
+using Service.SO;
 
 namespace WebApi.Extensions
 {
@@ -33,28 +41,29 @@ namespace WebApi.Extensions
             services.Configure<IISOptions>(options =>
             {
             });
+
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration) =>
             services.AddDbContext<SmartDriveContext>(opts =>
             {
                 opts.UseSqlServer(configuration.GetConnectionString("SmartDriveDB"));
             });
 
-        public static void ConfigureRepositoryUser(this IServiceCollection services) =>
+        public static void ConfigureRepository(this IServiceCollection services)  {
+            services.AddScoped<IRepositoryManagerMaster, RepositoryManagerMaster>();
             services.AddScoped<IRepositoryManagerUser, RepositoryManagerUser>();
-        public static void ConfigureServiceUser(this IServiceCollection services) =>
+            services.AddScoped<IRepositorySOManager, RepositorySOManager>();
+        }
+        public static void ConfigureService(this IServiceCollection services) {
+            services.AddScoped<IServiceManagerMaster, ServiceManagerMaster>();
             services.AddScoped<IServiceManagerUser, ServiceManagerUser>();
-        public static void ConfigureRepositoryPartner(this IServiceCollection services) =>
-            services.AddScoped<IRepositoryPartnerManager, RepositoryPartnerManager>();
-        public static void ConfigureServicePartner(this IServiceCollection services) =>
-            services.AddScoped<IServicePartnerManager, ServicePartnerManager>();
-
+            services.AddScoped<IServiceSOManager, ServiceSOManager>();
+            services.AddScoped<IServiceRequestSOManager, ServiceRequestSOManager>();
+        }
         public static void ConfigureMapster(this IServiceCollection services)
         {
             var config = TypeAdapterConfig.GlobalSettings;
             config.Scan(Assembly.GetExecutingAssembly());
             services.AddSingleton(config);
         }
-
-
     }
 }
