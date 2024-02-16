@@ -1,9 +1,18 @@
-﻿using Domain.Repositories.SO;
+﻿using Domain.Repositories.Master;
+using Domain.Repositories.UserModule;
+using Domain.Repositories.SO;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Repositories;
+using Persistence.Base;
 using Persistence.SO;
+using Persistence.Repositories;
+using Persistence.Repositories.Master;
+using Persistence.Repositories.SO;
+using Service.Abstraction.Master;
 using Service.Abstraction.SO;
-using Service.Base;
+using Service.Abstraction.User;
+using Service.Base.UserModule;
+using Service.Master;
+using Service.SO;
 
 namespace WebApi.Extensions
 {
@@ -23,21 +32,24 @@ namespace WebApi.Extensions
             services.Configure<IISOptions>(options =>
             {
             });
+
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration) =>
             services.AddDbContext<SmartDriveContext>(opts =>
             {
                 opts.UseSqlServer(configuration.GetConnectionString("SmartDriveDB"));
             });
-        // register repository manager
-        public static void ConfigureRepositorySOManager(this IServiceCollection services) =>
+
+        public static void ConfigureRepository(this IServiceCollection services)  {
+            services.AddScoped<IRepositoryManagerMaster, RepositoryManagerMaster>();
+            services.AddScoped<IRepositoryManagerUser, RepositoryManagerUser>();
             services.AddScoped<IRepositorySOManager, RepositorySOManager>();
-
-        // register service Manager
-        public static void ConfigureServiceSOManager(this IServiceCollection services) =>
+        }
+        public static void ConfigureService(this IServiceCollection services) {
+            services.AddScoped<IServiceManagerMaster, ServiceManagerMaster>();
+            services.AddScoped<IServiceManagerUser, ServiceManagerUser>();
             services.AddScoped<IServiceSOManager, ServiceSOManager>();
-
-        // register service request manager
-        public static void ConfigureServiceRequestSOManager(this IServiceCollection services) =>
             services.AddScoped<IServiceRequestSOManager, ServiceRequestSOManager>();
+        }
+
     }
 }

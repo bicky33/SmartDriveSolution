@@ -10,7 +10,7 @@ using Service.Abstraction.SO;
 using ServiceOrderTask.SO;
 
 
-namespace Service.Base
+namespace Service.SO
 {
     public class ServiceSOManager : IServiceSOManager
     {

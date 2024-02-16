@@ -4,11 +4,14 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AssemblyName>Persistence</AssemblyName>
+    <RootNamespace>Persistence</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Repositories\CR\" />
     <Folder Include="Repositories\HR\" />
+    <Folder Include="Repositories\Partner\" />
     <Folder Include="Repositories\Master\" />
     <Folder Include="Repositories\Partners\" />
     <Folder Include="Repositories\Payment\" />
