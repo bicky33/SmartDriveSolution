@@ -1,5 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Repositories.HR;
+using Microsoft.EntityFrameworkCore;
+using Persistence.Base;
 using Persistence.Repositories;
+using Service.Abstraction.Base;
+using Services.Base;
 
 namespace WebApi.Extensions
 {
@@ -24,5 +28,11 @@ namespace WebApi.Extensions
             {
                 opts.UseSqlServer(configuration.GetConnectionString("SmartDriveDB"));
             });
+
+        public static void ConfigureRepositoryManager(this IServiceCollection services) =>
+                     services.AddScoped<IRepositoryManager, RepositoryManager>();
+
+        public static void ConfigureServiceManager(this IServiceCollection services) =>
+        services.AddScoped<IServiceManager, ServiceManager>();
     }
 }

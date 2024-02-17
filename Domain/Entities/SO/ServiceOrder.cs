@@ -81,7 +81,7 @@ public partial class ServiceOrder
 
     [ForeignKey("SeroServId")]
     [InverseProperty("ServiceOrders")]
-    public virtual Service? SeroServ { get; set; }
+    public virtual Servic? SeroServ { get; set; }
 
     [InverseProperty("SeotSero")]
     public virtual ICollection<ServiceOrderTask> ServiceOrderTasks { get; set; } = new List<ServiceOrderTask>();

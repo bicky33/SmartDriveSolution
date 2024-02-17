@@ -4,17 +4,25 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AssemblyName>Services</AssemblyName>
+    <RootNamespace>Services</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Base\" />
     <Folder Include="CR\" />
-    <Folder Include="HR\" />
     <Folder Include="Master\" />
     <Folder Include="Partner\" />
     <Folder Include="Payment\" />
     <Folder Include="SO\" />
     <Folder Include="User\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
   </ItemGroup>
 
 </Project>

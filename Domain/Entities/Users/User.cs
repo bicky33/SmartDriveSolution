@@ -80,7 +80,7 @@ public partial class User
     public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 
     [InverseProperty("ServCustEntity")]
-    public virtual ICollection<Service> Services { get; set; } = new List<Service>();
+    public virtual ICollection<Servic> Services { get; set; } = new List<Servic>();
 
     [InverseProperty("UsacUserEntity")]
     public virtual ICollection<UserAccount> UserAccounts { get; set; } = new List<UserAccount>();

@@ -55,5 +55,5 @@ public partial class CustomerRequest
     public virtual CustomerInscAsset? CustomerInscAsset { get; set; }
 
     [InverseProperty("ServCreqEntity")]
-    public virtual ICollection<Service> Services { get; set; } = new List<Service>();
+    public virtual ICollection<Servic> Services { get; set; } = new List<Servic>();
 }

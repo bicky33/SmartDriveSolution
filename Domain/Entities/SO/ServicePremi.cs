@@ -34,5 +34,5 @@ public partial class ServicePremi
 
     [ForeignKey("SemiServId")]
     [InverseProperty("ServicePremi")]
-    public virtual Service SemiServ { get; set; } = null!;
+    public virtual Servic SemiServ { get; set; } = null!;
 }

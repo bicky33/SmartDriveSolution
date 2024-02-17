@@ -47,5 +47,5 @@ public partial class ServicePremiCredit
 
     [ForeignKey("SecrServId")]
     [InverseProperty("ServicePremiCredits")]
-    public virtual Service SecrServ { get; set; } = null!;
+    public virtual Servic SecrServ { get; set; } = null!;
 }
