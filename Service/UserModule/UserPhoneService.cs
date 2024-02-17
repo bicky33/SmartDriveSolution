@@ -142,13 +142,6 @@ namespace Service.UserModule
                 throw new EntityBadRequestException($"Invalid Phone Type");
             }
 
-            //userPhone.UsphPhoneNumber = entity.UsphPhoneNumber;
-            //userPhone.UsphPhoneType = entity.UsphPhoneType;
-            //userPhone.UsphStatus = entity.UsphStatus;
-            //userPhone.UsphMime = entity.UsphMime;
-            //userPhone.UsphModifiedDate = DateTime.Now;
-            //await _repositoryManager.UnitOfWork.SaveChangesAsync();
-
             //delete current phoneNumber
             _repositoryManager.UserPhoneRepository.DeleteEntity(userPhone);
             await _repositoryManager.UnitOfWork.SaveChangesAsync();

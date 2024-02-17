@@ -11,5 +11,6 @@ namespace Domain.Repositories.UserModule
     public interface IRepositoryUser : IRepositoryEntityBase<User>
     {
         Task<User> GetUserByUsername(string username, bool trackChanges);
+        Task<User> GetUserByEmail(string email, bool trackChanges);
     }
 }

@@ -12,5 +12,7 @@ namespace Service.Abstraction.User
     public interface IServiceUser : IServiceEntityBase<UserDto>
     {
         Task UpdatePhoto(int id, UserEditProfileRequestDto entity);
+        Task UpdatePassword(int id, UserUpdatePasswordRequestDto entity);
+        Task UpdateEmail(int id, string newEmail);
     }
 }

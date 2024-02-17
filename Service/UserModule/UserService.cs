@@ -123,6 +123,50 @@ namespace Service.UserModule
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
         }
 
+        public async Task UpdateEmail(int id, string newEmail)
+        {
+            var user = await _repositoryManager.UserRepository.GetEntityById(id, true);
+            if (user == null)
+            {
+                throw new EntityNotFoundException(id, "user");
+            }
+
+            var checkUserEmail = await _repositoryManager.UserRepository.GetUserByEmail(newEmail, false);
+
+            if (checkUserEmail != null && user.UserEmail != checkUserEmail.UserEmail)
+            {
+                throw new EntityBadRequestException("email already exist");
+            }
+
+            user.UserEmail = newEmail;
+
+            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task UpdatePassword(int id, UserUpdatePasswordRequestDto entity)
+        {
+            var user = await _repositoryManager.UserRepository.GetEntityById(id, true);
+
+            if (user == null)
+            {
+                throw new EntityNotFoundException(id, "user");
+            }
+
+            if (BCrypt.Net.BCrypt.Verify(entity.CurrentPassword, user.UserPassword) == false)
+            {
+                throw new EntityBadRequestException("Incorrect Password");
+            }
+
+            if(entity.NewPassword != entity.ConfirmNewPassword)
+            {
+                throw new EntityBadRequestException("The new password and confirm new password do not match");
+            }
+
+            user.UserPassword = BCrypt.Net.BCrypt.HashPassword(entity.NewPassword);
+
+            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+        }
+
         public async Task UpdatePhoto(int id, UserEditProfileRequestDto entity)
         {
             var user = await _repositoryManager.UserRepository.GetEntityById(id, true);
@@ -152,12 +196,6 @@ namespace Service.UserModule
                     {
                         file.CopyTo(stream);
                     }
-
-                    //user.UserPhoto = fileName;
-                    //user.UserName = entity.UserName;
-                    //user.UserFullName = entity.UserFullName;
-                    //user.UserBirthPlace = entity.UserBirthPlace;
-                    //user.UserBirthDate = entity.UserBirthDate;
 
                     if (!string.IsNullOrWhiteSpace(fileName))
                     {

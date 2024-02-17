@@ -12,7 +12,7 @@ namespace Contract.DTO.UserModule
     public class UserAddressDto
     {
         public int UsdrId { get; set; }
-        public int UsdrEntityid { get; set; }
+        public int? UsdrEntityid { get; set; }
 
         [StringLength(255)]
         public string? UsdrAddress1 { get; set; }

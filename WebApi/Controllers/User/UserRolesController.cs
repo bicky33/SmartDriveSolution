@@ -36,16 +36,6 @@ namespace WebApi.Controllers.User
             return Ok(userRoles);
         }
 
-        // GET api/<UserRolesController>/5
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> Get(int id)
-        //{
-        //    var userRole = await _serviceManager.UserRoleService.GetByIdAsync(id, false);
-
-        //    return Ok(userRole);
-        //}
-
-        // POST api/<UserRolesController>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] UserRoleDto body)
         {

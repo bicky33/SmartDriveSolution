@@ -11,5 +11,6 @@ namespace Domain.Enum
         public static readonly string EM = "EM";
         public static readonly string CU = "CU";
         public static readonly string PC = "PC";
+        public static readonly string PR = "PR";
     }
 }

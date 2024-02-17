@@ -21,8 +21,8 @@ namespace WebApi.Controllers.UserModule
         }
 
         // GET: api/<UserController>
-        [HttpGet]
         [Authorize(Roles = "EM")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDto>>> Get()
         {
             var users = await _serviceManager.UserService.GetAllAsync(false);
@@ -54,16 +54,23 @@ namespace WebApi.Controllers.UserModule
         }
 
         // PUT api/<UserController>/5
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] UserDto body)
         {
+            var me = _serviceManager.LoginService.GetCurrentUser(HttpContext.User);
+            if(me.Sub != id.ToString())
+            {
+                return Forbid();
+            }
+
             await _serviceManager.UserService.UpdateAsync(id, body);
 
             return Ok(body);
         }
 
         // DELETE api/<UserController>/5
-        [Authorize(Roles = "PC")]
+        [Authorize(Roles = "EM")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -73,10 +80,48 @@ namespace WebApi.Controllers.UserModule
         }
 
         // PUT api/<UserController>/5
+        [Authorize]
         [HttpPatch("UpdateProfile/{id}")]
         public async Task<IActionResult> UpdateProfile(int id, [FromForm] UserEditProfileRequestDto body)
         {
+            var me = _serviceManager.LoginService.GetCurrentUser(HttpContext.User);
+            if (me.Sub != id.ToString()) return Forbid();
+
             await _serviceManager.UserService.UpdatePhoto(id, body);
+
+            return Ok(body);
+        }
+
+        [Authorize]
+        [HttpPut("UpdatePassword/{id}")]
+        public async Task<IActionResult> UpdatePassword(int id, [FromBody] UserUpdatePasswordRequestDto body)
+        {
+            if(body == null)
+            {
+                return BadRequest();
+            }
+
+            var me = _serviceManager.LoginService.GetCurrentUser(HttpContext.User);
+            if (me.Sub != id.ToString()) return Forbid();
+
+            await _serviceManager.UserService.UpdatePassword(id, body);
+
+            return Ok(body);
+        }
+
+        [Authorize]
+        [HttpPut("UpdateEmail/{id}")]
+        public async Task<IActionResult> UpdateEmail(int id, [FromBody] UserUpdateEmailRequestDto body)
+        {
+            if (body == null)
+            {
+                return BadRequest();
+            }
+
+            var me = _serviceManager.LoginService.GetCurrentUser(HttpContext.User);
+            if (me.Sub != id.ToString()) return Forbid();
+
+            await _serviceManager.UserService.UpdateEmail(id, body.UserEmail);
 
             return Ok(body);
         }

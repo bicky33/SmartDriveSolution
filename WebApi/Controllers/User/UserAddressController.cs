@@ -1,4 +1,5 @@
 ﻿using Contract.DTO.UserModule;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.User;
 
@@ -45,9 +46,13 @@ namespace WebApi.Controllers.User
         }
 
         // POST api/<UserAddressController>
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] UserAddressDto body)
         {
+            var me = _serviceManager.LoginService.GetCurrentUser(HttpContext.User);
+            body.UsdrEntityid = int.Parse(me.Sub);
+
             if (body == null)
             {
                 return BadRequest();
@@ -59,18 +64,26 @@ namespace WebApi.Controllers.User
         }
 
         // PUT api/<UserAddressController>/5
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] UserAddressDto body)
         {
+            var me = _serviceManager.LoginService.GetCurrentUser(HttpContext.User);
+            if (me.Sub != id.ToString()) return Forbid();
+
             await _serviceManager.UserAddressService.UpdateAsync(id, body);
 
             return Ok(body);
         }
 
         // DELETE api/<UserAddressController>/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
+            var me = _serviceManager.LoginService.GetCurrentUser(HttpContext.User);
+            if (me.Sub != id.ToString()) return Forbid();
+
             await _serviceManager.UserAddressService.DeleteAsync(id);
 
             return NoContent();

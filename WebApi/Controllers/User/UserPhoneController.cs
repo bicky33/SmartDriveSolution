@@ -1,4 +1,5 @@
 ﻿using Contract.DTO.UserModule;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.User;
 
@@ -44,9 +45,13 @@ namespace WebApi.Controllers.User
         }
 
         // POST api/<UserPhoneController>
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] UserPhoneDto body)
         {
+            var me = _serviceManager.LoginService.GetCurrentUser(HttpContext.User);
+            body.UsphEntityid = int.Parse(me.Sub);
+
             if (body == null)
             {
                 return BadRequest();
@@ -58,18 +63,28 @@ namespace WebApi.Controllers.User
         }
 
         // PUT api/<UserPhoneController>/5
+        [Authorize]
         [HttpPut("{id}/{phoneNumber}")]
         public async Task<IActionResult> Put(int id, string phoneNumber, [FromBody] UserPhoneDto body)
         {
+            var me = _serviceManager.LoginService.GetCurrentUser(HttpContext.User);
+            if (int.Parse(me.Sub) != id) return Forbid();
+
+            body.UsphEntityid = int.Parse(me.Sub);
+
             await _serviceManager.UserPhoneService.UpdateAsync(id, phoneNumber, body);
 
             return Ok(body);
         }
 
         // DELETE api/<UserPhoneController>/5
+        [Authorize]
         [HttpDelete("{id}/{phoneNumber}")]
         public async Task<IActionResult> Delete(int id, string phoneNumber)
         {
+            var me = _serviceManager.LoginService.GetCurrentUser(HttpContext.User);
+            if (me.Sub != id.ToString()) return Forbid();
+
             await _serviceManager.UserPhoneService.DeleteAsync(id, phoneNumber);
 
             return NoContent();

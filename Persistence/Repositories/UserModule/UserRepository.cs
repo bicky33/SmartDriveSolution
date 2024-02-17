@@ -43,5 +43,11 @@ namespace Persistence.Repositories.UserModule
             return await GetByCondition(v => v.UserName== username, trackChanges)
                 .Include(v => v.UserRoles).SingleOrDefaultAsync();
         }
+
+        public async Task<User> GetUserByEmail(string email, bool trackChanges)
+        {
+            return await GetByCondition(v => v.UserEmail == email, trackChanges)
+                .Include(v => v.UserRoles).SingleOrDefaultAsync();
+        }
     }
 }
