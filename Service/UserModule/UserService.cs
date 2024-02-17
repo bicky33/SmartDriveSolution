@@ -4,11 +4,6 @@ using Domain.Exceptions;
 using Domain.Repositories.UserModule;
 using Mapster;
 using Service.Abstraction.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.UserModule
 {

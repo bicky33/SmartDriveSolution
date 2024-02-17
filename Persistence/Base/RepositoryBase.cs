@@ -18,7 +18,8 @@ namespace Persistence.Base
 
         public void Delete(T entity) => _dbContext.Set<T>().Remove(entity);
 
-        public IQueryable<T> GetAll(bool trackChanges) => !trackChanges ? _dbContext.Set<T>().AsNoTracking() : _dbContext.Set<T>();
+        public IQueryable<T> GetAll(bool trackChanges) => 
+            !trackChanges ? _dbContext.Set<T>().AsNoTracking() : _dbContext.Set<T>();
 
         public IQueryable<T> GetByCondition(Expression<Func<T, bool>> expressions, bool trackChanges) =>
             !trackChanges ? _dbContext.Set<T>().AsNoTracking().Where(expressions) : _dbContext.Set<T>().Where(expressions);

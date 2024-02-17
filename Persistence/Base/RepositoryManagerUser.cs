@@ -3,11 +3,6 @@ using Domain.Repositories.Base;
 using Domain.Repositories.UserModule;
 using Persistence.Repositories;
 using Persistence.Repositories.UserModule;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence.Base
 {

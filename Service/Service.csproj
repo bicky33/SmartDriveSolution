@@ -4,21 +4,16 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyName>Service</AssemblyName>
     <RootNamespace>Service</RootNamespace>
+    <AssemblyName>Service</AssemblyName>
   </PropertyGroup>
-	
-	<ItemGroup>
-		<PackageReference Include="Mapster" Version="7.4.0" />
-	</ItemGroup>
-
-
+	 
 	<ItemGroup>
     <Folder Include="Base\" />
+    <Folder Include="Master\" />
     <Folder Include="CR\" />
     <Folder Include="HR\" />
     <Folder Include="Partner\" />
-    <Folder Include="Payment\" />
     <Folder Include="SO\" />
   </ItemGroup>
 
@@ -27,21 +22,13 @@
 		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
 		<PackageReference Include="Mapster" Version="7.4.0" />
 	</ItemGroup>
-
+ 
   <ItemGroup>
     <ProjectReference Include="..\Contract\Contract.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Mapster" Version="7.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Contract\Contract.csproj" />
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
-  </ItemGroup>
+   
 
 </Project>
