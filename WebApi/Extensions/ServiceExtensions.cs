@@ -22,6 +22,7 @@ using Service.Partners;
 using System.Reflection;
 using Service.Master;
 using Service.SO;
+using Domain.Repositories.Master;
 
 namespace WebApi.Extensions
 {
@@ -52,12 +53,14 @@ namespace WebApi.Extensions
             services.AddScoped<IRepositoryManagerMaster, RepositoryManagerMaster>();
             services.AddScoped<IRepositoryManagerUser, RepositoryManagerUser>();
             services.AddScoped<IRepositorySOManager, RepositorySOManager>();
+            services.AddScoped<IRepositoryPartnerManager, RepositoryPartnerManager>();
         }
         public static void ConfigureService(this IServiceCollection services) {
             services.AddScoped<IServiceManagerMaster, ServiceManagerMaster>();
             services.AddScoped<IServiceManagerUser, ServiceManagerUser>();
             services.AddScoped<IServiceSOManager, ServiceSOManager>();
             services.AddScoped<IServiceRequestSOManager, ServiceRequestSOManager>();
+            services.AddScoped<IServicePartnerManager, ServicePartnerManager>();
         }
         public static void ConfigureMapster(this IServiceCollection services)
         {

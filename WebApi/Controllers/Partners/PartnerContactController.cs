@@ -1,4 +1,5 @@
-﻿using Domain.RequestFeatured;
+﻿using Contract.DTO.Partners;
+using Domain.RequestFeatured;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.Partners;
 
@@ -34,16 +35,19 @@ namespace WebApi.Controllers.Partners
         }
 
         // GET api/<PartnerContactController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{pacoPatrnEntityid:int}/{pacoUserEntityid:int}")]
+        public async Task<ActionResult> Get(int pacoPatrnEntityid, int pacoUserEntityid)
         {
-            return "value";
+            PartnerContactDTO partnerContact =  await _servicePartnerManager.ServicePartnerContact.GetByIdAsync(pacoPatrnEntityid, pacoUserEntityid, false);
+            return Ok(partnerContact);
         }
 
         // POST api/<PartnerContactController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult> Post([FromBody] PartnerContactDTO request)
         {
+            await _servicePartnerManager.ServicePartnerContact.CreateAsync(request);
+            return NoContent();
         }
 
         // PUT api/<PartnerContactController>/5

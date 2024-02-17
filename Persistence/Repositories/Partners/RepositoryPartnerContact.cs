@@ -49,7 +49,7 @@ namespace Persistence.Repositories.Partners
 
         public async Task<PagedList<PartnerContact>> GetAllPagingAsync(bool trackChanges, EntityParameter parameter)
         {
-            var partnerContacts = _dbContext.PartnerContacts
+            IQueryable<PartnerContact> partnerContacts = _dbContext.PartnerContacts
                 .Include(c => c.PacoUserEntity)
                 .Select(c => new PartnerContact
                 {
@@ -73,7 +73,7 @@ namespace Persistence.Repositories.Partners
 
         public async Task<PartnerContact> GetEntityById(int pacoPatrnEntityid, int pacoUserEntityid, bool trackChanges)
         {
-            var partnerContact = await GetByCondition(c => c.PacoPatrnEntityid.Equals(pacoPatrnEntityid) && c.PacoUserEntityid.Equals(pacoUserEntityid), trackChanges)
+            PartnerContact partnerContact = await GetByCondition(c => c.PacoPatrnEntityid.Equals(pacoPatrnEntityid) && c.PacoUserEntityid.Equals(pacoUserEntityid), trackChanges)
                 .SingleOrDefaultAsync() ?? throw new EntityNotFoundException(pacoPatrnEntityid, nameof(PartnerContact));
             return partnerContact;
         }

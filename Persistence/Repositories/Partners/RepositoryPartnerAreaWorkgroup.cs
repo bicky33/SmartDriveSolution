@@ -32,7 +32,7 @@ namespace Persistence.Repositories.Partners
 
         public async Task<IEnumerable<PartnerAreaWorkgroup>> GetAllEntity(bool trackChanges)
         {
-            var result = _dbContext.PartnerAreaWorkgroups.AsNoTracking()
+            IQueryable<PartnerAreaWorkgroup> result = _dbContext.PartnerAreaWorkgroups.AsNoTracking()
                 .Include(c => c.PawoArwgCodeNavigation)
                     .ThenInclude(d => d.ArwgCity)
                         .ThenInclude(e => e.CityProv)
@@ -80,7 +80,7 @@ namespace Persistence.Repositories.Partners
 
         public async Task<PagedList<PartnerAreaWorkgroup>> GetAllPaging(bool trackChanges, EntityParameter parameter)
         {
-            var result = _dbContext.PartnerAreaWorkgroups
+            IQueryable<PartnerAreaWorkgroup> result = _dbContext.PartnerAreaWorkgroups
                 .Include(c => c.PawoArwgCodeNavigation)
                     .ThenInclude(d => d.ArwgCity)
                         .ThenInclude(e => e.CityProv)
@@ -125,10 +125,11 @@ namespace Persistence.Repositories.Partners
         }
         public async Task<PartnerAreaWorkgroup> GetEntityById(bool trackChanges, int partnerId, int userId, string areaWorkgroupCode)
         {
-            var result = await GetByCondition(c =>
+            PartnerAreaWorkgroup result = await GetByCondition(c =>
                 c.PawoPatrEntityid.Equals(partnerId)
                 && c.PawoUserEntityid.Equals(userId) &&
-                c.PawoArwgCode.Equals(areaWorkgroupCode), trackChanges).FirstOrDefaultAsync() ?? throw new EntityNotFoundException(partnerId, nameof(PartnerAreaWorkgroup));
+                c.PawoArwgCode.Equals(areaWorkgroupCode), trackChanges).FirstOrDefaultAsync() 
+                ?? throw new EntityNotFoundException(partnerId, nameof(PartnerAreaWorkgroup));
             return result;
         }
 

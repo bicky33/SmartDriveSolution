@@ -26,6 +26,7 @@ builder.Services.ConfigureCors();
 builder.Services.ConfigureDbContext(builder.Configuration);
 builder.Services.ConfigureRepository();
 builder.Services.ConfigureService();
+builder.Services.ConfigureMapster();
 
 var app = builder.Build();
 

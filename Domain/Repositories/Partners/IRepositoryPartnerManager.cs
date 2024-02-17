@@ -17,6 +17,7 @@ namespace Domain.Repositories.Partners
         public IRepositoryPartnerContact RepositoryPartnerContact { get; }
         public IRepositoryEntityBase<BatchPartnerInvoice> RepositoryPartnerBatchInvoice { get; }
         public IRepositoryBusinessEntity<BusinessEntity> RepositoryBusinessEntity { get; }
+        public IRepositoryEntityBase<User> RepositoryUser { get; }
 
         public IUnitOfWorks UnitOfWorks { get; }
     }

@@ -11,11 +11,11 @@ namespace Service.Abstraction.Partners
 {
     public interface IServicePartnerContact
     {
-        Task<IEnumerable<PartnerContactResponse>> GetAllPagingAsync(EntityParameter parameter);
+        Task<IEnumerable<PartnerContactDTO>> GetAllPagingAsync(EntityParameter parameter);
         Task<PartnerContactDTO> GetByIdAsync(int pacoPatrnEntityid, int pacoUserEntityid, bool trackChanges);
-        Task<IEnumerable<PartnerContactResponse>> GetAllAsync(bool trackChanges);
-        Task<PartnerContactDTO> CreateAsync(PartnerDTO entity);
-        Task UpdateAsync(int id, PartnerDTO entity);
+        Task<IEnumerable<PartnerContactDTO>> GetAllAsync(bool trackChanges);
+        Task<PartnerContactDTO> CreateAsync(PartnerContactDTO entity);
+        Task UpdateAsync(int id, PartnerContactDTO entity);
         Task DeleteAsync(int pacoPatrnEntityid, int pacoUserEntityid);
     }
 }

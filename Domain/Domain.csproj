@@ -9,12 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Repositories\Partner\**" />
+    <EmbeddedResource Remove="Repositories\Partner\**" />
+    <None Remove="Repositories\Partner\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Exceptions\UserModule\" />
     <Folder Include="Interface\" />
     <Folder Include="Repositories\CR\" />
     <Folder Include="Repositories\HR\" />
     <Folder Include="Repositories\Master\" />
-    <Folder Include="Repositories\Partner\" />
     <Folder Include="Repositories\Payment\" />
     <Folder Include="Repositories\SO\" />
     <Folder Include="Repositories\User\" />

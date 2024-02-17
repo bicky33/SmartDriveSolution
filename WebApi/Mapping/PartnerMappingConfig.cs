@@ -36,7 +36,8 @@ namespace WebApi.Mapping
                 && src.PawoArwgCodeNavigation.ArwgCity.CityProv.ProvZones != null
                 ? src.PawoArwgCodeNavigation.ArwgCity.CityProv.ProvZones.ZonesName : null);
 
-            config.NewConfig<PartnerContact, PartnerContactResponse>()
+            config.NewConfig<PartnerContact, PartnerContactDTO>()
+                .Map(dest => dest.PacoStatus, src => Enum.Parse<PartnerStatus>(src.PacoStatus ?? "ACTIVE"))
                 .Map(dest => dest.FullName, src => src.PacoUserEntity.UserFullName)
                 .Map(dest => dest.PhoneNumber, src => src.PacoUserEntity.UserPhones.Select(d => d.UsphPhoneNumber).FirstOrDefault());
 

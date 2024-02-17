@@ -4,11 +4,6 @@ using Domain.Repositories.Partners;
 using Domain.RequestFeatured;
 using Mapster;
 using Service.Abstraction.Partners;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Transactions;
 
 namespace Service.Partners
@@ -24,28 +19,28 @@ namespace Service.Partners
 
         public async Task CreateAsync(PartnerAreaWorkgroupDTO entity)
         {
-            var partnerAreaWorkgroups = entity.Adapt<PartnerAreaWorkgroup>();
+            PartnerAreaWorkgroup partnerAreaWorkgroups = entity.Adapt<PartnerAreaWorkgroup>();
             _repositoryPartnerManager.RepositoryPartnerAreaWorkgroup.CreateEntity(partnerAreaWorkgroups);
             await _repositoryPartnerManager.UnitOfWorks.SaveChangesAsync();
         }
         public async Task DeleteAsync(int PawoPatrEntityid, string PawoArwgCode, int PawoUserEntityid)
         {
-            var partnerAreaWorkgroup = await _repositoryPartnerManager.RepositoryPartnerAreaWorkgroup.GetEntityById(true, PawoPatrEntityid, PawoUserEntityid, PawoArwgCode);
+            PartnerAreaWorkgroup partnerAreaWorkgroup = await _repositoryPartnerManager.RepositoryPartnerAreaWorkgroup.GetEntityById(true, PawoPatrEntityid, PawoUserEntityid, PawoArwgCode);
             _repositoryPartnerManager.RepositoryPartnerAreaWorkgroup.DeleteEntity(partnerAreaWorkgroup);
             await _repositoryPartnerManager.UnitOfWorks.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<PartnerAreaWorkgroupResponse>> GetAllAsync(bool trackChanges)
         {
-            var partnerAreaWorkgroups = await _repositoryPartnerManager.RepositoryPartnerAreaWorkgroup.GetAllEntity(trackChanges);
-            var partnerAreaWorkgroupsDTO = partnerAreaWorkgroups.Adapt<IEnumerable<PartnerAreaWorkgroupResponse>>();
+            IEnumerable<PartnerAreaWorkgroup> partnerAreaWorkgroups = await _repositoryPartnerManager.RepositoryPartnerAreaWorkgroup.GetAllEntity(trackChanges);
+            IEnumerable<PartnerAreaWorkgroupResponse> partnerAreaWorkgroupsDTO = partnerAreaWorkgroups.Adapt<IEnumerable<PartnerAreaWorkgroupResponse>>();
             return partnerAreaWorkgroupsDTO;
         }
 
         public async Task<IEnumerable<PartnerAreaWorkgroupResponse>> GetAllPagingAsync(EntityParameter parameter, bool trackChanges)
         {
-            var partnerAreaWorkgroups = await _repositoryPartnerManager.RepositoryPartnerAreaWorkgroup.GetAllPaging(trackChanges, parameter);
-            var partnerAreaWorkgroupsDTO = partnerAreaWorkgroups.Adapt<IEnumerable<PartnerAreaWorkgroupResponse>>();
+            PagedList<PartnerAreaWorkgroup> partnerAreaWorkgroups = await _repositoryPartnerManager.RepositoryPartnerAreaWorkgroup.GetAllPaging(trackChanges, parameter);
+            IEnumerable<PartnerAreaWorkgroupResponse> partnerAreaWorkgroupsDTO = partnerAreaWorkgroups.Adapt<IEnumerable<PartnerAreaWorkgroupResponse>>();
             return partnerAreaWorkgroupsDTO;
         }
 
@@ -56,8 +51,8 @@ namespace Service.Partners
             bool trackChanges
         )
         {
-            var partnerAreaWorkgroup = await _repositoryPartnerManager.RepositoryPartnerAreaWorkgroup.GetEntityById(trackChanges, PawoPatrEntityid, PawoUserEntityid, PawoArwgCode);
-            var partnerAreaWorkgroupDTO = partnerAreaWorkgroup.Adapt<PartnerAreaWorkgroupDTO>();
+            PartnerAreaWorkgroup partnerAreaWorkgroup = await _repositoryPartnerManager.RepositoryPartnerAreaWorkgroup.GetEntityById(trackChanges, PawoPatrEntityid, PawoUserEntityid, PawoArwgCode);
+            PartnerAreaWorkgroupDTO partnerAreaWorkgroupDTO = partnerAreaWorkgroup.Adapt<PartnerAreaWorkgroupDTO>();
             return partnerAreaWorkgroupDTO;
         }
 
@@ -72,10 +67,10 @@ namespace Service.Partners
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
             try
             {
-                var partnerAreaWorkgroup = await _repositoryPartnerManager.RepositoryPartnerAreaWorkgroup.GetEntityById(trackChanges, PawoPatrEntityid, PawoUserEntityid, PawoArwgCode);
+                PartnerAreaWorkgroup partnerAreaWorkgroup = await _repositoryPartnerManager.RepositoryPartnerAreaWorkgroup.GetEntityById(trackChanges, PawoPatrEntityid, PawoUserEntityid, PawoArwgCode);
                 _repositoryPartnerManager.RepositoryPartnerAreaWorkgroup.DeleteEntity(partnerAreaWorkgroup);
                 await _repositoryPartnerManager.UnitOfWorks.SaveChangesAsync();
-                var data = entity.Adapt<PartnerAreaWorkgroup>();
+                PartnerAreaWorkgroup data = entity.Adapt<PartnerAreaWorkgroup>();
                 _repositoryPartnerManager.RepositoryPartnerAreaWorkgroup.CreateEntity(data);
                 await _repositoryPartnerManager.UnitOfWorks.SaveChangesAsync();
                 scope.Complete();

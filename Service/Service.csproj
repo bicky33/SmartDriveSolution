@@ -7,6 +7,12 @@
     <AssemblyName>Service</AssemblyName>
     <RootNamespace>Service</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Partner\**" />
+    <EmbeddedResource Remove="Partner\**" />
+    <None Remove="Partner\**" />
+  </ItemGroup>
 	
 	<ItemGroup>
 		<PackageReference Include="Mapster" Version="7.4.0" />
@@ -18,8 +24,6 @@
     <Folder Include="CR\" />
     <Folder Include="HR\" />
     <Folder Include="Master\" />
-    <Folder Include="Partner\" />
-    <Folder Include="Partner\" />
 
     <Folder Include="Payment\" />
     <Folder Include="SO\" />
@@ -36,15 +40,4 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Mapster" Version="7.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Contract\Contract.csproj" />
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -19,6 +19,7 @@ namespace Persistence.Repositories.Partners
         private readonly Lazy<IRepositoryPartnerContact> _repositoryPartnerContact;
         private readonly Lazy<IRepositoryEntityBase<BatchPartnerInvoice>> _repositoryPartnerBatchInvoice;
         private readonly Lazy<IRepositoryBusinessEntity<BusinessEntity>> _repositoryBusinessEntity;
+        private readonly Lazy<IRepositoryEntityBase<User>> _repositoryUser;
         private readonly Lazy<IUnitOfWorks> _unitOfWorks;
 
         public RepositoryPartnerManager(SmartDriveContext _context)
@@ -28,6 +29,7 @@ namespace Persistence.Repositories.Partners
             _repositoryPartnerContact = new Lazy<IRepositoryPartnerContact>(() => new RepositoryPartnerContact(_context));
             _repositoryPartnerBatchInvoice = new Lazy<IRepositoryEntityBase<BatchPartnerInvoice>>(() => new RepositoryPartnerBatchInvoice(_context));
             _repositoryBusinessEntity = new Lazy<IRepositoryBusinessEntity<BusinessEntity>>(() => new BusinessEntityRepository(_context));
+            _repositoryUser = new Lazy<IRepositoryEntityBase<User>>(() => new UserRepository(_context));
             _unitOfWorks = new Lazy<IUnitOfWorks>(() => new UnitOfWorks(_context));
         }
         public IRepositoryPartner RepositoryPartner => _repositoryPartner.Value;
@@ -36,5 +38,6 @@ namespace Persistence.Repositories.Partners
         public IRepositoryEntityBase<BatchPartnerInvoice> RepositoryPartnerBatchInvoice => _repositoryPartnerBatchInvoice.Value;
         public IRepositoryBusinessEntity<BusinessEntity> RepositoryBusinessEntity => _repositoryBusinessEntity.Value;
         public IUnitOfWorks UnitOfWorks => _unitOfWorks.Value;
+        public IRepositoryEntityBase<User> RepositoryUser => _repositoryUser.Value;
     }
 }

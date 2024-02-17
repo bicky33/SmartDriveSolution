@@ -33,14 +33,14 @@ namespace Persistence.Repositories.Partners
 
         public async Task<Partner> GetEntityById(int id, bool trackChanges)
         {
-            var partner = await GetByCondition(c => c.PartEntityid.Equals(id), trackChanges).SingleOrDefaultAsync() 
+            Partner partner = await GetByCondition(c => c.PartEntityid.Equals(id), trackChanges).SingleOrDefaultAsync() 
                 ?? throw new EntityNotFoundException(id, nameof(Partner));
             return partner;
         }
 
         public async Task<PagedList<Partner>> GetAllPaging(bool trackChanges, EntityParameter parameter)
         {
-            var partners = string.IsNullOrEmpty(parameter.SearchBy) ? GetAll(trackChanges) : GetByCondition(c => c.PartName.StartsWith(parameter.SearchBy), trackChanges);
+            IQueryable<Partner> partners = string.IsNullOrEmpty(parameter.SearchBy) ? GetAll(trackChanges) : GetByCondition(c => c.PartName.StartsWith(parameter.SearchBy), trackChanges);
             return PagedList<Partner>.ToPagedList(partners, parameter.PageNumber, parameter.PageSize);
 
         }
