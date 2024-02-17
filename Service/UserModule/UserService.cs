@@ -47,7 +47,9 @@ namespace Service.UserModule
                 UserNationalId = entity.UserNationalId,
                 UserNpwp = entity.UserNpwp,
                 UserModifiedDate = DateTime.Now,
-                UserRoles = null
+                UserRoles = null,
+                UserPhones = null,
+                UserAddresses = null,
             };
 
             _repositoryManager.UserRepository.CreateEntity(user);

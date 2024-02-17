@@ -21,7 +21,7 @@ namespace WebApi.Controllers.UserModule
         }
 
         // GET: api/<UserController>
-        [Authorize(Roles = "EM")]
+        //[Authorize(Roles = "EM")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDto>>> Get()
         {
