@@ -57,9 +57,9 @@ namespace Service.SO
 
             services.ServId = id;
             services.ServCreatedOn = entity.ServCreatedOn;
-            services.ServType= entity.ServType.ToString();
+            services.ServType= entity.ServType;
             services.ServInsuranceNo=entity.ServInsuranceNo;
-            services.ServStatus=entity.ServStatus.ToString();
+            services.ServStatus=entity.ServStatus;
             services.ServVehicleNo=entity.ServVehicleNo;
             services.ServStartdate=entity.ServStartdate;
             services.ServEnddate=entity.ServEnddate;

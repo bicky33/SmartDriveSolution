@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Contract.DTO.SO
 {
-    public class ServicePremiDto
+    public class ServicePremiDtoCreate
     {
         [Required]
         public int SemiServId { get; init; }
@@ -22,5 +22,6 @@ namespace Contract.DTO.SO
         public string? SemiStatus { get; init; }
 
         public DateTime? SemiModifiedDate { get; init; }
+
     }
 }

@@ -19,6 +19,8 @@ namespace Persistence.SO
         private readonly Lazy<IRepositorySOEntityBase<ServiceOrderWorkorder,int>> _serviceOrderWorkorderRepository;
         private readonly Lazy<IRepositorySOEntityBase<ClaimAssetEvidence,int>> _claimAssetEvidenceRepository;
         private readonly Lazy<IRepositorySOEntityBase<ClaimAssetSparepart,int>> _claimAssetSparepartRepository;
+        private readonly Lazy<IRepositorySOEntityBase<ServicePremi, int>> _servicePremiRepository;
+        private readonly Lazy<IRepositorySOEntityBase<ServicePremiCredit, int>> _servicePremiCreditRepository;
         private readonly Lazy<IUnitOfWorksSO> _unitOfWork;
 
         public RepositorySOManager(SmartDriveContext dbContext)
@@ -30,8 +32,10 @@ namespace Persistence.SO
             _serviceOrderWorkorderRepository = new Lazy<IRepositorySOEntityBase<ServiceOrderWorkorder,int>>(()=>new ServiceOrderWorkorderRepository(dbContext));
             _claimAssetEvidenceRepository = new Lazy<IRepositorySOEntityBase<ClaimAssetEvidence, int>>(()=>new ClaimAssetEvidenceRepository(dbContext));
             _claimAssetSparepartRepository = new Lazy<IRepositorySOEntityBase<ClaimAssetSparepart, int>>(()=>new ClaimAssetSparepartRepository(dbContext));
+            _servicePremiRepository = new Lazy<IRepositorySOEntityBase<ServicePremi, int>>(() => new ServicePremiRepository(dbContext));
+            _servicePremiCreditRepository = new Lazy<IRepositorySOEntityBase<ServicePremiCredit, int>>(() => new ServicePremiCreditRepository(dbContext));
 
-            
+
         }
         public IUnitOfWorksSO UnitOfWork => _unitOfWork.Value;
 
@@ -43,5 +47,9 @@ namespace Persistence.SO
         public IRepositorySOEntityBase<ClaimAssetEvidence, int> ClaimAssetEvidenceRepository => _claimAssetEvidenceRepository.Value;
 
         public IRepositorySOEntityBase<ClaimAssetSparepart, int> ClaimAssetSparepartRepository => _claimAssetSparepartRepository.Value;
+
+        public IRepositorySOEntityBase<ServicePremi, int> ServicePremiRepository => _servicePremiRepository.Value;
+
+        public IRepositorySOEntityBase<ServicePremiCredit, int> ServicePremiCreditRepository => _servicePremiCreditRepository.Value;
     }
 }

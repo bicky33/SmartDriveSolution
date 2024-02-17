@@ -12,7 +12,8 @@ namespace Domain.Enum
         {
             FEASIBILITY,
             POLIS,
-            CLAIM
+            CLAIM,
+            CLOSED
         }
         public enum SERVSTATUS
         {

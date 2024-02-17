@@ -9,10 +9,9 @@ using Domain.Entities.Payment;
 
 namespace Contract.DTO.SO
 {
-    public class ServicePremiCreditDto
+    public class ServicePremiCreditDtoCreate
     {
-        [Required]
-        public int SecrId { get; init; }
+        public int? SecrId { get; init; }
         [Required]
         public int SecrServId { get; init; }
 
@@ -28,6 +27,5 @@ namespace Contract.DTO.SO
 
         public string? SecrPatrTrxno { get; init; }
 
-        public PaymentTransaction? SecrPatrTrxnoNavigation { get; set; }
     }
 }

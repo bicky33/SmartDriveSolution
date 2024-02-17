@@ -32,6 +32,8 @@
     <Folder Include="Controllers\SO\" />
     <Folder Include="Controllers\User\" />
     <Folder Include="Resources\Image\" />
+    <Folder Include="Resources\Images\" />
+    <Folder Include="Resources\Images\" />
   </ItemGroup>
 
   <ItemGroup>
