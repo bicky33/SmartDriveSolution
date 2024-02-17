@@ -1,11 +1,5 @@
 ﻿using Contract.DTO.SO;
 using Domain.Repositories.SO;
-using Service.SO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Service.Abstraction.SO;
 
 namespace Service.SO

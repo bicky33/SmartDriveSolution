@@ -6,7 +6,7 @@ using Service.Abstraction.SO;
 
 namespace Service.SO
 {
-    public class ServiceOrderWorkorderService : IServiceSOEntityBase<ServiceOrderWorkorderDto,ServiceOrderWorkorderDtoCreate,int>
+    public class ServiceOrderWorkorderService : IServiceSOEntityBase<ServiceOrderWorkorderDto, ServiceOrderWorkorderDtoCreate, int>
     {
         private readonly IRepositorySOManager _repositoryManager;
 
@@ -25,9 +25,9 @@ namespace Service.SO
 
         public async Task DeleteAsync(int id)
         {
-            var service = await _repositoryManager.ServiceOrderWorkorderRepository.GetEntityById(id,false);
+            var service = await _repositoryManager.ServiceOrderWorkorderRepository.GetEntityById(id, false);
             if (service == null)
-                throw new EntityNotFoundException(id,"ServiceOrderTask");
+                throw new EntityNotFoundException(id, "ServiceOrderTask");
             _repositoryManager.ServiceOrderWorkorderRepository.DeleteEntity(service);
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
         }
@@ -43,7 +43,7 @@ namespace Service.SO
         {
             var service = await _repositoryManager.ServiceOrderWorkorderRepository.GetEntityById(id, trackChanges);
             if (service == null)
-                throw new EntityNotFoundException(id,"ServiceOrderTask");
+                throw new EntityNotFoundException(id, "ServiceOrderTask");
             var serviceDtos = service.Adapt<ServiceOrderWorkorderDto>();
             return serviceDtos;
         }
@@ -52,11 +52,11 @@ namespace Service.SO
         {
             var services = await _repositoryManager.ServiceOrderWorkorderRepository.GetEntityById(id, true);
             if (services == null)
-                throw new EntityNotFoundException(id,"ServiceOrderTask entity not found");
+                throw new EntityNotFoundException(id,"ServiceOrderTask");
 
             services.SowoId = id;
             services.SowoName = entity.SowoName;
-            services.SowoModifiedDate=entity.SowoStatus!=services.SowoStatus?DateTime.Now:entity.SowoModifiedDate;
+            services.SowoModifiedDate= entity.SowoStatus != services.SowoStatus ? DateTime.Now : entity.SowoModifiedDate;
             services.SowoStatus=entity.SowoStatus;
             services.SowoSeotId=entity.SowoSeotId;
 

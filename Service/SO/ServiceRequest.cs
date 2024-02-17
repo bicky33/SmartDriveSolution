@@ -1,6 +1,5 @@
 ﻿using Contract.DTO.SO;
 using Domain.Enum;
-using Domain.Entities.SO;
 using Domain.Repositories.SO;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Service.Abstraction.Master;

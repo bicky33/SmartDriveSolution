@@ -36,7 +36,7 @@ namespace Contract.DTO.SO
 
         //public Partner? CaevPartEntity { get; set; }
 
-        public ServiceOrderDto? CaevSero { get; set; }
+        //public ServiceOrderDto? CaevSero { get; set; }
 
     }
 }

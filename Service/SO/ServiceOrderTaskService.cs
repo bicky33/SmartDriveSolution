@@ -6,7 +6,7 @@ using Service.Abstraction.SO;
 
 namespace Service.SO
 {
-    public class ServiceOrderTaskService : IServiceSOEntityBase<ServiceOrderTaskDto,ServiceOrderTaskDtoCreate,int>
+    public class ServiceOrderTaskService : IServiceSOEntityBase<ServiceOrderTaskDto, ServiceOrderTaskDtoCreate, int>
     {
         private readonly IRepositorySOManager _repositoryManager;
 
@@ -25,9 +25,9 @@ namespace Service.SO
 
         public async Task DeleteAsync(int id)
         {
-            var service = await _repositoryManager.ServiceOrderTaskRepository.GetEntityById(id,false);
+            var service = await _repositoryManager.ServiceOrderTaskRepository.GetEntityById(id, false);
             if (service == null)
-                throw new EntityNotFoundException(id,"ServiceOrderTask");
+                throw new EntityNotFoundException(id, "ServiceOrderTask");
             _repositoryManager.ServiceOrderTaskRepository.DeleteEntity(service);
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
         }
@@ -43,7 +43,7 @@ namespace Service.SO
         {
             var service = await _repositoryManager.ServiceOrderTaskRepository.GetEntityById(id, trackChanges);
             if (service == null)
-                throw new EntityNotFoundException(id,"ServiceOrderTask");
+                throw new EntityNotFoundException(id, "ServiceOrderTask");
             var serviceDtos = service.Adapt<ServiceOrderTaskDto>();
             return serviceDtos;
         }
@@ -52,16 +52,16 @@ namespace Service.SO
         {
             var services = await _repositoryManager.ServiceOrderTaskRepository.GetEntityById(id, true);
             if (services == null)
-                throw new EntityNotFoundException(id,"ServiceOrderTask");
+                throw new EntityNotFoundException(id, "ServiceOrderTask");
 
             services.SeotId = id;
             services.SeotName = entity.SeotName;
-            services.SeotStartdate=entity.SeotStartdate;
-            services.SeotEnddate=entity.SeotEnddate;
-            services.SeotActualStartdate=entity.SeotActualStartdate;
-            services.SeotActualEnddate=entity.SeotActualEnddate;
-            services.SeotStatus=entity.SeotStatus;
-            services.SeotArwgCode=entity.SeotArwgCode;
+            services.SeotStartdate = entity.SeotStartdate;
+            services.SeotEnddate = entity.SeotEnddate;
+            services.SeotActualStartdate = entity.SeotActualStartdate;
+            services.SeotActualEnddate = entity.SeotActualEnddate;
+            services.SeotStatus = entity.SeotStatus;
+            services.SeotArwgCode = entity.SeotArwgCode;
             services.SeotSeroId = entity.SeotSeroId;
 
             await _repositoryManager.UnitOfWork.SaveChangesAsync();

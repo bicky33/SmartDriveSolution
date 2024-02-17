@@ -17,6 +17,7 @@
     <Folder Include="DTO\HR\" />
     <Folder Include="DTO\Partner\" />
     <Folder Include="DTO\Payment\" />
+    <Folder Include="DTO\SO\" />
     <Folder Include="Records\" />
   </ItemGroup>
 
