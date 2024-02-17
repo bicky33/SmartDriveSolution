@@ -18,7 +18,7 @@ namespace Contract.DTO.SO
 
         public DateTime? ServCreatedOn { get; init; }
 
-        public string? ServType { get; init; }
+        public string? ServType { get; set; }
 
         public string? ServInsuranceNo { get; init; }
 
@@ -28,7 +28,7 @@ namespace Contract.DTO.SO
 
         public DateTime? ServEnddate { get; init; }
 
-        public string? ServStatus { get; init; }
+        public string? ServStatus { get; set; }
 
         public int? ServServId { get; init; }
 

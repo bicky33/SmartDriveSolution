@@ -4,7 +4,7 @@ using Domain.Repositories.SO;
 using Mapster;
 using Service.Abstraction.SO;
 
-namespace ServiceOrderTask.SO
+namespace Service.SO
 {
     public class ServiceOrderTaskService : IServiceSOEntityBase<ServiceOrderTaskDto,ServiceOrderTaskDtoCreate,int>
     {

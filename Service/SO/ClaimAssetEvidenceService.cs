@@ -82,29 +82,53 @@ namespace Service.SO
         {
             var claimAssetEvidence = await _repositoryManager.ClaimAssetEvidenceRepository.GetEntityById(id, trackChanges); 
             if (claimAssetEvidence == null)
-                throw new EntityNotFoundExceptionSO(id,"Claim Asset Evidence");
+                throw new EntityNotFoundExceptionSO(id,"Claim Asset Evidence entity is not found");
 
             var ClaimAssetEvidenceDtos = claimAssetEvidence.Adapt<ClaimAssetEvidenceDto>();
             return ClaimAssetEvidenceDtos;
         }
 
-        public async Task<ClaimAssetEvidenceDtoCreate> UpdateAsync(int id, ClaimAssetEvidenceDtoCreate entity)
+        public async Task<ClaimAssetEvidenceDtoCreate> UpdateAsync(int id, ClaimAssetEvidenceDtoCreate entityDto)
         {
+            ClaimAssetEvidenceDtoCreate claimAssetDto = new();
             var claimAssetEvidence = await _repositoryManager.ClaimAssetEvidenceRepository.GetEntityById(id, true);
             if (claimAssetEvidence == null)
-                throw new EntityNotFoundExceptionSO(id,"Claim Asset Evidence");
+                throw new EntityNotFoundExceptionSO(id, "Claim Asset Evidence entity is not found");
+            // save photo
+            try
+            {
+                var file = entityDto.Photo;
+                var folderName = Path.Combine("Resources", "Images");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                if (file.Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName);
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
 
-            claimAssetEvidence.CaevId = id;
-            claimAssetEvidence.CaevFilename=entity.CaevFilename;
-            claimAssetEvidence.CaevFilesize=entity.CaevFilesize;
-            claimAssetEvidence.CaevUrl=entity.CaevUrl;
-            claimAssetEvidence.CaevNote=entity.CaevNote;
-            claimAssetEvidence.CaevPartEntityid=entity.CaevPartEntityid;
-            claimAssetEvidence.CaevSeroId=entity.CaevSeroId;
-            claimAssetEvidence.CaevServiceFee = entity.CaevServiceFee;
-            claimAssetEvidence.CaevCreatedDate = entity.CaevCreatedDate;
+                    claimAssetEvidence.CaevFilename = entityDto.CaevFilename;
+                    claimAssetEvidence.CaevFilesize = (int)file.Length / 2048;
+                    claimAssetEvidence.CaevUrl = fileName;
 
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+
+                    claimAssetEvidence.CaevId = id;
+                    claimAssetEvidence.CaevNote = entityDto.CaevNote;
+                    claimAssetEvidence.CaevPartEntityid = entityDto.CaevPartEntityid;
+                    claimAssetEvidence.CaevSeroId = entityDto.CaevSeroId;
+                    claimAssetEvidence.CaevServiceFee = entityDto.CaevServiceFee;
+                    claimAssetEvidence.CaevCreatedDate = entityDto.CaevCreatedDate;
+
+                    await _repositoryManager.UnitOfWork.SaveChangesAsync();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
             return claimAssetEvidence.Adapt<ClaimAssetEvidenceDtoCreate>();
         }
     }

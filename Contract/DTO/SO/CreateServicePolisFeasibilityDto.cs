@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace Contract.DTO.SO
 {
-    public class CreateServicePolisDto
+    public class CreateServicePolisFeasibilityDto
     {
         [Required]
-        public int ServId { get; init; }
+        public int CreqId { get; init; }
+        [Required]
+        public int CustId { get; init; }
         [Required]
         public int AgentId { get; init; }
         [Required]

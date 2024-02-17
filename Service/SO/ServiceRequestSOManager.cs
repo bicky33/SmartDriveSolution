@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Service.Abstraction.SO;
-using ServiceOrderTask.SO;
+using Service.Abstraction.Master;
 
 
 namespace Service.SO
@@ -15,9 +15,9 @@ namespace Service.SO
     public class ServiceRequestSOManager : IServiceRequestSOManager
     {
         private readonly IServiceRequestSOBase _serviceRequest;
-        public ServiceRequestSOManager(IRepositorySOManager repositoryManager,IServiceSOManager serviceManager)
+        public ServiceRequestSOManager(IRepositorySOManager repositoryManager,IServiceSOManager serviceManager,IServiceManagerMaster serviceManagerMaster)
         {
-            _serviceRequest = new ServiceRequest(repositoryManager,serviceManager);
+            _serviceRequest = new ServiceRequest(repositoryManager,serviceManager, serviceManagerMaster);
         }
 
         public IServiceRequestSOBase ServiceRequest => _serviceRequest;

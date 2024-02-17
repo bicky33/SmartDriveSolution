@@ -4,7 +4,7 @@ using Domain.Repositories.SO;
 using Mapster;
 using Service.Abstraction.SO;
 
-namespace ServiceOrderTask.SO
+namespace Service.SO
 {
     public class ServiceOrderWorkorderService : IServiceSOEntityBase<ServiceOrderWorkorderDto,ServiceOrderWorkorderDtoCreate,int>
     {
@@ -52,15 +52,16 @@ namespace ServiceOrderTask.SO
         {
             var services = await _repositoryManager.ServiceOrderWorkorderRepository.GetEntityById(id, true);
             if (services == null)
-                throw new EntityNotFoundException(id,"ServiceOrderTask");
+                throw new EntityNotFoundException(id,"ServiceOrderTask entity not found");
 
             services.SowoId = id;
             services.SowoName = entity.SowoName;
-            services.SowoModifiedDate=entity.SowoModifiedDate;
+            services.SowoModifiedDate=entity.SowoStatus!=services.SowoStatus?DateTime.Now:entity.SowoModifiedDate;
             services.SowoStatus=entity.SowoStatus;
             services.SowoSeotId=entity.SowoSeotId;
 
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            
             return services.Adapt<ServiceOrderWorkorderDtoCreate>();
         }
     }
