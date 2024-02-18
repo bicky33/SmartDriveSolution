@@ -5,8 +5,11 @@ namespace Domain.Repositories.UserModule
 {
     public interface IRepositoryManagerUser
     {
-        IRepositoryEntityBase<User> UserRepository { get; }
+        IRepositoryUser UserRepository { get; }
         IUnitOfWorks UnitOfWork { get; }
         IRepositoryBusinessEntity<BusinessEntity> BusinessEntityRepository { get; }
+        IRepositoryUserRole UserRoleRepository { get; }
+        IRepositoryUserPhone UserPhoneRepository { get; }
+        IRepositoryUserAddress UserAddressRepository { get; }
     }
 }
