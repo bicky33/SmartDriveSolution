@@ -39,36 +39,4 @@
     <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
   </ItemGroup>
 
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
-  </ItemGroup>
-
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
-  </ItemGroup>
-
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
-  </ItemGroup>
-
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
-  </ItemGroup>
-
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
-  </ItemGroup>
-
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
-  </ItemGroup>
-
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
-  </ItemGroup>
-
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
-  </ItemGroup>
-
 </Project>

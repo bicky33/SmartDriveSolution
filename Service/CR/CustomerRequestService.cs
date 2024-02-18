@@ -20,7 +20,6 @@ namespace Service.CR
     {
         private readonly IRepositoryCustomerManager _repositoryCustomerManager;
         private readonly IRepositoryManagerUser _repositoryManagerUser;
-        //private readonly IServiceCustomerManager _serviceCustomerManager;
 
         public CustomerRequestService(
             IRepositoryCustomerManager repositoryCustomerManager,
@@ -28,7 +27,6 @@ namespace Service.CR
         {
             _repositoryCustomerManager = repositoryCustomerManager;
             _repositoryManagerUser = repositoryManagerUser;
-            //_serviceCustomerManager = serviceCustomerManager;
         }
 
         public async Task<CustomerRequestDto> CreateAsync(CustomerRequestDto entity)
@@ -78,19 +76,6 @@ namespace Service.CR
 
             return customerRequest.Adapt<CustomerRequestDto>();
         }
-
-        //public async Task<CustomerRequestDto> CreateByAgen(CustomerRequestDto entity)
-        //{
-        //    var newBusinessEntity = await _serviceManagerUser.BusinessEntityService.CreateBusinessEntity();
-        //    var newInscAsset = await _serviceCustomerManager.CustomerInscAssetService.CreateAsync(entity.CustomerInscAsset);
-
-        //    var customerRequest = entity.Adapt<CustomerRequest>();
-        //    customerRequest.CreqEntityid = newBusinessEntity.Entityid;
-        //    _repositoryCustomerManager.CustomerRequestRepository.CreateEntity(customerRequest);
-        //    await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
-
-        //    return customerRequest.Adapt<CustomerRequestDto>();
-        //}
 
         public async Task DeleteAsync(int id)
         {

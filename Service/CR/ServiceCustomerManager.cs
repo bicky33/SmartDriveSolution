@@ -1,6 +1,7 @@
 ﻿using Contract.DTO.CR.Response;
 using Domain.Entities.CR;
 using Domain.Repositories.CR;
+using Domain.Repositories.Master;
 using Domain.Repositories.UserModule;
 using Service.Abstraction.Base;
 using Service.Abstraction.CR;
@@ -22,11 +23,12 @@ namespace Service.CR
         private readonly Lazy<ICustomerInscExtendService> _customerInscExtendService;
         public ServiceCustomerManager(
             IRepositoryCustomerManager customerRepositoryManager,
-            IRepositoryManagerUser repositoryManagerUser
+            IRepositoryManagerUser repositoryManagerUser,
+            IRepositoryManagerMaster repositoryManagerMaster
             )
         {
             _customerRequestService = new Lazy<ICustomerRequestService>(() => new CustomerRequestService(customerRepositoryManager, repositoryManagerUser));
-            _customerInscAssetService = new Lazy<ICustomerInscAssetService>(() => new CustomerInscAssetsService(customerRepositoryManager));
+            _customerInscAssetService = new Lazy<ICustomerInscAssetService>(() => new CustomerInscAssetsService(customerRepositoryManager, repositoryManagerMaster));
             _customerClaimService = new Lazy<ICustomerClaimService>(() => new CustomerClaimService(customerRepositoryManager));
             _customerInscDocService = new Lazy<IServiceEntityBase<CustomerInscDocDto>>(() => new CustomerInscDocService(customerRepositoryManager));
             _customerInscExtendService = new Lazy<ICustomerInscExtendService>(() => new CustomerInscExtendService(customerRepositoryManager));

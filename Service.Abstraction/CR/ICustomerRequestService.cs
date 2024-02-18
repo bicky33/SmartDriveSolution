@@ -13,6 +13,5 @@ namespace Service.Abstraction.CR
         Task<IEnumerable<CustomerRequestDto>> GetAllByUser(int userId, bool trackChanges);
         Task<IEnumerable<CustomerRequestDto>> GetAllByEmployee(string eawgCode, bool trackChanges);
         Task<CustomerRequestDto> CreateCustomerRequest(CustomerRequestDto entity);
-        //Task<CustomerRequestDto> CreateByAgen(CustomerRequestDto entity);
     }
 }
