@@ -1,5 +1,6 @@
 ﻿using Contract.DTO.UserModule;
 using Domain.Entities.Users;
+using Domain.Enum;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.User;
@@ -49,6 +50,20 @@ namespace WebApi.Controllers.UserModule
             }
 
             var create = await _serviceManager.UserService.CreateAsync(body);
+
+            return Ok(create);
+        }
+
+        // POST api/<UserController>/CreateUserWithRole
+        [HttpPost("CreateUserWithRole")]
+        public async Task<IActionResult> CreateUserWithRole([FromBody] UserDto body)
+        {
+            if (body == null)
+            {
+                return BadRequest();
+            }
+
+            var create = await _serviceManager.UserService.CreateUserWithRole(body, EnumRoleType.EM, EnumRoleActiveStatus.ACTIVE);
 
             return Ok(create);
         }

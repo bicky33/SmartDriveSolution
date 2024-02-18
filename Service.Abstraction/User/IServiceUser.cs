@@ -1,5 +1,6 @@
 ﻿using Contract.DTO.UserModule;
 using Domain.Entities.Users;
+using Domain.Enum;
 using Service.Abstraction.Base;
 using System;
 using System.Collections.Generic;
@@ -14,5 +15,6 @@ namespace Service.Abstraction.User
         Task UpdatePhoto(int id, UserEditProfileRequestDto entity);
         Task UpdatePassword(int id, UserUpdatePasswordRequestDto entity);
         Task UpdateEmail(int id, string newEmail);
+        Task<UserDto> CreateUserWithRole(UserDto entity, string roleType, string isUserRoleActive);
     }
 }

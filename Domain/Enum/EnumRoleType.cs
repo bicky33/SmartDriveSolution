@@ -13,4 +13,10 @@ namespace Domain.Enum
         public static readonly string PC = "PC";
         public static readonly string PR = "PR";
     }
+
+    public static class EnumRoleActiveStatus
+    {
+        public static readonly string ACTIVE = "ACTIVE";
+        public static readonly string INACTIVE = "INACTIVE";
+    }
 }

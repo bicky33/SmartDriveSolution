@@ -1,5 +1,6 @@
 ﻿using Contract.DTO.UserModule;
 using Domain.Entities.Users;
+using Domain.Enum;
 using Domain.Exceptions;
 using Domain.Repositories.UserModule;
 using Mapster;
@@ -60,6 +61,86 @@ namespace Service.UserModule
             var mapsterConfig = TypeAdapterConfig.GlobalSettings.Clone();
             mapsterConfig.Default.Ignore("UserPassword");
             return user.Adapt<UserDto>(mapsterConfig);
+        }
+
+        public async Task<UserDto> CreateUserWithRole(UserDto entity, string roleType, string isUserRoleActive)
+        {
+            var checkUsername = await _repositoryManager.UserRepository.GetUserByUsername(entity.UserName, false);
+
+            if (checkUsername != null)
+            {
+                throw new EntityBadRequestException("username already exist");
+            }
+
+            var checkUserEmail = await _repositoryManager.UserRepository.GetUserByEmail(entity.UserEmail, false);
+
+            if (checkUserEmail != null)
+            {
+                throw new EntityBadRequestException("email already exist");
+            }
+
+            //check if role type is valid with enum types
+            bool isRoleValid = typeof(EnumRoleType)
+           .GetFields()
+           .Any(f => f.GetValue(null).ToString() == roleType);
+
+            if (!isRoleValid)
+            {
+                throw new EntityBadRequestException($"Invalid Role Name");
+            }
+
+            //check if role status is valid with enum types
+            bool isRoleStatusValid = typeof(EnumRoleActiveStatus)
+           .GetFields()
+           .Any(f => f.GetValue(null).ToString() == isUserRoleActive);
+
+            if (!isRoleStatusValid)
+            {
+                throw new EntityBadRequestException($"Invalid Role Name");
+            }
+
+            //businessentity
+            var businessEntity = _repositoryManager.BusinessEntityRepository.CreateEntity();
+            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+
+            var user = new User()
+            {
+                UserEntityid = businessEntity.Entityid,
+                UserName = entity.UserName,
+                UserPassword = BCrypt.Net.BCrypt.HashPassword(entity.UserPassword),
+                UserFullName = entity.UserFullName,
+                UserEmail = entity.UserEmail,
+                UserBirthPlace = entity.UserBirthPlace,
+                UserBirthDate = entity.UserBirthDate,
+                UserNationalId = entity.UserNationalId,
+                UserNpwp = entity.UserNpwp,
+                UserModifiedDate = DateTime.Now,
+                UserRoles = null,
+                UserPhones = null,
+                UserAddresses = null,
+            };
+
+            _repositoryManager.UserRepository.CreateEntity(user);
+            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+
+            var mapsterConfig = TypeAdapterConfig.GlobalSettings.Clone();
+            mapsterConfig.Default.Ignore("UserPassword");
+
+            var userDto = user.Adapt<UserDto>(mapsterConfig);
+
+            //assign role
+            var entityRole = new UserRole()
+            {
+                UsroEntityid = businessEntity.Entityid,
+                UsroModifiedDate = DateTime.Now,
+                UsroRoleName = roleType,
+                UsroStatus = isUserRoleActive
+            };
+
+            _repositoryManager.UserRoleRepository.CreateEntity(entityRole);
+            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+
+            return userDto;
         }
 
         public async Task DeleteAsync(int id)

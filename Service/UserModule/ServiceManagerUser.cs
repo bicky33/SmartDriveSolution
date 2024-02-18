@@ -20,7 +20,8 @@ namespace Service.UserModule
         private readonly Lazy<IServiceUserAddress> _userAddressService;
         private readonly Lazy<IServiceLogin> _loginService;
 
-        public ServiceManagerUser(IRepositoryManagerUser repositoryUser, JwtTokenGenerator jwtGenerator)
+        public ServiceManagerUser(IRepositoryManagerUser repositoryUser, 
+            JwtTokenGenerator jwtGenerator)
         {
             _userService = new Lazy<IServiceUser>(
                 () => new UserService(repositoryUser));
