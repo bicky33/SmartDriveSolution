@@ -1,11 +1,24 @@
-﻿using Domain.Authentication;
+﻿using Domain.Repositories.Master;
+using Domain.Repositories.Payment;
+using Domain.Authentication;
 using Domain.Repositories.UserModule;
+using Domain.Repositories.SO;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Base;
+using Persistence.SO;
 using Microsoft.IdentityModel.Tokens;
 using Persistence.Repositories;
+using Persistence.Repositories.Master;
+using Persistence.Repositories.SO;
+using Service.Abstraction.Master;
+using Service.Abstraction.SO;
+using Service.Abstraction.Payment;
+using Service.Base;
 using Persistence.Repositories.UserModule;
 using Service.Abstraction.User;
+using Service.Master;
+using Service.SO;
 using Service.UserModule;
 using System.Text;
 
@@ -27,16 +40,28 @@ namespace WebApi.Extensions
             services.Configure<IISOptions>(options =>
             {
             });
+
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration) =>
             services.AddDbContext<SmartDriveContext>(opts =>
             {
                 opts.UseSqlServer(configuration.GetConnectionString("SmartDriveDB"));
             });
 
-        public static void ConfigureRepositoryUser(this IServiceCollection services) =>
+        public static void ConfigureRepository(this IServiceCollection services)
+        {
+            services.AddScoped<IRepositoryManagerMaster, RepositoryManagerMaster>();
+            services.AddScoped<IRepositoryPaymentManager, RepositoryPaymentManager>();
             services.AddScoped<IRepositoryManagerUser, RepositoryManagerUser>();
-        public static void ConfigureServiceUser(this IServiceCollection services) =>
+            services.AddScoped<IRepositorySOManager, RepositorySOManager>();
+        }
+        public static void ConfigureService(this IServiceCollection services)
+        {
+            services.AddScoped<IServiceManagerMaster, ServiceManagerMaster>();
             services.AddScoped<IServiceManagerUser, ServiceManagerUser>();
+            services.AddScoped<IServiceSOManager, ServiceSOManager>();
+            services.AddScoped<IServiceRequestSOManager, ServiceRequestSOManager>();
+            services.AddScoped<IServicePaymentManager, ServicePaymentManager>();
+        }
 
         public static void ConfigureJwtGenerator(this IServiceCollection services, IConfiguration configuration) {
             services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));

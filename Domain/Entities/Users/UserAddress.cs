@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Domain.Entities.Master;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Domain.Entities.Master;
-using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Entities.Users;
 

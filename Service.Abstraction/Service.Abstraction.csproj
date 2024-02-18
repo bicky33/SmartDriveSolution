@@ -7,16 +7,22 @@
     <RootNamespace>Service.Abstraction</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Master\" />
     <Folder Include="HR\" />
     <Folder Include="CR\" />
     <Folder Include="Partner\" />
-    <Folder Include="SO\" />
     <Folder Include="Payment\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contract\Contract.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
+    <Folder Include="User\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Contract\Contract.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Contract\Contract.csproj" />
   </ItemGroup>
 
 </Project>
