@@ -1,5 +1,6 @@
 ﻿using Domain.Entities.CR;
 using Domain.Repositories.Base;
+using Domain.Repositories.CR;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
 using System;
@@ -10,10 +11,16 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repositories.CR
 {
-    public class CustomerClaimRepository : RepositoryBase<CustomerClaim>, IRepositoryEntityBase<CustomerClaim>
+    public class CustomerClaimRepository : RepositoryBase<CustomerClaim>, ICustomerClaimRepository
     {
         public CustomerClaimRepository(SmartDriveContext dbContext) : base(dbContext)
         {
+        }
+
+        public CustomerClaim CreateData(CustomerClaim entity)
+        {
+            CreateEntity(entity);
+            return entity;
         }
 
         public void CreateEntity(CustomerClaim entity)

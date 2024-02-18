@@ -22,28 +22,25 @@ namespace WebApi.Controllers.CR
 
         // GET: api/<CustomerRequestController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CustomerRequestDto>>> GetCustomerRequests()
+        public async Task<ActionResult> GetAll()
         {
             var customerRequestDto = await _serviceCustomerManager.CustomerRequestService.GetAllAsync(false);
-            //var result = customerRequestDto.Adapt<IEnumerable<CustomerRequestGetDto>>();
             return Ok(customerRequestDto);
         }
 
         [HttpGet("request")]
-        public async Task<ActionResult<IEnumerable<CustomerRequestDto>>> GetAllByUserOrEmployee(int userentityid, string arwgCode, string role)
+        public async Task<ActionResult> GetAllByUserOrEmployee(int userentityid, string arwgCode, string role)
         {
 
             if (role == "Customer")
             {
                 var customerRequest = await _serviceCustomerManager.CustomerRequestService.GetAllByUser(userentityid, false);
-                //var result = customerRequest.Adapt<IEnumerable<CustomerRequestGetDto>>();
                 return Ok(customerRequest);
 
             }
             else if (role == "Employee")
             {
                 var customerRequest = await _serviceCustomerManager.CustomerRequestService.GetAllByEmployee(arwgCode, false);
-                //var result = customerRequest.Adapt<IEnumerable<CustomerRequestGetDto>>();
                 return Ok(customerRequest);
             }
 
@@ -53,7 +50,7 @@ namespace WebApi.Controllers.CR
 
         // GET api/<CustomerRequestController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<CustomerRequestDto>> GetCustomerRequestById(int id)
+        public async Task<ActionResult<CustomerRequestDto>> GetById(int id)
         {
             var customerRequestDto = await _serviceCustomerManager.CustomerRequestService.GetByIdAsync(id, false);
             return Ok(customerRequestDto);
@@ -61,16 +58,23 @@ namespace WebApi.Controllers.CR
 
         // POST api/<CustomerRequestController>
         [HttpPost]
-        public async Task<IActionResult> CreateCustomerRequest([FromBody] CustomerRequestCreateDto customerRequestDto)
+        public async Task<IActionResult> Create([FromBody] CustomerRequestCreateDto customerRequestDto)
         {
 
             var customerRequest = await _serviceCustomerManager.CustomerRequestService.CreateAsync(customerRequestDto.Adapt<CustomerRequestDto>());
-            return CreatedAtAction(nameof(GetCustomerRequestById), new { id = customerRequest.CreqEntityid }, customerRequest);
+            return CreatedAtAction(nameof(GetById), new { id = customerRequest.CreqEntityid }, customerRequest);
+        }
+
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateCustomerRequest([FromBody] CustomerRequestCreateDto customerRequestDto)
+        {
+            var customerRequest = await _serviceCustomerManager.CustomerRequestService.CreateCustomerRequest(customerRequestDto.Adapt<CustomerRequestDto>());
+            return CreatedAtAction(nameof(GetById), new { id = customerRequest.CreqEntityid }, customerRequest);
         }
 
         // PUT api/<CustomerRequestController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCustomerRequest(int id, [FromBody] CustomerRequestUpdateDto customerRequestDto)
+        public async Task<IActionResult> Update(int id, [FromBody] CustomerRequestUpdateDto customerRequestDto)
         {
             await _serviceCustomerManager.CustomerRequestService.UpdateAsync(id, customerRequestDto.Adapt<CustomerRequestDto>());
             return NoContent();

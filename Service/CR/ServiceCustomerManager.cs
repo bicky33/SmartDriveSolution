@@ -20,7 +20,10 @@ namespace Service.CR
         private readonly Lazy<ICustomerClaimService> _customerClaimService;
         private readonly Lazy<IServiceEntityBase<CustomerInscDocDto>> _customerInscDocService;
         private readonly Lazy<ICustomerInscExtendService> _customerInscExtendService;
-        public ServiceCustomerManager(IRepositoryCustomerManager customerRepositoryManager, IRepositoryManagerUser repositoryManagerUser)
+        public ServiceCustomerManager(
+            IRepositoryCustomerManager customerRepositoryManager,
+            IRepositoryManagerUser repositoryManagerUser
+            )
         {
             _customerRequestService = new Lazy<ICustomerRequestService>(() => new CustomerRequestService(customerRepositoryManager, repositoryManagerUser));
             _customerInscAssetService = new Lazy<ICustomerInscAssetService>(() => new CustomerInscAssetsService(customerRepositoryManager));

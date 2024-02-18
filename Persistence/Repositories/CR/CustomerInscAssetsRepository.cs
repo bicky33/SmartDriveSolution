@@ -1,5 +1,6 @@
 ﻿using Domain.Entities.CR;
 using Domain.Repositories.Base;
+using Domain.Repositories.CR;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
 using System;
@@ -10,10 +11,16 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repositories.CR
 {
-    public class CustomerInscAssetsRepository : RepositoryBase<CustomerInscAsset>, IRepositoryEntityBase<CustomerInscAsset>
+    public class CustomerInscAssetsRepository : RepositoryBase<CustomerInscAsset>, ICustomerInscAssetRepository
     {
         public CustomerInscAssetsRepository(SmartDriveContext dbContext) : base(dbContext)
         {
+        }
+
+        public CustomerInscAsset CreateData(CustomerInscAsset entity)
+        {
+            Create(entity);
+            return entity;
         }
 
         public void CreateEntity(CustomerInscAsset entity)
@@ -24,6 +31,11 @@ namespace Persistence.Repositories.CR
         public void DeleteEntity(CustomerInscAsset entity)
         {
             Delete(entity);
+        }
+
+        public CustomerInscAsset? FindByCiasPoliceNumber(string ciasPoliceNumber, bool trackChanges)
+        {
+            return GetByCondition(x => x.CiasPoliceNumber.Equals(ciasPoliceNumber), trackChanges).SingleOrDefault();
         }
 
         public async Task<IEnumerable<CustomerInscAsset>> GetAllEntity(bool trackChanges)

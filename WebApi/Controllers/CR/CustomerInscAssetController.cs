@@ -31,8 +31,8 @@ namespace WebApi.Controllers.CR
         [HttpGet("{id}")]
         public async Task<ActionResult<CustomerInscAssetDto>> GetCustomerInscAssetById(int id)
         {
-            var customerRequestDto = await _serviceCustomerManager.CustomerInscAssetService.GetByIdAsync(id, false);
-            return Ok(customerRequestDto);
+            var customerInscAssetDto = await _serviceCustomerManager.CustomerInscAssetService.GetByIdAsync(id, false);
+            return Ok(customerInscAssetDto);
         }
 
         // POST api/<CustomerInscAssetController>

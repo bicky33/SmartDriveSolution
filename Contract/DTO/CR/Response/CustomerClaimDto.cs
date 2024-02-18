@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Entities.CR;
 
 namespace Contract.DTO.CR.Response
 {
@@ -17,5 +18,6 @@ namespace Contract.DTO.CR.Response
         public decimal? CuclEventPrice { get; set; }
         public decimal? CuclSubtotal { get; set; }
         public string? CuclReason { get; set; }
+        //public CustomerRequest CuclCreqEntity { get; set; } = null!;
     }
 }

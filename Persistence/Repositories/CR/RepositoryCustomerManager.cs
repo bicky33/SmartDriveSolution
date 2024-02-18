@@ -14,8 +14,8 @@ namespace Persistence.Repositories.CR
     {
         private readonly Lazy<ICustomerUnitOfWork> _customerUnitOfWork;
         private readonly Lazy<ICustomerRequestRepository> _customerRequestRepository;
-        private readonly Lazy<IRepositoryEntityBase<CustomerInscAsset>> _customerInscAssetRepository;
-        private readonly Lazy<IRepositoryEntityBase<CustomerClaim>> _customerClaimRepository;
+        private readonly Lazy<ICustomerInscAssetRepository> _customerInscAssetRepository;
+        private readonly Lazy<ICustomerClaimRepository> _customerClaimRepository;
         private readonly Lazy<IRepositoryEntityBase<CustomerInscDoc>> _customerInscDocRepository;
         private readonly Lazy<IRepositoryEntityBase<CustomerInscExtend>> _customerInscExtendRepository;
 
@@ -23,22 +23,17 @@ namespace Persistence.Repositories.CR
         {
             _customerUnitOfWork = new Lazy<ICustomerUnitOfWork>(() => new CustomerUnitOfWork(dbContext));
             _customerRequestRepository = new Lazy<ICustomerRequestRepository>(() => new CustomerRequestRepository(dbContext));
-            _customerInscAssetRepository = new Lazy<IRepositoryEntityBase<CustomerInscAsset>>(() => new CustomerInscAssetsRepository(dbContext));
-            _customerClaimRepository = new Lazy<IRepositoryEntityBase<CustomerClaim>>(() => new CustomerClaimRepository(dbContext));
+            _customerInscAssetRepository = new Lazy<ICustomerInscAssetRepository>(() => new CustomerInscAssetsRepository(dbContext));
+            _customerClaimRepository = new Lazy<ICustomerClaimRepository>(() => new CustomerClaimRepository(dbContext));
             _customerInscDocRepository = new Lazy<IRepositoryEntityBase<CustomerInscDoc>>(() => new CustomerInscDocRepository(dbContext));
             _customerInscExtendRepository = new Lazy<IRepositoryEntityBase<CustomerInscExtend>>(() =>  new CustomerInscExtendRepository(dbContext));
         }
 
         public ICustomerRequestRepository CustomerRequestRepository => _customerRequestRepository.Value;
-
         public ICustomerUnitOfWork CustomerUnitOfWork => _customerUnitOfWork.Value;
-
-        public IRepositoryEntityBase<CustomerInscAsset> CustomerInscAssetRepository => _customerInscAssetRepository.Value;
-
-        public IRepositoryEntityBase<CustomerClaim> CustomerClaimRepository => _customerClaimRepository.Value;
-
         public IRepositoryEntityBase<CustomerInscDoc> CustomerInscDocRepository => _customerInscDocRepository.Value;
-
         public IRepositoryEntityBase<CustomerInscExtend> CustomerInscExtendRepository => _customerInscExtendRepository.Value;
+        public ICustomerInscAssetRepository CustomerInscAssetRepository => _customerInscAssetRepository.Value;
+        public ICustomerClaimRepository CustomerClaimRepository => _customerClaimRepository.Value;
     }
 }

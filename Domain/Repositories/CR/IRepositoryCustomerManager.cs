@@ -11,8 +11,8 @@ namespace Domain.Repositories.CR
     public interface IRepositoryCustomerManager
     {
         ICustomerRequestRepository CustomerRequestRepository { get; }
-        IRepositoryEntityBase<CustomerInscAsset> CustomerInscAssetRepository { get; }
-        IRepositoryEntityBase<CustomerClaim> CustomerClaimRepository { get; }
+        ICustomerInscAssetRepository CustomerInscAssetRepository { get; }
+        ICustomerClaimRepository CustomerClaimRepository { get; }
         ICustomerUnitOfWork CustomerUnitOfWork { get; }
         IRepositoryEntityBase<CustomerInscDoc> CustomerInscDocRepository { get; }
         IRepositoryEntityBase<CustomerInscExtend> CustomerInscExtendRepository { get; }

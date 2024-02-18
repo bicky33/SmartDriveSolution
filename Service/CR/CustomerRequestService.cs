@@ -20,11 +20,15 @@ namespace Service.CR
     {
         private readonly IRepositoryCustomerManager _repositoryCustomerManager;
         private readonly IRepositoryManagerUser _repositoryManagerUser;
+        //private readonly IServiceCustomerManager _serviceCustomerManager;
 
-        public CustomerRequestService(IRepositoryCustomerManager repositoryCustomerManager, IRepositoryManagerUser repositoryManagerUser)
+        public CustomerRequestService(
+            IRepositoryCustomerManager repositoryCustomerManager,
+            IRepositoryManagerUser repositoryManagerUser)
         {
             _repositoryCustomerManager = repositoryCustomerManager;
             _repositoryManagerUser = repositoryManagerUser;
+            //_serviceCustomerManager = serviceCustomerManager;
         }
 
         public async Task<CustomerRequestDto> CreateAsync(CustomerRequestDto entity)
@@ -34,6 +38,41 @@ namespace Service.CR
 
             var customerRequest = entity.Adapt<CustomerRequest>();
             customerRequest.CreqEntityid = businessEntity.Entityid;
+            _repositoryCustomerManager.CustomerRequestRepository.CreateEntity(customerRequest);
+            await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
+
+            return customerRequest.Adapt<CustomerRequestDto>();
+        }
+
+        public async Task<CustomerRequestDto> CreateCustomerRequest(CustomerRequestDto entity)
+        {
+            var businessEntity = _repositoryManagerUser.BusinessEntityRepository.CreateEntity();
+            await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
+
+            // Create new CustomerInscAsset
+            var customerInscAsset = entity.CustomerInscAsset.Adapt<CustomerInscAsset>();
+            var newCustomerInscAsset = _repositoryCustomerManager.CustomerInscAssetRepository.CreateData(customerInscAsset);
+
+            // Create new CustomerClaim
+            var customerClaim = new CustomerClaimDto();
+            var newCustomerClaim = _repositoryCustomerManager.CustomerClaimRepository.CreateData(customerClaim.Adapt<CustomerClaim>());
+
+            //var customerRequest = entity.Adapt<CustomerRequest>();
+            var customerRequest = new CustomerRequest()
+            {
+                CreqEntityid = businessEntity.Entityid,
+                CreqCreateDate = DateTime.Now,
+                CreqStatus = entity.CreqStatus,
+                CreqType = entity.CreqType,
+                CreqCustEntityid = entity.CreqCustEntityid,
+                CreqAgenEntityid = entity.CreqAgenEntityid,
+                CustomerInscAsset = newCustomerInscAsset,
+                CustomerClaim = newCustomerClaim
+            };
+            //customerRequest.CreqEntityid = businessEntity.Entityid;
+            //customerRequest.CustomerClaim = newCustomerClaim;
+            //customerRequest.CustomerInscAsset = newCustomerInscAsset;
+
             _repositoryCustomerManager.CustomerRequestRepository.CreateEntity(customerRequest);
             await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
 
@@ -110,6 +149,8 @@ namespace Service.CR
             customerRequest.CreqStatus = entity.CreqStatus;
             customerRequest.CreqType = entity.CreqType;
             customerRequest.CreqModifiedDate = DateTime.Now;
+            customerRequest.CreqCustEntityid = entity.CreqCustEntityid;
+            customerRequest.CreqAgenEntityid = entity.CreqAgenEntityid;
 
             await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
         }

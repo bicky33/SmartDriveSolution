@@ -8,6 +8,7 @@ namespace Contract.DTO.CR.Request
 {
     public class CustomerInscDocUpdateDto
     {
+        public int CadocCreqEntityid { get; set; }
         public string? CadocFilename { get; set; }
         public string? CadocFiletype { get; set; }
         public int? CadocFilesize { get; set; }

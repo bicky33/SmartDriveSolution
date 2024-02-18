@@ -1,5 +1,7 @@
-﻿using Contract.DTO.CR.Response;
+﻿using Contract.DTO.CR.Request;
+using Contract.DTO.CR.Response;
 using Domain.Entities.CR;
+using Domain.Entities.Master;
 using Domain.Exceptions;
 using Domain.Repositories.CR;
 using Mapster;
@@ -8,6 +10,7 @@ using Service.Abstraction.CR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -85,5 +88,96 @@ namespace Service.CR
 
             await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
         }
+
+        public CustomerInscAsset createCustomerInscAssets(
+            int entityId,
+            CustomerInscAssetRequestDto customerInscAssetRequestDto,
+            CarSeries carSeries,
+            City existCity,
+            InsuranceType existInty,
+            CustomerRequest newCustomerRequest)
+        {
+
+            DateTime ciasStartdate = DateTime.Now;
+
+            // new cias
+            var customrInscAsset = new CustomerInscAsset()
+            {
+                CiasCreqEntityid = entityId,
+                CiasPoliceNumber = customerInscAssetRequestDto.CiasPoliceNumber,
+                CiasYear = customerInscAssetRequestDto.CiasYear,
+                CiasStartdate = ciasStartdate,
+                CiasEnddate = ciasStartdate.AddYears(1),
+                CiasCurrentPrice = customerInscAssetRequestDto.CiasCurrentPrice,
+                CiasInsurancePrice = customerInscAssetRequestDto.CiasCurrentPrice,
+                CiasPaidType = customerInscAssetRequestDto.CiasPaidType,
+                CiasIsNewChar = customerInscAssetRequestDto.CiasIsNewChar,
+                CiasCars = carSeries,
+                CiasCity = existCity,
+                CiasIntyNameNavigation = existInty,
+                CiasCreqEntity = newCustomerRequest
+            };
+
+            return customrInscAsset;
+        }
+
+        //public Decimal GetPremiPrice(string insuraceType, string carBrand, long zonesId, decimal currentPrice, int ageOfBirth, List<CustomerInscExtend> cuexs)
+        //{
+        //    List<string> carBrandRateMax = new List<string> { "BMW", "MERCEDEZ BENZ", "AUDI", "VOLKSWAGEN", "LAND ROVER", "JAGUAR", "PEUGOT", "RENAULT", "SMART", "VOLVO", "MINI", "FLAT", "OPEN", "MAZDA" };
+
+        //    TemplateInsurancePremi temiMain = this.temiRepository.FindByTemiZonesIdAndTemiIntyNameAndTemiCateId(zonesId, insuraceType, 1L) ?? throw new Exception("Template Insurance Premi is not found");
+
+        //    int yearsNow = DateTime.Now.Year;
+        //    int userAge = yearsNow - ageOfBirth;
+
+        //    double temiRate;
+
+        //    if (userAge >= 17 && userAge <= 27)
+        //    {
+        //        temiRate = temiMain.TemiRateMax;
+        //    }
+        //    else
+        //    {
+        //        if (carBrandRateMax.Contains(carBrand))
+        //        {
+        //            temiRate = temiMain.TemiRateMax;
+        //        }
+        //        else
+        //        {
+        //            temiRate = temiMain.TemiRateMin;
+        //        }
+        //    }
+
+        //    double rate = temiRate / 100;
+        //    decimal rateBig = (decimal)rate;
+        //    decimal premiMain = currentPrice * rateBig;
+
+        //    decimal premiExtend = 0;
+        //    decimal materai = 10000;
+
+        //    if (cuexs != null && cuexs.Any())
+        //    {
+        //        foreach (CustomerInscExtend cuex in cuexs)
+        //        {
+        //            premiExtend = premiExtend + (cuex.CuexNominal);
+        //        }
+        //    }
+
+        //    decimal totalPremi = premiMain + premiExtend;
+        //    decimal result = totalPremi + materai;
+
+        //    return result;
+        //}
+
+        public void ValidatePoliceNumber(string policeNumber)
+        {
+            var existingCustomerInscAssets = _repositoryCustomerManager.CustomerInscAssetRepository.FindByCiasPoliceNumber(policeNumber, false);
+            if (existingCustomerInscAssets != null)
+            {
+                throw new Exception($"Customer Request with police number {policeNumber} is already exist");
+            }
+        }
+
+
     }
 }
