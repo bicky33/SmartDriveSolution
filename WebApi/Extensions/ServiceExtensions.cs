@@ -1,6 +1,7 @@
 ﻿using Domain.Repositories.Master;
 using Domain.Repositories.Payment;
 using Domain.Authentication;
+using Domain.Repositories.CR;
 using Domain.Repositories.UserModule;
 using Domain.Repositories.SO;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,6 +10,10 @@ using Persistence.Base;
 using Persistence.SO;
 using Microsoft.IdentityModel.Tokens;
 using Persistence.Repositories;
+using Persistence.Repositories.CR;
+using Service.Abstraction.CR;
+using Service.CR;
+using Persistence.Repositories.UserModule;
 using Persistence.Repositories.Master;
 using Persistence.Repositories.SO;
 using Service.Abstraction.Master;
@@ -53,6 +58,7 @@ namespace WebApi.Extensions
             services.AddScoped<IRepositoryPaymentManager, RepositoryPaymentManager>();
             services.AddScoped<IRepositoryManagerUser, RepositoryManagerUser>();
             services.AddScoped<IRepositorySOManager, RepositorySOManager>();
+            services.AddScoped<IRepositoryCustomerManager, RepositoryCustomerManager>();
         }
         public static void ConfigureService(this IServiceCollection services)
         {
@@ -61,6 +67,7 @@ namespace WebApi.Extensions
             services.AddScoped<IServiceSOManager, ServiceSOManager>();
             services.AddScoped<IServiceRequestSOManager, ServiceRequestSOManager>();
             services.AddScoped<IServicePaymentManager, ServicePaymentManager>();
+            services.AddScoped<IServiceCustomerManager, ServiceCustomerManager>();
         }
 
         public static void ConfigureJwtGenerator(this IServiceCollection services, IConfiguration configuration) {

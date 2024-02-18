@@ -25,15 +25,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\CR\" />
     <Folder Include="Controllers\HR\" />
     <Folder Include="Controllers\Master\" />
     <Folder Include="Controllers\Partner\" />
     <Folder Include="Controllers\Payment\" />
     <Folder Include="Controllers\SO\" />
     <Folder Include="Controllers\User\" />
-    <Folder Include="Resources\Image\" />
-    <Folder Include="Resources\Images\" />
+    <Folder Include="Controllers\SO\" />
     <Folder Include="Resources\Images\" />
     <Folder Include="Resources\Images\Users\" />
   </ItemGroup>
