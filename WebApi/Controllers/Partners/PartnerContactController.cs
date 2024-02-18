@@ -51,9 +51,11 @@ namespace WebApi.Controllers.Partners
         }
 
         // PUT api/<PartnerContactController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{pacoPatrnEntityid:int}/{pacoUserEntityid:int}")]
+        public async Task<ActionResult> Put(int pacoPatrnEntityid, int pacoUserEntityid, [FromBody] PartnerDTO request)
         {
+            await _servicePartnerManager.ServicePartner.UpdateAsync(pacoPatrnEntityid, pacoUserEntityid, request);
+            return NoContent();
         }
 
         // DELETE api/<PartnerContactController>/5

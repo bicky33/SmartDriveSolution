@@ -2,6 +2,8 @@
 using Contract.DTO.UserModule;
 using Domain.Entities.Partners;
 using Domain.Entities.Users;
+using Domain.Enum;
+using Domain.Enum.User;
 using Domain.Repositories.Partners;
 using Domain.RequestFeatured;
 using Mapster;
@@ -31,13 +33,23 @@ namespace Service.Partners
             using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
             try
             {
+                string statusRoles = entity.IsGranted ? PartnerStatus.ACTIVE.ToString() : PartnerStatus.INACTIVE.ToString();
+                BusinessEntity businessEntity = _repositoryPartnerMannager.RepositoryBusinessEntity.CreateEntity();
+                await _repositoryPartnerMannager.UnitOfWorks.SaveChangesAsync();
                 UserDto userDTO = new()
                 {
+                    UserEntityid = businessEntity.Entityid,
                     UserName = entity.FullName,
                     UserFullName = entity.FullName,
                     UserNpwp = entity.PhoneNumber,
+                    UserEmail = entity.PhoneNumber,
                     UserNationalId = entity.PhoneNumber,
-                    UserPassword = entity.IsGranted ? entity.PhoneNumber : null,
+                    UserPassword = entity.PhoneNumber,
+                    UserModifiedDate = DateTime.Now,
+                    UserBirthDate = DateTime.Now,
+                    Roles = new List<UserRoleDto>() {
+                        new() { UsroEntityid = businessEntity.Entityid, UsroRoleName = EnumRoleType.PC.ToString(), UsroStatus = statusRoles }
+                    }
                 };
                 UserDto userResult = await _serviceUser.Value.CreateAsync(userDTO);
                 PartnerContact partnerContact = new()
@@ -59,9 +71,18 @@ namespace Service.Partners
 
         public async Task DeleteAsync(int pacoPatrnEntityid, int pacoUserEntityid)
         {
-            PartnerContact partnerContact = await _repositoryPartnerMannager.RepositoryPartnerContact.GetEntityById(pacoPatrnEntityid, pacoUserEntityid, true);
-            _repositoryPartnerMannager.RepositoryPartnerContact.DeleteEntity(partnerContact);
-            await _repositoryPartnerMannager.UnitOfWorks.SaveChangesAsync();
+            using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+            try
+            {
+                PartnerContact partnerContact = await _repositoryPartnerMannager.RepositoryPartnerContact.GetEntityById(pacoPatrnEntityid, pacoUserEntityid, true);
+                User user = await _repositoryPartnerMannager.RepositoryUser.GetEntityById(pacoUserEntityid, true);
+                _repositoryPartnerMannager.RepositoryPartnerContact.DeleteEntity(partnerContact);
+                await _repositoryPartnerMannager.UnitOfWorks.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<IEnumerable<PartnerContactDTO>> GetAllAsync(bool trackChanges)
@@ -84,9 +105,22 @@ namespace Service.Partners
             return partnerContactDTO;
         }
 
-        public Task UpdateAsync(int id, PartnerContactDTO entity)
+        public async Task UpdateAsync(int pacoPatrnEntityid, int pacoUserEntityid, PartnerContactDTO entity)
         {
-            throw new NotImplementedException();
+            PartnerContact partnerContact = await _repositoryPartnerMannager.RepositoryPartnerContact.GetEntityById(pacoPatrnEntityid, pacoUserEntityid, true);
+            User user = await _repositoryPartnerMannager.RepositoryUser.GetEntityById(pacoUserEntityid, true);
+            Dictionary<bool, string> status = new()
+            {
+                { true, PartnerStatus.ACTIVE.ToString() },
+                { false, PartnerStatus.INACTIVE.ToString() }
+            };
+            if (status[entity.IsGranted] != partnerContact.PacoStatus)
+            {
+                partnerContact.PacoStatus = status[entity.IsGranted];
+                //user.UserRoles.
+            }
+
+
         }
     }
 }
