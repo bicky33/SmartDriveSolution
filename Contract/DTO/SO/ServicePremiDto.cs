@@ -22,7 +22,5 @@ namespace Contract.DTO.SO
         public string? SemiStatus { get; init; }
 
         public DateTime? SemiModifiedDate { get; init; }
-
-        public ServiceDto SemiServ { get; set; } = null!;
     }
 }
