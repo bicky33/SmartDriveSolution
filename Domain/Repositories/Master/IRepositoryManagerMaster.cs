@@ -18,7 +18,7 @@ namespace Domain.Repositories.Master
         IRepositoryEntityBase<TemplateType> TemplateTypeRepository { get; }
         IRepositoryTemplateServiceTask TemplateServiceTaskRepository { get; }
         IRepositoryEntityBase<TemplateTaskWorkorder> TemplateTaskWorkorderRepository { get; }
-        IRepositoryEntityBase<TemplateInsurancePremi> TemplateInsurancePremiRepository { get; }
+        IRepositoryTemplateInsurancePremi TemplateInsurancePremiRepository { get; }
         IUnitOfWorks UnitOfWork { get; }
     }
 }
