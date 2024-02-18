@@ -1,5 +1,6 @@
 ﻿using Domain.Entities.Users;
 using Domain.Repositories.Base;
+using Domain.Repositories.UserModule;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repositories.UserModule
 {
-    public class UserRepository : RepositoryBase<User>, IRepositoryEntityBase<User>
+    public class UserRepository : RepositoryBase<User>, IRepositoryUser
     {
         public UserRepository(SmartDriveContext dbContext) : base(dbContext)
         {
@@ -28,12 +29,38 @@ namespace Persistence.Repositories.UserModule
 
         public async Task<IEnumerable<User>> GetAllEntity(bool trackChanges)
         {
-            return await GetAll(trackChanges).OrderBy(v => v.UserEntityid).ToListAsync();
+            return await GetAll(trackChanges)
+                .Include(v => v.UserRoles)
+                .Include(v => v.UserPhones)
+                .Include(v => v.UserAddresses)
+                .OrderBy(v => v.UserEntityid).ToListAsync();
         }
 
         public async Task<User> GetEntityById(int id, bool trackChanges)
         {
-            return await GetByCondition(v => v.UserEntityid == id, trackChanges).SingleOrDefaultAsync();
+            return await GetByCondition(v => v.UserEntityid == id, trackChanges)
+                .Include(v => v.UserRoles)
+                .Include(v => v.UserPhones)
+                .Include(v => v.UserAddresses)
+                .SingleOrDefaultAsync();
+        }
+
+        public async Task<User> GetUserByUsername(string username, bool trackChanges)
+        {
+            return await GetByCondition(v => v.UserName== username, trackChanges)
+                .Include(v => v.UserRoles)
+                .Include(v => v.UserPhones)
+                .Include(v => v.UserAddresses)
+                .SingleOrDefaultAsync();
+        }
+
+        public async Task<User> GetUserByEmail(string email, bool trackChanges)
+        {
+            return await GetByCondition(v => v.UserEmail == email, trackChanges)
+                .Include(v => v.UserRoles)
+                .Include(v => v.UserPhones)
+                .Include(v => v.UserAddresses)
+                .SingleOrDefaultAsync();
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Contract.DTO.UserModule;
 using Domain.Entities.Users;
+using Domain.Enum;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.User;
 
@@ -12,48 +14,131 @@ namespace WebApi.Controllers.UserModule
     public class UserController : ControllerBase
     {
 
-        private readonly IServiceManagerUser _userService;
+        private readonly IServiceManagerUser _serviceManager;
 
-        public UserController(IServiceManagerUser userService)
+        public UserController(IServiceManagerUser serviceManager)
         {
-            _userService = userService;
+            _serviceManager = serviceManager;
         }
 
         // GET: api/<UserController>
+        //[Authorize(Roles = "EM")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> Get()
+        public async Task<ActionResult<IEnumerable<UserDto>>> Get()
         {
-            var users = await _userService.UserService.GetAllAsync(false);
+            var users = await _serviceManager.UserService.GetAllAsync(false);
 
             return Ok(users);
         }
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            var user = await _serviceManager.UserService.GetByIdAsync(id, false);
+
+            return Ok(user);
         }
 
         // POST api/<UserController>
         [HttpPost]
-        public async Task<IActionResult> Post()
+        public async Task<IActionResult> Post([FromBody] UserDto body)
         {
-            var bus = await _userService.BusinessEntityService.CreateBusinessEntity();
+            if(body == null)
+            {
+                return BadRequest();
+            }
 
-            return Ok(bus);
+            var create = await _serviceManager.UserService.CreateAsync(body);
+
+            return Ok(create);
+        }
+
+        // POST api/<UserController>/CreateUserWithRole
+        [HttpPost("CreateUserWithRole")]
+        public async Task<IActionResult> CreateUserWithRole([FromBody] UserDto body)
+        {
+            if (body == null)
+            {
+                return BadRequest();
+            }
+
+            var create = await _serviceManager.UserService.CreateUserWithRole(body, EnumRoleType.EM, EnumRoleActiveStatus.ACTIVE);
+
+            return Ok(create);
         }
 
         // PUT api/<UserController>/5
+        [Authorize]
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(int id, [FromBody] UserDto body)
         {
+            var me = _serviceManager.LoginService.GetCurrentUser(HttpContext.User);
+            if(me.Sub != id.ToString())
+            {
+                return Forbid();
+            }
+
+            await _serviceManager.UserService.UpdateAsync(id, body);
+
+            return Ok(body);
         }
 
         // DELETE api/<UserController>/5
+        [Authorize(Roles = "EM")]
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            await _serviceManager.UserService.DeleteAsync(id);
+
+            return NoContent();
+        }
+
+        // PUT api/<UserController>/5
+        [Authorize]
+        [HttpPatch("UpdateProfile/{id}")]
+        public async Task<IActionResult> UpdateProfile(int id, [FromForm] UserEditProfileRequestDto body)
+        {
+            var me = _serviceManager.LoginService.GetCurrentUser(HttpContext.User);
+            if (me.Sub != id.ToString()) return Forbid();
+
+            await _serviceManager.UserService.UpdatePhoto(id, body);
+
+            return Ok(body);
+        }
+
+        [Authorize]
+        [HttpPut("UpdatePassword/{id}")]
+        public async Task<IActionResult> UpdatePassword(int id, [FromBody] UserUpdatePasswordRequestDto body)
+        {
+            if(body == null)
+            {
+                return BadRequest();
+            }
+
+            var me = _serviceManager.LoginService.GetCurrentUser(HttpContext.User);
+            if (me.Sub != id.ToString()) return Forbid();
+
+            await _serviceManager.UserService.UpdatePassword(id, body);
+
+            return Ok(body);
+        }
+
+        [Authorize]
+        [HttpPut("UpdateEmail/{id}")]
+        public async Task<IActionResult> UpdateEmail(int id, [FromBody] UserUpdateEmailRequestDto body)
+        {
+            if (body == null)
+            {
+                return BadRequest();
+            }
+
+            var me = _serviceManager.LoginService.GetCurrentUser(HttpContext.User);
+            if (me.Sub != id.ToString()) return Forbid();
+
+            await _serviceManager.UserService.UpdateEmail(id, body.UserEmail);
+
+            return Ok(body);
         }
     }
 }

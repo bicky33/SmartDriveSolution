@@ -17,6 +17,7 @@ builder.Services.ConfigureCors();
 builder.Services.ConfigureDbContext(builder.Configuration);
 builder.Services.ConfigureRepository();
 builder.Services.ConfigureService();
+builder.Services.ConfigureJwtGenerator(builder.Configuration);
 
 var app = builder.Build();
 

@@ -1,10 +1,13 @@
 ﻿using Domain.Repositories.Master;
 using Domain.Repositories.Payment;
+using Domain.Authentication;
 using Domain.Repositories.UserModule;
 using Domain.Repositories.SO;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
 using Persistence.SO;
+using Microsoft.IdentityModel.Tokens;
 using Persistence.Repositories;
 using Persistence.Repositories.Master;
 using Persistence.Repositories.SO;
@@ -14,9 +17,10 @@ using Service.Abstraction.Payment;
 using Service.Base;
 using Persistence.Repositories.UserModule;
 using Service.Abstraction.User;
-using Service.Base.UserModule;
 using Service.Master;
 using Service.SO;
+using Service.UserModule;
+using System.Text;
 
 namespace WebApi.Extensions
 {
@@ -59,5 +63,22 @@ namespace WebApi.Extensions
             services.AddScoped<IServicePaymentManager, ServicePaymentManager>();
         }
 
+        public static void ConfigureJwtGenerator(this IServiceCollection services, IConfiguration configuration) {
+            services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
+            services.AddScoped<JwtTokenGenerator>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.MapInboundClaims = false;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("JwtSettings:Secret").Value)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero,
+                };
+            });
+        }
     }
 }
