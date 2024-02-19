@@ -25,6 +25,7 @@ using Service.SO;
 using Service.UserModule;
 using System.Text;
 using Persistence.Repositories.SO;
+using Persistence.Repositories.CR;
 
 namespace WebApi.Extensions
 {
