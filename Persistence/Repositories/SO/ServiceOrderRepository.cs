@@ -1,5 +1,4 @@
-﻿using Contract.DTO.SO;
-using Domain.Entities.SO;
+﻿using Domain.Entities.SO;
 using Domain.Repositories.SO;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;

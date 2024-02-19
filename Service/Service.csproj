@@ -9,10 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Partner\**" />
+    <EmbeddedResource Remove="Partner\**" />
+    <None Remove="Partner\**" />
+  </ItemGroup>
+	
+
+
+	<ItemGroup>
     <Folder Include="Base\" />
     <Folder Include="HR\" />
-	<Folder Include="Master\" />
-    <Folder Include="Partner\" />
+    <Folder Include="Master\" />
     <Folder Include="Payment\" />
     <Folder Include="SO\" />
   </ItemGroup>
@@ -28,7 +35,6 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Mapster" Version="7.4.0" />
   </ItemGroup>

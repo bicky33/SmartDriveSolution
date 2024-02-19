@@ -1,31 +1,31 @@
-﻿using Domain.Repositories.Master;
+﻿using Domain.Repositories.Partners;
+using Domain.Repositories.Master;
 using Domain.Repositories.Payment;
 using Domain.Authentication;
 using Domain.Repositories.CR;
 using Domain.Repositories.UserModule;
+using Mapster;
 using Domain.Repositories.SO;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
-using Persistence.SO;
 using Microsoft.IdentityModel.Tokens;
 using Persistence.Repositories;
-using Persistence.Repositories.CR;
-using Service.Abstraction.CR;
-using Service.CR;
+using Persistence.Repositories.Partners;
 using Persistence.Repositories.UserModule;
+using Service.Abstraction.Partners;
 using Persistence.Repositories.Master;
-using Persistence.Repositories.SO;
 using Service.Abstraction.Master;
 using Service.Abstraction.SO;
-using Service.Abstraction.Payment;
-using Service.Base;
-using Persistence.Repositories.UserModule;
 using Service.Abstraction.User;
+using Service.Partners;
+using System.Reflection;
 using Service.Master;
 using Service.SO;
 using Service.UserModule;
 using System.Text;
+using Persistence.Repositories.SO;
+using Persistence.Repositories.CR;
 
 namespace WebApi.Extensions
 {
@@ -59,6 +59,7 @@ namespace WebApi.Extensions
             services.AddScoped<IRepositoryManagerUser, RepositoryManagerUser>();
             services.AddScoped<IRepositorySOManager, RepositorySOManager>();
             services.AddScoped<IRepositoryCustomerManager, RepositoryCustomerManager>();
+            services.AddScoped<IRepositoryPartnerManager, RepositoryPartnerManager>();
         }
         public static void ConfigureService(this IServiceCollection services)
         {
@@ -66,8 +67,13 @@ namespace WebApi.Extensions
             services.AddScoped<IServiceManagerUser, ServiceManagerUser>();
             services.AddScoped<IServiceSOManager, ServiceSOManager>();
             services.AddScoped<IServiceRequestSOManager, ServiceRequestSOManager>();
-            services.AddScoped<IServicePaymentManager, ServicePaymentManager>();
-            services.AddScoped<IServiceCustomerManager, ServiceCustomerManager>();
+            services.AddScoped<IServicePartnerManager, ServicePartnerManager>();
+        }
+        public static void ConfigureMapster(this IServiceCollection services)
+        {
+            var config = TypeAdapterConfig.GlobalSettings;
+            config.Scan(Assembly.GetExecutingAssembly());
+            services.AddSingleton(config);
         }
 
         public static void ConfigureJwtGenerator(this IServiceCollection services, IConfiguration configuration) {
