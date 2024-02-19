@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 namespace Contract.DTO.HR.CompositeDto
 {
     public class UserPhoneCompositeDto
-    { 
-
+    {
+        public int UsphEntityid { get; set; }
         public string UsphPhoneNumber { get; set; } = null!;
 
 

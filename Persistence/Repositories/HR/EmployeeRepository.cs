@@ -13,14 +13,15 @@ namespace Persistence.Repositories.HR
         {
         }
 
-      /*  public void CreateEmployee(BusinessEntity be, User user, IEnumerable<UserAddress> userAddress, IEnumerable<UserPhone> userPhone, IEnumerable<UserRole> userRole, Employee e)
+        public void CreateEmployee(BusinessEntity be, User user, UserAddress userAddress, UserPhone userPhone, UserRole userRole, Employee e)
         {
-*//*            _dbContext.BusinessEntities.Add(be);
+            _dbContext.BusinessEntities.Add(be);
+            _dbContext.Users.Add(user);
             _dbContext.UserPhones.Add(userPhone);
             _dbContext.UserRoles.Add(userRole);
             _dbContext.UserAddresses.Add(userAddress);
-            _dbContext.Employees.Add(e);*//*
-        }*/
+            _dbContext.Employees.Add(e);
+        }
 
         public void CreateEntity(Employee entity)
         {

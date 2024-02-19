@@ -6,7 +6,7 @@ namespace Contract.DTO.HR
 {
     public class EmployeeDto
     {
-
+        public int Entityid { get; set; }
         public string? EmpName { get; set; }
 
 

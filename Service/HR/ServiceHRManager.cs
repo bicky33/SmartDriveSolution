@@ -11,7 +11,7 @@ namespace Service.HR
         private readonly Lazy<IBatchEmployeeSalaryService> _batchEmployeeSalaryService;
         private readonly Lazy<IEmployeeSalaryDetailService> _employeeSalaryDetailService;
         private readonly Lazy<ITemplateSalaryService> _templateSalaryService;
-
+        //isi private irepoUserManager 
         public ServiceHRManager(IRepositoryHRManager repositoryManager)
         {
             _jobTypeService = new Lazy<IJobTypeService>(() => new JobTypeService(repositoryManager));

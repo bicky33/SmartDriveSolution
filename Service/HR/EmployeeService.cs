@@ -42,15 +42,16 @@ namespace Service.HR
             var employee = entity.UserComposite.EmployeeDto.Adapt<Employee>();
 
 
-          /*  var user = userDto.Adapt<User>();
+/*            var user = userDto.Adapt<User>();
             var userAddress = userAddressDto.Adapt<UserAddress>();
             var userPhone = userPhoneDto.Adapt<UserPhone>();
             var userRole = userRoleDto.Adapt<UserRole>();
-            var employee = employeeDto.Adapt<Employee>();
-*/
+            var employee = employeeDto.Adapt<Employee>();*/
+
             user.UserEntityid = be.Entityid;
-           
-            foreach (var address in userAddress) 
+
+
+            foreach (var address in userAddress)
             {
                 address.UsdrEntityid = be.Entityid;
             }
@@ -65,41 +66,19 @@ namespace Service.HR
             foreach (var role in userRole)
             {
                 role.UsroEntityid = be.Entityid;
-            } 
+            }
             employee.EmpEntityid = be.Entityid;
 
 
             user.UserFullName = employee.EmpName;
-            //user.UserPassword = userPhone.UsphPhoneNumber;
+
             user.UserEmail = user.UserEmail;
-           /* var dataUserPhone = entity.Adapt<UserPhone>();
-            var dataUser = entity.Adapt<User>();
-            var dataUserAddress = entity.Adapt<UserAddress>();
-            var dataUserRole = entity.Adapt<UserRole>();*/
 
+            var dataAddress = userAddress.FirstOrDefault();
+            var dataPhone = userPhone.FirstOrDefault();
+            var dataRole = userRole.FirstOrDefault();
 
-            /*emp.User.UserEntityid = entity.Entityid;
-            emp.User.UserRoles = new List<UserRole>
-            {
-                new UserRole {UsroEntityid=entity.Entityid},
-            };
-            emp.User.UserPhones = new List<UserPhone>
-            {
-                new UserPhone {UsphEntityid=entity.Entityid},
-            };
-            emp.User.UserAddresses = new List<UserAddress>
-            {
-                new UserAddress {UsdrEntityid = entity.Entityid},
-            };
-
-            emp.User.UserName = entity.UserComposite.UserEmail;
-            
-            var data = entity.Adapt<UserPhone>();
-
-            emp.User.UserPassword = data.UsphPhoneNumber;*/
-
-
-            //_repositoryManager.EmployeeRepository.CreateEmployee(be,user,userAddress,userPhone,userRole,employee);
+            _repositoryManager.EmployeeRepository.CreateEmployee(be,user,dataAddress,dataPhone,dataRole,employee);
             await _repositoryManager.UnitOfWorks.SaveChangesAsync();
 
             return entity;

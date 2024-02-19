@@ -17,8 +17,8 @@ namespace Contract.DTO.HR.CompositeDto
 {
     public class UserCompositeDto
     {
-     
 
+        public int UserEntityid { get; set; }
 
         public string UserEmail { get; set; } = null!;
 

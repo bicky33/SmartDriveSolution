@@ -13,7 +13,7 @@ namespace Contract.DTO.HR.CompositeDto
 {
     public class UserAddressCompositeDto
     {
-
+        public int UsdrEntityid { get; set; }
         public string? UsdrAddress1 { get; set; }
 
         public string? UsdrAddress2 { get; set; }

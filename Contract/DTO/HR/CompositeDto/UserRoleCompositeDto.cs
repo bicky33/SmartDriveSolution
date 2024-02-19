@@ -12,7 +12,7 @@ namespace Contract.DTO.HR.CompositeDto
 {
     public class UserRoleCompositeDto
     {
-
+        public int UsroEntityid { get; set; }
         public string UsroRoleName { get; set; } = null!;
 
         public string? UsroStatus { get; set; }
