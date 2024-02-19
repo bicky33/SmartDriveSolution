@@ -20,7 +20,7 @@ namespace Persistence.Repositories.Master
         private readonly Lazy<IRepositoryEntityBase<TemplateType>> _templateType;
         private readonly Lazy<IRepositoryTemplateServiceTask> _templateServiceTask;
         private readonly Lazy<IRepositoryEntityBase<TemplateTaskWorkorder>> _templateTaskWorkorder;
-        private readonly Lazy<IRepositoryEntityBase<TemplateInsurancePremi>> _templateInsurancePremi;
+        private readonly Lazy<IRepositoryTemplateInsurancePremi> _templateInsurancePremi;
 
         public RepositoryManagerMaster(SmartDriveContext _context)
         {
@@ -38,7 +38,7 @@ namespace Persistence.Repositories.Master
             _templateType = new Lazy<IRepositoryEntityBase<TemplateType>>(() => new TemplateTypeRepository(_context));
             _templateServiceTask = new Lazy<IRepositoryTemplateServiceTask>(() => new TemplateServiceTaskRepository(_context));
             _templateTaskWorkorder = new Lazy<IRepositoryEntityBase<TemplateTaskWorkorder>>(() => new TemplateTaskWorkorderRepository(_context));
-            _templateInsurancePremi = new Lazy<IRepositoryEntityBase<TemplateInsurancePremi>>(() => new TemplateInsurancePremiRespository(_context));
+            _templateInsurancePremi = new Lazy<IRepositoryTemplateInsurancePremi>(() => new TemplateInsurancePremiRespository(_context));
         }
 
         public IUnitOfWorks UnitOfWork => _unitOfWorks.Value;
@@ -67,6 +67,6 @@ namespace Persistence.Repositories.Master
 
         public IRepositoryEntityBase<TemplateTaskWorkorder> TemplateTaskWorkorderRepository => _templateTaskWorkorder.Value;
 
-        public IRepositoryEntityBase<TemplateInsurancePremi> TemplateInsurancePremiRepository => _templateInsurancePremi.Value;
+        public IRepositoryTemplateInsurancePremi TemplateInsurancePremiRepository => _templateInsurancePremi.Value;
     }
 }

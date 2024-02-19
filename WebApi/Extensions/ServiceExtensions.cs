@@ -2,6 +2,7 @@
 using Domain.Repositories.Master;
 using Domain.Repositories.Payment;
 using Domain.Authentication;
+using Domain.Repositories.CR;
 using Domain.Repositories.UserModule;
 using Mapster;
 using Domain.Repositories.SO;
@@ -56,6 +57,7 @@ namespace WebApi.Extensions
             services.AddScoped<IRepositoryPaymentManager, RepositoryPaymentManager>();
             services.AddScoped<IRepositoryManagerUser, RepositoryManagerUser>();
             services.AddScoped<IRepositorySOManager, RepositorySOManager>();
+            services.AddScoped<IRepositoryCustomerManager, RepositoryCustomerManager>();
             services.AddScoped<IRepositoryPartnerManager, RepositoryPartnerManager>();
         }
         public static void ConfigureService(this IServiceCollection services)
