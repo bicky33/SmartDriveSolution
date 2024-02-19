@@ -4,14 +4,6 @@ using Domain.Repositories.HR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Persistence.Base;
-using Service.Abstraction.Base;
-using Services.HR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence.Repositories.HR
 {

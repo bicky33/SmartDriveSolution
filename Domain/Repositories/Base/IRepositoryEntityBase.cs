@@ -7,7 +7,6 @@
         Task<T> GetEntityById(int id, bool trackChanges);
 
         void CreateEntity(T entity);
-
         void DeleteEntity(T entity);
     }
 }

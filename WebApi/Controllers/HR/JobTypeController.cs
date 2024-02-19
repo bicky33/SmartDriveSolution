@@ -2,7 +2,7 @@
 using Domain.Entities.HR;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
-using Service.Abstraction.Base;
+using Service.Abstraction.HR;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,9 +12,9 @@ namespace WebApi.Controllers.HR
     [ApiController]
     public class JobTypeController : ControllerBase
     {
-        private readonly IServiceManager _serviceManager;
+        private readonly IServiceHRManager _serviceManager;
 
-        public JobTypeController(IServiceManager serviceManager)
+        public JobTypeController(IServiceHRManager serviceManager)
         {
             _serviceManager = serviceManager;
         }

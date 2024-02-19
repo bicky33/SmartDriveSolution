@@ -1,10 +1,11 @@
 ﻿using Contract.DTO.HR;
+using Contract.DTO.HR.CompositeDto;
 using Domain.Entities.HR;
 using Domain.Entities.Master;
-using Domain.Repositories.HR.RequestFeature;
+using Domain.RequestFeatured;
+using Mapster;
 using Microsoft.AspNetCore.Mvc;
-using Service.Abstraction.Base;
-using Services.Base;
+using Service.Abstraction.HR;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,9 +15,9 @@ namespace WebApi.Controllers.HR
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        private readonly IServiceManager _serviceManager;
+        private readonly IServiceHRManager _serviceManager;
 
-        public EmployeeController(IServiceManager services)
+        public EmployeeController(IServiceHRManager services)
         {
             _serviceManager = services;
         }
@@ -48,8 +49,13 @@ namespace WebApi.Controllers.HR
 
         // POST api/<EmployeeController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public  async Task<IActionResult> CreateEmployee([FromBody] BusinessEntityCompositeDto employeeDto)
         {
+           // employeeDto.UserComposite.UserEntityid = employeeDto.Entityid;
+            var data = await _serviceManager.EmployeeService.CreateEmployee(employeeDto);
+
+
+          return Ok(data);
         }
 
         // PUT api/<EmployeeController>/5

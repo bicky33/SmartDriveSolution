@@ -13,15 +13,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.HR
+namespace Service.HR
 {
 
     public class JobTypeService : IJobTypeService
     {
 
-        private readonly IRepositoryManager _repositoryManager;
+        private readonly IRepositoryHRManager _repositoryManager;
 
-        public JobTypeService(IRepositoryManager repositoryManager)
+        public JobTypeService(IRepositoryHRManager repositoryManager)
         {
             _repositoryManager = repositoryManager;
         }
@@ -40,7 +40,7 @@ namespace Services.HR
             var category = await _repositoryManager.JobTypeRepository.GetEntityById(id, false);
             if (category == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(JobType));
             }
             _repositoryManager.JobTypeRepository.DeleteEntity(category);
             await _repositoryManager.UnitOfWorks.SaveChangesAsync();
@@ -50,7 +50,7 @@ namespace Services.HR
         public async Task DeleteDataAsync(string id)
         {
             var category = await _repositoryManager.JobTypeRepository.GetJobTypeById(id, false);
-            
+
 
             _repositoryManager.JobTypeRepository.DeleteEntity(category);
             await _repositoryManager.UnitOfWorks.SaveChangesAsync();
@@ -68,7 +68,7 @@ namespace Services.HR
             var category = await _repositoryManager.JobTypeRepository.GetEntityById(id, false);
             if (category == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(JobType));
             }
 
             var data = category.Adapt<JobTypeDto>();
@@ -79,10 +79,10 @@ namespace Services.HR
         public async Task<JobTypeDto> GetJobTypeById(string id, bool trackChanges)
         {
             var category = await _repositoryManager.JobTypeRepository.GetJobTypeById(id, false);
-           /* if (category == null)
-            {
-                return BadRequest();
-            }*/
+            /* if (category == null)
+             {
+                 return BadRequest();
+             }*/
 
             var data = category.Adapt<JobTypeDto>();
 
@@ -94,7 +94,7 @@ namespace Services.HR
             var category = await _repositoryManager.JobTypeRepository.GetEntityById(id, true);
             if (category == null)
             {
-                throw new EntityNotFoundException(id);
+                throw new EntityNotFoundException(id, nameof(JobType));
             }
 
             category.JobCode = entity.JobCode;
@@ -105,7 +105,7 @@ namespace Services.HR
             await _repositoryManager.UnitOfWorks.SaveChangesAsync();
         }
 
-        public async  Task UpdateDataAsync(string id, JobTypeDto entity)
+        public async Task UpdateDataAsync(string id, JobTypeDto entity)
         {
             var category = await _repositoryManager.JobTypeRepository.GetJobTypeById(id, true);
 

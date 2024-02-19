@@ -1,9 +1,4 @@
-﻿using Domain.Repositories.HR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Repositories.Base;
 
 namespace Persistence.Repositories.HR
 {
@@ -18,7 +13,16 @@ namespace Persistence.Repositories.HR
 
         public async Task<int> SaveChangesAsync()
         {
-            return await _dbContext.SaveChangesAsync();
+            try
+            {
+                return await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+           // return await _dbContext.SaveChangesAsync();
         }
         
     }

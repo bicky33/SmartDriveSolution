@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Domain.Entities.SO;
 
 [Table("services", Schema = "so")]
-public partial class Servic
+public partial class Service
 {
     [Key]
     [Column("serv_id")]
@@ -52,7 +52,7 @@ public partial class Servic
     public int? ServCreqEntityid { get; set; }
 
     [InverseProperty("ServServ")]
-    public virtual ICollection<Servic> InverseServServ { get; set; } = new List<Servic>();
+    public virtual ICollection<Service> InverseServServ { get; set; } = new List<Service>();
 
     [ForeignKey("ServCreqEntityid")]
     [InverseProperty("Services")]
@@ -64,7 +64,7 @@ public partial class Servic
 
     [ForeignKey("ServServId")]
     [InverseProperty("InverseServServ")]
-    public virtual Servic? ServServ { get; set; }
+    public virtual Service? ServServ { get; set; }
 
     [InverseProperty("SeroServ")]
     public virtual ICollection<ServiceOrder> ServiceOrders { get; set; } = new List<ServiceOrder>();

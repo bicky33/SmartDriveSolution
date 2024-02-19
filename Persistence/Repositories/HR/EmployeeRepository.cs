@@ -1,14 +1,9 @@
 ﻿using Domain.Entities.HR;
-using Domain.Entities.Master;
+using Domain.Entities.Users;
 using Domain.Repositories.HR;
-using Domain.Repositories.HR.RequestFeature;
+using Domain.RequestFeatured;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence.Repositories.HR
 {
@@ -17,6 +12,15 @@ namespace Persistence.Repositories.HR
         public EmployeeRepository(SmartDriveContext dbContext) : base(dbContext)
         {
         }
+
+      /*  public void CreateEmployee(BusinessEntity be, User user, IEnumerable<UserAddress> userAddress, IEnumerable<UserPhone> userPhone, IEnumerable<UserRole> userRole, Employee e)
+        {
+*//*            _dbContext.BusinessEntities.Add(be);
+            _dbContext.UserPhones.Add(userPhone);
+            _dbContext.UserRoles.Add(userRole);
+            _dbContext.UserAddresses.Add(userAddress);
+            _dbContext.Employees.Add(e);*//*
+        }*/
 
         public void CreateEntity(Employee entity)
         {

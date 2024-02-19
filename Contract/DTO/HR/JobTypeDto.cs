@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Domain.Entities.HR;
 
 namespace Contract.DTO.HR
@@ -31,7 +26,7 @@ namespace Contract.DTO.HR
         [Column("job_rate_max", TypeName = "decimal(18, 0)")]
         public decimal? JobRateMax { get; set; }
 
-        [InverseProperty("EmpJobCodeNavigation")]
-        public virtual ICollection<Employee> Employees { get; set; } = new List<Employee>();
+        //[InverseProperty("EmpJobCodeNavigation")]
+        //public virtual ICollection<EmployeeUserDto> EmployeeUserDto { get; set; } = new List<EmployeeUserDto>();
     }
 }

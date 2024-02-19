@@ -1,17 +1,14 @@
 ﻿using Domain.Entities.HR;
-using Domain.Entities.Master;
+using Domain.Entities.Users;
 using Domain.Repositories.Base;
-using Domain.Repositories.HR.RequestFeature;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain.RequestFeatured;
 
 namespace Domain.Repositories.HR
 {
     public interface IEmployeeRepository : IRepositoryEntityBase<Employee>
     {
-        Task<PagedList<Employee>> GetAllPaging(EntityParameter entityParams, bool trackChanges);
+        Task<PagedList<Employee>> GetAllPaging(EntityParameter entityParams, bool trackChanges); 
+       /* void CreateEmployee(BusinessEntity be, User user, UserAddress userAddress, UserPhone userPhone, UserRole userRole, Employee employee); */
+
     }
 }
