@@ -12,12 +12,16 @@ namespace Domain.Repositories.Partners
 {
     public interface IRepositoryPartnerManager
     {
+        public IRepositoryUser RepositoryUser { get; }
+        public IRepositoryUserPhone RepositoryUserPhone { get; }
+        public IRepositoryUserRole RepositoryUserRole { get; }
+
+
         public IRepositoryPartner RepositoryPartner { get; }
         public IRepositoryPartnerAreaWorkgroup RepositoryPartnerAreaWorkgroup { get; }
         public IRepositoryPartnerContact RepositoryPartnerContact { get; }
         public IRepositoryEntityBase<BatchPartnerInvoice> RepositoryPartnerBatchInvoice { get; }
         public IRepositoryBusinessEntity<BusinessEntity> RepositoryBusinessEntity { get; }
-        public IRepositoryEntityBase<User> RepositoryUser { get; }
 
         public IUnitOfWorks UnitOfWorks { get; }
     }

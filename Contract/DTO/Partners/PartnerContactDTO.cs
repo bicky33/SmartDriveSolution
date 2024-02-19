@@ -17,11 +17,8 @@ namespace Contract.DTO.Partners
         int PacoPatrnEntityid,
         int PacoUserEntityid,
         PartnerStatus PacoStatus,
-        [Required(ErrorMessage = $"{nameof(FullName)} is required")]
-        string FullName,
-        [Required(ErrorMessage = $"{nameof(PhoneNumber)} is required")]
-        string PhoneNumber,
-        [Required(ErrorMessage = $"{nameof(IsGranted)} is required")]
+        string? FullName,
+        string? PhoneNumber,
         bool IsGranted
     );
 }

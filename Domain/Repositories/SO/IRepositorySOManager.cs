@@ -11,6 +11,8 @@ namespace Domain.Repositories.SO
         IRepositorySOEntityBase<ServiceOrderWorkorder,int> ServiceOrderWorkorderRepository { get; }
         IRepositorySOEntityBase<ClaimAssetEvidence,int> ClaimAssetEvidenceRepository { get; }
         IRepositorySOEntityBase<ClaimAssetSparepart,int> ClaimAssetSparepartRepository { get; }
+        IRepositorySOEntityBase<ServicePremi, int> ServicePremiRepository { get; }
+        IRepositorySOEntityBase<ServicePremiCredit, int> ServicePremiCreditRepository { get; }
         IUnitOfWorksSO UnitOfWork { get; }
 
     }

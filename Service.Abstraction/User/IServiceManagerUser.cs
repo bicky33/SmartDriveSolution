@@ -10,7 +10,11 @@ namespace Service.Abstraction.User
 {
     public interface IServiceManagerUser
     {
-        IServiceEntityBase<UserDto> UserService { get; }
+        IServiceUser UserService { get; }
         IServiceBusinessEntity BusinessEntityService {  get; }
+        IServiceUserRole UserRoleService {  get; }
+        IServiceUserPhone UserPhoneService {  get; }
+        IServiceUserAddress UserAddressService {  get; }
+        IServiceLogin LoginService { get; }
     }
 }

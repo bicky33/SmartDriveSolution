@@ -52,9 +52,9 @@ namespace WebApi.Controllers.Partners
 
         // PUT api/<PartnerContactController>/5
         [HttpPut("{pacoPatrnEntityid:int}/{pacoUserEntityid:int}")]
-        public async Task<ActionResult> Put(int pacoPatrnEntityid, int pacoUserEntityid, [FromBody] PartnerDTO request)
+        public async Task<ActionResult> Put(int pacoPatrnEntityid, int pacoUserEntityid, [FromBody] PartnerContactDTO request)
         {
-            await _servicePartnerManager.ServicePartner.UpdateAsync(pacoPatrnEntityid, pacoUserEntityid, request);
+            await _servicePartnerManager.ServicePartnerContact.UpdateAsync(pacoPatrnEntityid, pacoUserEntityid, request);
             return NoContent();
         }
 

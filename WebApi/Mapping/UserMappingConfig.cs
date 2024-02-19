@@ -8,8 +8,8 @@ namespace WebApi.Mapping
     {
         public void Register(TypeAdapterConfig config)
         {
-            config.NewConfig<UserDto, User>()
-                 .Map(dest => dest.UserRoles, src => src.Roles);
+            //config.NewConfig<UserDto, User>()
+            //     .Map(dest => dest.UserRoles, src => src.UserRoles);
         }
     }
 }

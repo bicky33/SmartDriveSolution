@@ -38,8 +38,8 @@ namespace WebApi.Mapping
 
             config.NewConfig<PartnerContact, PartnerContactDTO>()
                 .Map(dest => dest.PacoStatus, src => Enum.Parse<PartnerStatus>(src.PacoStatus ?? "ACTIVE"))
-                .Map(dest => dest.FullName, src => src.PacoUserEntity.UserFullName)
-                .Map(dest => dest.PhoneNumber, src => src.PacoUserEntity.UserPhones.Select(d => d.UsphPhoneNumber).FirstOrDefault());
+                .Map(dest => dest.FullName, src => src.PacoUserEntity != null ? src.PacoUserEntity.UserFullName : null )
+                .Map(dest => dest.PhoneNumber, src => src.PacoUserEntity != null && src.PacoUserEntity.UserPhones != null ? src.PacoUserEntity.UserPhones.Select(d => d.UsphPhoneNumber).FirstOrDefault() : null);
 
         }
     }

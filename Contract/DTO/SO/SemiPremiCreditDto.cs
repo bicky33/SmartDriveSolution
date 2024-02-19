@@ -29,7 +29,5 @@ namespace Contract.DTO.SO
         public string? SecrPatrTrxno { get; init; }
 
         public PaymentTransaction? SecrPatrTrxnoNavigation { get; set; }
-
-        public ServiceDto SecrServ { get; set; } = null!;
     }
 }
