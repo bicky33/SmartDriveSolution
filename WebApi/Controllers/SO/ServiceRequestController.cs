@@ -18,10 +18,31 @@ namespace WebApi.Controllers.SO
         }
 
         // GET: api/<ServiceController>
+        [HttpPost("CreateServicePolisFeasibility")]
+        public async Task<IActionResult> CreateServicePolis([FromBody] CreateServicePolisFeasibilityDto createServicePolisDto)
+        {
+            await _serviceRequestManager.ServiceRequest.CreateServicePolisFeasibility(createServicePolisDto);
+            return Ok();
+        }
+        // GET: api/<ServiceController>
         [HttpPost("CreateServicePolis")]
         public async Task<IActionResult> CreateServicePolis([FromBody] CreateServicePolisDto createServicePolisDto)
         {
             await _serviceRequestManager.ServiceRequest.CreateServicePolis(createServicePolisDto);
+            return Ok();
+        }
+        // GET: api/<ServiceController>
+        [HttpPost("CreateClaimPolis")]
+        public async Task<IActionResult> CreateClaimPolis([FromBody] CreateClaimPolisDto createClaimPolisDto)
+        {
+            await _serviceRequestManager.ServiceRequest.CreateClaimPolis(createClaimPolisDto);
+            return Ok();
+        }
+        // GET: api/<ServiceController>
+        [HttpGet("ClosePolis")]
+        public async Task<IActionResult> ClosePolis(int servId, string reason)
+        {
+            await _serviceRequestManager.ServiceRequest.ClosePolis(servId,reason);
             return Ok();
         }
         [HttpGet("debugdongplis")]

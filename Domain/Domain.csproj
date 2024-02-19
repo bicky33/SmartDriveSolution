@@ -9,19 +9,30 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Repositories\Partner\**" />
+    <EmbeddedResource Remove="Repositories\Partner\**" />
+    <None Remove="Repositories\Partner\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Exceptions\UserModule\" />
     <Folder Include="Interface\" />
     <Folder Include="Repositories\CR\" />
     <Folder Include="Repositories\Master\" />
     <Folder Include="Repositories\Partner\" />
+    <Folder Include="Repositories\HR\" />
+    <Folder Include="Repositories\Master\" />
     <Folder Include="Repositories\Payment\" />
     <Folder Include="Repositories\SO\" />
     <Folder Include="Repositories\User\" />
-    <Folder Include="Repositories\User\" />
+
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.16" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.15" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.3.1" />
   </ItemGroup>
+ 
 
 </Project>

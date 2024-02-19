@@ -2,6 +2,7 @@
 using Domain.Exceptions.SO;
 using Domain.Repositories.SO;
 using Mapster;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Service.Abstraction.SO;
 
 namespace Service.SO

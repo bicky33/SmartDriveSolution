@@ -17,9 +17,9 @@ namespace Contract.DTO.SO
 
         public string? SeroOrdtType { get; init; }
 
-        public string? SeroStatus { get; init; }
+        public string? SeroStatus { get; set; }
 
-        public string? SeroReason { get; init; }
+        public string? SeroReason { get; set; }
 
         public string? ServClaimNo { get; init; }
 

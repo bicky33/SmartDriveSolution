@@ -9,9 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Partner\**" />
+    <EmbeddedResource Remove="Partner\**" />
+    <None Remove="Partner\**" />
+  </ItemGroup>
+	
+
+
+	<ItemGroup>
     <Folder Include="Base\" />
     <Folder Include="CR\" />
-    <Folder Include="Master\" />
+    <Folder Include="HR\" />
     <Folder Include="Partner\" />
     <Folder Include="Payment\" />
     <Folder Include="SO\" />
@@ -29,7 +37,6 @@
     <ProjectReference Include="..\Persistence\Persistence.csproj" />
     <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Mapster" Version="7.4.0" />
   </ItemGroup>
