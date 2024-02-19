@@ -9,13 +9,16 @@ builder.Services.AddControllers();
 builder.Services.ConfigureCors();
 builder.Services.AddCors();
 builder.Services.ConfigureDbContext(builder.Configuration);
-builder.Services.ConfigureRepositoryManager();
-builder.Services.ConfigureServiceManager();
-//builder.Services.AddTransient<GlobalHandlingException>();
+builder.Services.AddTransient<GlobalHandlingException>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.ConfigureCors();
+builder.Services.ConfigureDbContext(builder.Configuration);
+builder.Services.ConfigureRepository();
+builder.Services.ConfigureService();
 
 var app = builder.Build();
 
@@ -26,6 +29,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<GlobalHandlingException>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

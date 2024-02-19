@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Entities.SO;
 
@@ -34,5 +32,5 @@ public partial class ServicePremi
 
     [ForeignKey("SemiServId")]
     [InverseProperty("ServicePremi")]
-    public virtual Servic SemiServ { get; set; } = null!;
+    public virtual Service SemiServ { get; set; } = null!;
 }

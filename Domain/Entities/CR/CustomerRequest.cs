@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Domain.Entities.HR;
+﻿using Domain.Entities.HR;
 using Domain.Entities.SO;
 using Domain.Entities.Users;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities.CR;
 
@@ -55,5 +53,5 @@ public partial class CustomerRequest
     public virtual CustomerInscAsset? CustomerInscAsset { get; set; }
 
     [InverseProperty("ServCreqEntity")]
-    public virtual ICollection<Servic> Services { get; set; } = new List<Servic>();
+    public virtual ICollection<Service> Services { get; set; } = new List<Service>();
 }

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Domain.Entities.Payment;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Domain.Entities.Payment;
-using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Entities.SO;
 
@@ -47,5 +45,5 @@ public partial class ServicePremiCredit
 
     [ForeignKey("SecrServId")]
     [InverseProperty("ServicePremiCredits")]
-    public virtual Servic SecrServ { get; set; } = null!;
+    public virtual Service SecrServ { get; set; } = null!;
 }
