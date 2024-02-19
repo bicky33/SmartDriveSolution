@@ -14,7 +14,7 @@ namespace Contract.DTO.SO
         [Required]
         public int SeotId { get; init; }
 
-        public string? SeotName { get; init; }
+        public string? SeotName { get; set; }
 
         public DateTime? SeotStartdate { get; init; }
 
@@ -30,10 +30,10 @@ namespace Contract.DTO.SO
 
         public string? SeotSeroId { get; init; }
 
-        public AreaWorkgroup? SeotArwgCodeNavigation { get; set; }
+        //public AreaWorkgroup? SeotArwgCodeNavigation { get; set; }
 
         public ServiceOrderDto? SeotSero { get; set; }
 
-        public ICollection<ServiceOrderWorkorderDto> ServiceOrderWorkorders { get; set; } = new List<ServiceOrderWorkorderDto>();
+        public ICollection<ServiceOrderWorkorderDto> ServiceWorkorders { get; set; } = new List<ServiceOrderWorkorderDto>();
     }
 }

@@ -7,7 +7,7 @@ using Service.Abstraction.SO;
 
 namespace Service.SO
 {
-    public class ServiceService : IServiceSOEntityBase<ServiceDto,ServiceDtoCreate,int>
+    public class ServiceService : IServiceSORelationBase<ServiceDto,ServiceDtoCreate,int>
     {
         private readonly IRepositorySOManager _repositoryManager;
 
@@ -38,6 +38,12 @@ namespace Service.SO
             var services = await _repositoryManager.ServiceRepository.GetAllEntity(trackChanges);
             var serviceDtos = services.Adapt<IEnumerable<ServiceDto>>();
             return serviceDtos;
+        }
+
+        public async Task<IEnumerable<ServiceDto>> GetAllByRelation(string name, string value,bool trackChanges)
+        {
+            var serv= await _repositoryManager.ServiceRepository.GetAllByRelation(name, value, trackChanges);
+            return serv.Adapt<IEnumerable<ServiceDto>>();
         }
 
         public async Task<ServiceDto> GetByIdAsync(int id, bool trackChanges)

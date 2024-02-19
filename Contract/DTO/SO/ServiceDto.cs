@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Domain.Entities.CR;
 using Domain.Entities.Users;
 using Domain.Entities.SO;
+using Contract.DTO.UserModule;
 
 namespace Contract.DTO.SO
 {
@@ -38,9 +39,9 @@ namespace Contract.DTO.SO
 
         public ICollection<ServiceDto> InverseServServ { get; set; } = new List<ServiceDto>();
 
-        //public CustomerRequest? ServCreqEntity { get; set; }
+        //public CustomerRequestDto? ServCreqEntity { get; set; }
 
-        //public User? ServCustEntity { get; set; }
+        public UserDto? ServCustEntity { get; set; }
 
         public ServiceDto? ServServ { get; set; }
 

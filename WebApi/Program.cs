@@ -18,6 +18,18 @@ builder.Services.ConfigureDbContext(builder.Configuration);
 builder.Services.ConfigureRepository();
 builder.Services.ConfigureService();
 
+// add cors policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "SmartDrivePolicy",
+                      policy =>
+                      {
+                          policy.AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                      });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,6 +1,8 @@
 ﻿using Contract.DTO.SO;
 using Domain.Entities.SO;
+using Domain.Exceptions.SO;
 using Domain.Repositories.SO;
+using Microsoft.AspNetCore.Routing.Tree;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
 using System;
@@ -13,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repositories.SO
 {
-    public class ServiceRepository : RepositoryBase<Service>, IRepositorySOEntityBase<Service,int>
+    public class ServiceRepository : RepositoryBase<Service>, IRepositoryRelationSOBase<Service,int>
     {
         public ServiceRepository(SmartDriveContext dbContext) : base(dbContext)
         {
@@ -27,7 +29,20 @@ namespace Persistence.Repositories.SO
         public void DeleteEntity(Service entity)
         {
             Delete(entity);
+        }
 
+        public async Task<IEnumerable<Service>> GetAllByRelation(string name, object value,bool trackChanges)
+        {
+            if (name.Equals("SeroId"))
+                return await GetByCondition(c => c.ServiceOrders.Any(so => so.SeroId.Equals(value)), trackChanges).ToListAsync();
+            if (name.Equals("feasbility"))
+                return await GetAll(trackChanges)
+                                .Include(c => c.ServCustEntity)
+                                .Include(c => c.ServCreqEntity)
+                                    .ThenInclude(c=>c.CreqAgenEntity)
+                                        .ThenInclude(c=>c.EawgEntity)
+                                        .ToListAsync();
+            throw new RelationNotFoundExceptionSO(name, "Service");
         }
 
         public async Task<IEnumerable<Service>> GetAllEntity(bool trackChanges)

@@ -1,4 +1,5 @@
 ﻿using Contract.DTO.SO;
+using Domain.Entities.SO;
 using Domain.Exceptions;
 using Domain.Repositories.SO;
 using Mapster;
@@ -6,7 +7,7 @@ using Service.Abstraction.SO;
 
 namespace Service.SO
 {
-    public class ServiceOrderTaskService : IServiceSOEntityBase<ServiceOrderTaskDto, ServiceOrderTaskDtoCreate, int>
+    public class ServiceOrderTaskService : IServiceSORelationBase<ServiceOrderTaskDto, ServiceOrderTaskDtoCreate, int>
     {
         private readonly IRepositorySOManager _repositoryManager;
 
@@ -37,6 +38,17 @@ namespace Service.SO
             var services = await _repositoryManager.ServiceOrderTaskRepository.GetAllEntity(trackChanges);
             var serviceDtos = services.Adapt<IEnumerable<ServiceOrderTaskDto>>();
             return serviceDtos;
+        }
+
+        public async Task<IEnumerable<ServiceOrderTaskDto>> GetAllByRelation(string name, string value, bool trackChanges)
+        {
+            var allSeot= await _repositoryManager.ServiceOrderTaskRepository.GetAllByRelation(name, value, trackChanges);
+            var allSeotDto = allSeot.Adapt<ICollection<ServiceOrderTaskDto>>().ToList();
+            foreach (var seot in allSeot.Select((value, index) => new {value,index}))
+            {
+                allSeotDto[seot.index].ServiceWorkorders=seot.value.ServiceOrderWorkorders.Adapt<ICollection<ServiceOrderWorkorderDto>>();
+            }
+            return allSeotDto;
         }
 
         public async Task<ServiceOrderTaskDto> GetByIdAsync(int id, bool trackChanges)
