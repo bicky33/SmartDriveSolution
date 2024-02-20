@@ -11,6 +11,6 @@ namespace Domain.Repositories.CR
     public interface ICustomerInscAssetRepository : IRepositoryEntityBase<CustomerInscAsset>
     {
         CustomerInscAsset CreateData(CustomerInscAsset entity);
-        CustomerInscAsset? FindByCiasPoliceNumber(string ciasPoliceNumber, bool trackChanges);
+        Task<CustomerInscAsset> FindByCiasPoliceNumber(string ciasPoliceNumber, bool trackChanges);
     }
 }

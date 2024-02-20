@@ -1,4 +1,5 @@
-﻿using Contract.DTO.CR.Response;
+﻿using Contract.DTO.CR.Request;
+using Contract.DTO.CR.Response;
 using Domain.Entities.CR;
 using Service.Abstraction.Base;
 using System;
@@ -11,5 +12,9 @@ namespace Service.Abstraction.CR
 {
     public interface ICustomerClaimService : IServiceEntityBase<CustomerClaimDto>
     {
+        CustomerClaim CreateNewClaim(CustomerRequest customerRequest);
+        Task<CustomerClaimResponseDto> GetClaimById(int cuclCreqEntityId);
+        Task<CustomerRequestResponseDto> ClaimPolis(CustomerClaimRequestDto customrClaimDto);
+        Task<CustomerRequestResponseDto> ClosePolis(CustomerCloseRequestDto customerCloseDto);
     }
 }

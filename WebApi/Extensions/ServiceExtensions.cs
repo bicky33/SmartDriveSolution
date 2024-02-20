@@ -26,6 +26,10 @@ using Service.UserModule;
 using System.Text;
 using Persistence.Repositories.SO;
 using Persistence.Repositories.CR;
+using Service.Abstraction.CR;
+using Service.CR;
+using Service.Abstraction.Payment;
+using Service.Base;
 
 namespace WebApi.Extensions
 {
@@ -64,9 +68,11 @@ namespace WebApi.Extensions
         public static void ConfigureService(this IServiceCollection services)
         {
             services.AddScoped<IServiceManagerMaster, ServiceManagerMaster>();
+            services.AddScoped<IServicePaymentManager, ServicePaymentManager>();
             services.AddScoped<IServiceManagerUser, ServiceManagerUser>();
             services.AddScoped<IServiceSOManager, ServiceSOManager>();
             services.AddScoped<IServiceRequestSOManager, ServiceRequestSOManager>();
+            services.AddScoped<IServiceCustomerManager, ServiceCustomerManager>();
             services.AddScoped<IServicePartnerManager, ServicePartnerManager>();
         }
         public static void ConfigureMapster(this IServiceCollection services)

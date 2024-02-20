@@ -1,5 +1,7 @@
-﻿using Contract.DTO.CR.Response;
+﻿using Contract.DTO.CR.Request;
+using Contract.DTO.CR.Response;
 using Domain.Entities.CR;
+using Domain.Enum;
 using Domain.Exceptions;
 using Domain.Repositories.CR;
 using Mapster;
@@ -21,6 +23,38 @@ namespace Service.CR
             _repositoryCustomerManager = repositoryCustomerManager;
         }
 
+        public async Task<CustomerRequestResponseDto> ClaimPolis(CustomerClaimRequestDto customerClaimDto)
+        {
+            var existRequest = await _repositoryCustomerManager.CustomerRequestRepository.GetById(customerClaimDto.CreqEntityid, true);
+            if (existRequest == null)
+                throw new EntityNotFoundException(customerClaimDto.CreqEntityid, "CustomerClaim");
+
+            existRequest.CreqType = EnumCustomerRequest.CREQTYPE.CLAIM.ToString();
+            existRequest.CreqModifiedDate = DateTime.Now;
+
+            await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
+            var customerResponseDto = existRequest.Adapt<CustomerRequestResponseDto>();
+            return customerResponseDto;
+        }
+
+        public async Task<CustomerRequestResponseDto> ClosePolis(CustomerCloseRequestDto customerCloseDto)
+        {
+            var existRequest = await _repositoryCustomerManager.CustomerRequestRepository.GetById(customerCloseDto.CreqEntityid, true);
+            if (existRequest == null)
+                throw new EntityNotFoundException(customerCloseDto.CreqEntityid, "CustomerClaim");
+
+            existRequest.CreqType = EnumCustomerRequest.CREQTYPE.CLOSE.ToString();
+            existRequest.CreqModifiedDate = DateTime.Now;
+
+            var customerClaim = await _repositoryCustomerManager.CustomerClaimRepository.GetEntityById(customerCloseDto.CreqEntityid, true);
+            customerClaim.CuclReason = customerCloseDto.CuclReason;
+            customerClaim.CuclCreateDate = DateTime.Now;
+
+            await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
+            var customerResponseDto = existRequest.Adapt<CustomerRequestResponseDto>();
+            return customerResponseDto;
+        }
+
         public async Task<CustomerClaimDto> CreateAsync(CustomerClaimDto entity)
         {
             var customerClaim = entity.Adapt<CustomerClaim>();
@@ -28,6 +62,20 @@ namespace Service.CR
             await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
 
             return customerClaim.Adapt<CustomerClaimDto>();
+        }
+
+        public CustomerClaim CreateNewClaim(CustomerRequest customerRequest)
+        {
+            var newCustomerClaim = new CustomerClaim()
+            {
+                CuclCreqEntityid = customerRequest.CreqEntityid,
+                CuclEvents = 0,
+                CuclEventPrice = 0,
+                CuclSubtotal = 0,
+                CuclCreqEntity = customerRequest
+            };
+
+            return newCustomerClaim;
         }
 
         public async Task DeleteAsync(int id)
@@ -60,6 +108,16 @@ namespace Service.CR
 
             var customerClaimDto = customerClaim.Adapt<CustomerClaimDto>();
             return customerClaimDto;
+        }
+
+        public async Task<CustomerClaimResponseDto> GetClaimById(int cuclCreqEntityId)
+        {
+            var existClaim = await _repositoryCustomerManager.CustomerClaimRepository.GetEntityById(cuclCreqEntityId, false);
+            if (existClaim == null)
+                throw new EntityNotFoundException(cuclCreqEntityId, "CustomerClaim");
+
+            var customerClaimResponseDto = existClaim.Adapt<CustomerClaimResponseDto>();
+            return customerClaimResponseDto;
         }
 
         public async Task UpdateAsync(int id, CustomerClaimDto entity)

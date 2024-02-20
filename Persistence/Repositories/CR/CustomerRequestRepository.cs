@@ -167,5 +167,10 @@ namespace Persistence.Repositories.CR
                     .ThenInclude(x => x.UserRoles)
                 .Include(x => x.CustomerInscAsset).SingleOrDefaultAsync();
         }
+
+        public async Task<CustomerRequest> GetById(int id, bool trackChanges)
+        {
+            return await GetByCondition(x => x.CreqEntityid.Equals(id), trackChanges).SingleOrDefaultAsync();
+        }
     }
 }

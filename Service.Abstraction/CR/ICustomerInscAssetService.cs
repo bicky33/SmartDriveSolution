@@ -13,9 +13,9 @@ namespace Service.Abstraction.CR
 {
     public interface ICustomerInscAssetService : IServiceEntityBase<CustomerInscAssetDto>
     {
-        //public CustomerInscAsset CreateCustomerInscAssets(int entityId,CustomerInscAssetRequestDto customerInscAssetRequestDto,CarSeries carSeries,City existCity,InsuranceType existInty,CustomerRequest newCustomerRequest);
-        //public decimal? GetPremiPrice(string insuraceType, string carBrand, int zonesId, decimal currentPrice, int ageOfBirth, List<CustomerInscExtend> cuexs);
-        //public void ValidatePoliceNumber(string policeNumber);
+        CustomerInscAsset CreateCustomerInscAssets(int entityId, CustomerInscAssetRequestDto customerInscAssetRequestDto, CarSeries carSeries, City existCity, InsuranceType existInty, CustomerRequest newCustomerRequest);
+        decimal? GetPremiPrice(string insuraceType, string carBrand, int zonesId, decimal currentPrice, int ageOfBirth, List<CustomerInscExtend> cuexs);
+        Task ValidatePoliceNumber(string policeNumber);
 
 
     }

@@ -12,5 +12,6 @@ namespace Domain.Repositories.CR
     {
         Task<IEnumerable<CustomerRequest>> GetAllByUserId(int userId, bool trackChanges);
         Task<IEnumerable<CustomerRequest>> GetAllByEmployee(string eawgCode, bool trackChanges);
+        Task<CustomerRequest> GetById(int id, bool trackChanges);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Contract.DTO.CR.Response;
+﻿using Contract.DTO.CR.Request;
+using Contract.DTO.CR.Response;
 using Service.Abstraction.Base;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace Service.Abstraction.CR
     {
         Task<IEnumerable<CustomerRequestDto>> GetAllByUser(int userId, bool trackChanges);
         Task<IEnumerable<CustomerRequestDto>> GetAllByEmployee(string eawgCode, bool trackChanges);
-        Task<CustomerRequestDto> CreateCustomerRequest(CustomerRequestDto entity);
+        //Task<CustomerRequestDto> Create(CustomerRequestDto entity);
+        Task<CustomerRequestResponseDto> CreateByUser(CustomerRequestRequestDto entity);
     }
 }

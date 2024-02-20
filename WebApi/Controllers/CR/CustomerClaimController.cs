@@ -1,5 +1,6 @@
 ﻿using Contract.DTO.CR.Request;
 using Contract.DTO.CR.Response;
+using Domain.Exceptions;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.CR;
@@ -57,6 +58,20 @@ namespace WebApi.Controllers.CR
         {
             await _serviceCustomerManager.CustomerClaimService.DeleteAsync(id);
             return NoContent();
+        }
+
+        [HttpGet("request/claim/{cuclCreqEntityId}")]
+        public async Task<IActionResult> GetClaimById(int cuclCreqEntityId)
+        {
+            try
+            {
+                var claimRequest = await _serviceCustomerManager.CustomerClaimService.GetClaimById(cuclCreqEntityId);
+                return Ok(claimRequest);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

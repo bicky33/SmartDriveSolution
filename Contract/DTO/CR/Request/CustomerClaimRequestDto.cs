@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Contract.DTO.CR.Response
+namespace Contract.DTO.CR.Request
 {
-    public class CustomerInscAssetGetDto
+    public class CustomerClaimRequestDto
     {
-        public string? CiasIntyName { get; set; }
+        public int CreqEntityid { get; set; }
     }
 }

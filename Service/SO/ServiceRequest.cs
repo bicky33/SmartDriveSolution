@@ -159,7 +159,7 @@ namespace Service.SO
             {
                 ServCreatedOn = createServicePolisDto.CreatePolisDate,
                 ServCreqEntityid = createServicePolisDto.CreqId,
-                ServCustEntityid = createServicePolisDto.CreqId,
+                ServCustEntityid = createServicePolisDto.CustId,
                 ServStartdate = createServicePolisDto.PolisStartDate,
                 ServEnddate = createServicePolisDto.PolisEndDate,
                 ServType = EnumModuleServiceOrder.SERVTYPE.FEASIBILITY.ToString(),
