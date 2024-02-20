@@ -7,7 +7,7 @@ using Service.Abstraction.Master;
 
 namespace WebApi.Controllers.Master
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/master/[controller]")]
     [ApiController]
     public class TemplateServiceTaskController : ControllerBase
     {
@@ -18,14 +18,13 @@ namespace WebApi.Controllers.Master
             _serviceManagerMaster = serviceManagerMaster;
         }
 
-        // GET: api/<CarSeriesController>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TemplateServiceTask>>> Get()
         {
             var templateServiceTask = await _serviceManagerMaster.TemplateServiceTaskService.GetAllAsync(false);
             return Ok(templateServiceTask);
         }
-        // GET: api/<CarSeriesController>
+
         [HttpGet("testa/{id}")]
         public async Task<ActionResult<IEnumerable<TemplateServiceTask>>> GetTesta(int id)
         {
@@ -33,7 +32,6 @@ namespace WebApi.Controllers.Master
             return Ok(templateServiceTask);
         }
 
-        // GET api/<CarSeriesController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TemplateServiceTask>> Get(int id)
         {
@@ -41,7 +39,6 @@ namespace WebApi.Controllers.Master
             return Ok(templateServiceTask);
         }
 
-        // POST api/<CarSeriesController>
         [HttpPost]
         public async Task<IActionResult> CreateTemplateServiceTask([FromBody] TemplateServiceTaskResponse request)
         {
@@ -53,15 +50,13 @@ namespace WebApi.Controllers.Master
             return CreatedAtAction(nameof(Get), new { id = templateServiceTask.TestaId }, templateServiceTask);
         }
 
-        // PUT api/<CarSeriesController>/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] TemplateServiceTaskResponse request)
         {
             await _serviceManagerMaster.TemplateServiceTaskService.UpdateAsync(id, request);
-            return CreatedAtAction(nameof(Get), new { id = request.TestaId }, request);
+            return NoContent();
         }
 
-        // DELETE api/<CarSeriesController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

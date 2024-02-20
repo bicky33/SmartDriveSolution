@@ -1,5 +1,6 @@
 ﻿using Contract.DTO.Master;
 using Domain.Entities.Master;
+using Domain.RequestFeatured;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.Master;
 
@@ -32,6 +33,13 @@ namespace WebApi.Controllers.Master
         {
             var provinsi = await _serviceManagerMaster.ProvinsiService.GetByIdAsync(id, false);
             return Ok(provinsi);
+        }
+
+        [HttpGet("paginate")]
+        public async Task<ActionResult<IEnumerable<Provinsi>>> GetCategoriesWithPagination([FromQuery] EntityParameter entityParameter)
+        {
+            var provinces = await _serviceManagerMaster.ProvinsiService.GetAllWithPagingAsync(entityParameter, false);
+            return Ok(provinces);
         }
 
         // POST api/<CarSeriesController>

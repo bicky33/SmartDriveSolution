@@ -18,7 +18,6 @@ namespace WebApi.Controllers.Master
             _serviceManagerMaster = serviceManagerMaster;
         }
 
-        // GET: api/<CarSeriesController>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> Get()
         {
@@ -26,7 +25,6 @@ namespace WebApi.Controllers.Master
             return Ok(categories);
         }
 
-        // GET api/<CarSeriesController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> Get(int id)
         {
@@ -34,7 +32,6 @@ namespace WebApi.Controllers.Master
             return Ok(category);
         }
 
-        // POST api/<CarSeriesController>
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CategoryResponse request)
         {
@@ -46,7 +43,6 @@ namespace WebApi.Controllers.Master
             return CreatedAtAction(nameof(Get), new { id = category.CateId }, category);
         }
 
-        // PUT api/<CarSeriesController>/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] CategoryResponse request)
         {
@@ -54,7 +50,6 @@ namespace WebApi.Controllers.Master
             return CreatedAtAction(nameof(Get), new { id = request.CateId }, request);
         }
 
-        // DELETE api/<CarSeriesController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

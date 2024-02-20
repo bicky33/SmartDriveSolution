@@ -36,7 +36,7 @@ namespace WebApi.Controllers.Master
 
         // POST api/<CarSeriesController>
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] RegionPLatResponse request)
+        public async Task<IActionResult> Create([FromBody] RegionPlatResponse request)
         {
             if (request == null)
             {
@@ -48,7 +48,7 @@ namespace WebApi.Controllers.Master
 
         // PUT api/<CarSeriesController>/5
         [HttpPut("{name}")]
-        public async Task<IActionResult> Update(string name, [FromBody] RegionPLatResponse request)
+        public async Task<IActionResult> Update(string name, [FromBody] RegionPlatResponse request)
         {
             await _serviceManagerMaster.RegionPlatService.UpdateAsyncMaster(name, request);
             return CreatedAtAction(nameof(Get), new { name = request.RegpName }, request);
