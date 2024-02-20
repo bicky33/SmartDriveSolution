@@ -7,7 +7,7 @@ using Service.Abstraction.Master;
 
 namespace WebApi.Controllers.Master
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/master/[controller]")]
     [ApiController]
     public class TemplateTaskWorkorderController : ControllerBase
     {
@@ -18,7 +18,6 @@ namespace WebApi.Controllers.Master
             _serviceManagerMaster = serviceManagerMaster;
         }
 
-        // GET: api/<CarSeriesController>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TemplateTaskWorkorder>>> Get()
         {
@@ -26,7 +25,6 @@ namespace WebApi.Controllers.Master
             return Ok(templateTaskWorkorder);
         }
 
-        // GET api/<CarSeriesController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TemplateTaskWorkorder>> Get(int id)
         {
@@ -34,7 +32,6 @@ namespace WebApi.Controllers.Master
             return Ok(templateTaskWorkorder);
         }
 
-        // POST api/<CarSeriesController>
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] TemplateTaskWorkorderResponse request)
         {
@@ -46,15 +43,13 @@ namespace WebApi.Controllers.Master
             return CreatedAtAction(nameof(Get), new { id = templateTaskWorkorder.TewoId }, templateTaskWorkorder);
         }
 
-        // PUT api/<CarSeriesController>/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] TemplateTaskWorkorderResponse request)
         {
             await _serviceManagerMaster.TemplateTaskWorkorderService.UpdateAsync(id, request);
-            return CreatedAtAction(nameof(Get), new { id = request.TewoId }, request);
+            return NoContent();
         }
 
-        // DELETE api/<CarSeriesController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
