@@ -9,5 +9,7 @@
         Task<T> CreateAsync(T entity);
         Task UpdateAsync(int id, T entity);
         Task DeleteAsync(int id);
+
+        // 
     }
 }

@@ -7,7 +7,7 @@ using Service.Abstraction.Master;
 
 namespace WebApi.Controllers.Master
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/master/[controller]")]
     [ApiController]
     public class CategoryController : ControllerBase
     {

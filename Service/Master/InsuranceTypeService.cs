@@ -30,8 +30,7 @@ namespace Service.Master
             var insuranceType = await _repositoryManagerMaster.InsuranceTypeRepository.GetEntityByNameMaster(name, false);
             if (insuranceType == null)
             {
-                //throw new EntityNotFoundException(name);
-                throw new Exception($"Data {name} Not Found");
+                throw new EntityNotFoundException(name, nameof(insuranceType));
             }
             _repositoryManagerMaster.InsuranceTypeRepository.DeleteEntityMaster(insuranceType);
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
@@ -49,26 +48,23 @@ namespace Service.Master
             var insuranceType = await _repositoryManagerMaster.InsuranceTypeRepository.GetEntityByNameMaster(name, false);
             if (insuranceType == null)
             {
-                //throw new EntityNotFoundException(name);
-                throw new Exception($"Data {name} Not Found");
+                throw new EntityNotFoundException(name, nameof(insuranceType));
             }
             var insuranceTypeResponse = insuranceType.Adapt<InsuranceTypeResponse>();
             return insuranceTypeResponse;
         }
 
-        public async Task<InsuranceTypeResponse> UpdateAsyncMaster(string name, InsuranceTypeResponse entity)
+        public async Task UpdateAsyncMaster(string name, InsuranceTypeResponse entity)
         {
             var insuranceType = await _repositoryManagerMaster.InsuranceTypeRepository.GetEntityByNameMaster(name, true);
             if (insuranceType == null)
             {
-                //throw new EntityNotFoundException(id);
-                throw new Exception($"Data {name} Not Found");
+                throw new EntityNotFoundException(name, nameof(entity));
             }
             insuranceType.IntyName = entity.IntyName;
             insuranceType.IntyDesc = entity.IntyDesc;
 
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
-            return insuranceType.Adapt<InsuranceTypeResponse>();
         }
     }
 }

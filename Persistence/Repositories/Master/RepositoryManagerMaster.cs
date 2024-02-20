@@ -12,7 +12,7 @@ namespace Persistence.Repositories.Master
         private readonly Lazy<IRepositoryEntityBase<CarSeries>> _carSeries;
         private readonly Lazy<IRepositoryEntityBase<Category>> _category;
         private readonly Lazy<IRepositoryEntityBase<Zone>> _zone;
-        private readonly Lazy<IRepositoryEntityBase<Provinsi>> _provinsi;
+        private readonly Lazy<IRepositoryWithPaging<Provinsi>> _provinsi;
         private readonly Lazy<IRepositoryEntityBase<City>> _city;
         private readonly Lazy<IRepositoryEntityBaseMaster<InsuranceType>> _insuranceType;
         private readonly Lazy<IRepositoryEntityBaseMaster<RegionPlat>> _regionPlat;
@@ -30,7 +30,7 @@ namespace Persistence.Repositories.Master
             _carSeries = new Lazy<IRepositoryEntityBase<CarSeries>>(() => new CarSeriesRepository(_context));
             _category = new Lazy<IRepositoryEntityBase<Category>>(() => new CategoryRepository(_context));
             _zone = new Lazy<IRepositoryEntityBase<Zone>>(() => new ZoneRepository(_context));
-            _provinsi = new Lazy<IRepositoryEntityBase<Provinsi>>(() => new ProvinsiRepository(_context));
+            _provinsi = new Lazy<IRepositoryWithPaging<Provinsi>>(() => new ProvinsiRepository(_context));
             _city = new Lazy<IRepositoryEntityBase<City>>(() => new CityRepository(_context));
             _insuranceType = new Lazy<IRepositoryEntityBaseMaster<InsuranceType>>(() => new InsuranceTypeRepository(_context));
             _regionPlat = new Lazy<IRepositoryEntityBaseMaster<RegionPlat>>(() => new RegionPlatRepository(_context));
@@ -52,7 +52,7 @@ namespace Persistence.Repositories.Master
         public IRepositoryEntityBase<Category> CategoryRepository => _category.Value;
         public IRepositoryEntityBase<Zone> ZoneRepository => _zone.Value;
 
-        public IRepositoryEntityBase<Provinsi> ProvinsiRepository => _provinsi.Value;
+        public IRepositoryWithPaging<Provinsi> ProvinsiRepository => _provinsi.Value;
 
         public IRepositoryEntityBase<City> CityRepository => _city.Value;
         public IRepositoryEntityBaseMaster<InsuranceType> InsuranceTypeRepository => _insuranceType.Value;
