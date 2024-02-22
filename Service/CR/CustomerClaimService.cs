@@ -29,6 +29,9 @@ namespace Service.CR
             if (existRequest == null)
                 throw new EntityNotFoundException(customerClaimDto.CreqEntityid, "CustomerClaim");
 
+            if (existRequest.CreqType == "CLAIM")
+                throw new Exception("This POLIS is already claimed.");
+
             existRequest.CreqType = EnumCustomerRequest.CREQTYPE.CLAIM.ToString();
             existRequest.CreqModifiedDate = DateTime.Now;
 
@@ -42,6 +45,9 @@ namespace Service.CR
             var existRequest = await _repositoryCustomerManager.CustomerRequestRepository.GetById(customerCloseDto.CreqEntityid, true);
             if (existRequest == null)
                 throw new EntityNotFoundException(customerCloseDto.CreqEntityid, "CustomerClaim");
+
+            if (existRequest.CreqType == "CLOSE")
+                throw new Exception("This POLIS is already close.");
 
             existRequest.CreqType = EnumCustomerRequest.CREQTYPE.CLOSE.ToString();
             existRequest.CreqModifiedDate = DateTime.Now;

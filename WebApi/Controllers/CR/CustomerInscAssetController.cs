@@ -45,7 +45,7 @@ namespace WebApi.Controllers.CR
 
         // PUT api/<CustomerRequestController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCustomerInscAsset(int id, [FromBody] CustomerInscAssetUpdateDto customerInscAssetDto)
+        public async Task<IActionResult> UpdateCustomerInscAsset(int id, [FromBody] CustomerInscAssetCreateDto customerInscAssetDto)
         {
             await _serviceCustomerManager.CustomerInscAssetService.UpdateAsync(id, customerInscAssetDto.Adapt<CustomerInscAssetDto>());
             return NoContent();

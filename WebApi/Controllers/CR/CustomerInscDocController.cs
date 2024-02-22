@@ -37,7 +37,7 @@ namespace WebApi.Controllers.CR
 
         // POST api/<CustomerInscDocController>
         [HttpPost]
-        public async Task<IActionResult> CreateCustomerInscDoc([FromBody] CustomerInscDocCreateDto customerInscDocDto)
+        public async Task<IActionResult> CreateCustomerInscDoc([FromBody] CustomerInscDocRequestDto customerInscDocDto)
         {
             var customerInscDoc = await _serviceCustomerManager.CustomerInscDocService.CreateAsync(customerInscDocDto.Adapt<CustomerInscDocDto>());
             return CreatedAtAction(nameof(GetCustomerInscDocById), new { id = customerInscDoc.CadocId }, customerInscDoc);
@@ -45,7 +45,7 @@ namespace WebApi.Controllers.CR
 
         // PUT api/<CustomerInscDocController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCustomerInscDoc(int id, [FromBody] CustomerInscDocUpdateDto customerInscDocDto)
+        public async Task<IActionResult> UpdateCustomerInscDoc(int id, [FromBody] CustomerInscDocRequestDto customerInscDocDto)
         {
             await _serviceCustomerManager.CustomerInscDocService.UpdateAsync(id, customerInscDocDto.Adapt<CustomerInscDocDto>());
             return NoContent();

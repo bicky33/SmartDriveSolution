@@ -38,7 +38,7 @@ namespace WebApi.Controllers.CR
 
         // POST api/<CustomerClaimController>
         [HttpPost]
-        public async Task<IActionResult> CreateCustomerClaim([FromBody] CustomerClaimCreateDto customerClaimDto)
+        public async Task<IActionResult> CreateCustomerClaim([FromBody] CustomerClaimDto customerClaimDto)
         {
             var customerClaim = await _serviceCustomerManager.CustomerClaimService.CreateAsync(customerClaimDto.Adapt<CustomerClaimDto>());
             return CreatedAtAction(nameof(GetCustomerClaimById), new { id = customerClaim.CuclCreqEntityid }, customerClaim);
@@ -46,7 +46,7 @@ namespace WebApi.Controllers.CR
 
         // PUT api/<CustomerClaimController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCustomerClaim(int id, [FromBody] CustomerClaimUpdateDto customerClaimDto)
+        public async Task<IActionResult> UpdateCustomerClaim(int id, [FromBody] CustomerClaimDto customerClaimDto)
         {
             await _serviceCustomerManager.CustomerClaimService.UpdateAsync(id, customerClaimDto.Adapt<CustomerClaimDto>());
             return NoContent();

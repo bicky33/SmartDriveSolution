@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Contract.DTO.CR.Request
 {
-    public class CustomerInscDocUpdateDto
+    public class CustomerInscDocRequestDto
     {
         public int CadocCreqEntityid { get; set; }
         public string? CadocFilename { get; set; }

@@ -16,7 +16,7 @@ namespace Contract.DTO.CR.Response
         public DateTime CreqCreateDate { get; set; }
         public EnumCustomerRequest.CREQSTATUS CreqStatus { get; set; }
         public EnumCustomerRequest.CREQTYPE CreqType { get; set; }
-        public DateTime CreqModifiedDate { get; set; }
+        public DateTime? CreqModifiedDate { get; set; }
         public int CreqCustEntityid { get; set; }
         public int CreqAgenEntityid { get; set; }
         //public EmployeeAreWorkgroup? CreqAgenEntity { get; set; }

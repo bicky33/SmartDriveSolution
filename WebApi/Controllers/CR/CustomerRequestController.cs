@@ -61,26 +61,44 @@ namespace WebApi.Controllers.CR
             return Ok(customerRequestDto);
         }
 
-        // POST api/<CustomerRequestController>
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CustomerRequestCreateDto customerRequestDto)
+        // POST api/<CustomerRequestController>    
+        [HttpPost("request")]
+        public async Task<IActionResult> CreateCustomerRequest([FromBody] CreateCustomerRequestDto request)
         {
+            await _serviceCustomerManager.CustomerInscAssetService.ValidatePoliceNumber(request.CustomerInscAsset.CiasPoliceNumber);
 
-            var customerRequest = await _serviceCustomerManager.CustomerRequestService.CreateAsync(customerRequestDto.Adapt<CustomerRequestDto>());
+            var totalPremi = await _serviceCustomerManager.CustomerInscAssetService.GetPremiPrice(request.CustomerInscAsset.CiasIntyName, request.CustomerInscAsset.CiasCarsId, request.CustomerInscAsset.CiasCityId, request.CustomerInscAsset.CiasCurrentPrice);
+            request.CustomerInscAsset.CiasTotalPremi = totalPremi;
+
+            var customerRequest = await _serviceCustomerManager.CustomerRequestService.CreateRequest(request);
+
             return CreatedAtAction(nameof(GetById), new { id = customerRequest.CreqEntityid }, customerRequest);
         }
 
-        //[HttpPost("request")]
-        //public async Task<IActionResult> CreateCustomerRequest([FromBody] CustomerRequestCreateDto customerRequestDto)
-        //{
-        //    var customerRequest = await _serviceCustomerManager.CustomerRequestService.Create(customerRequestDto.Adapt<CustomerRequestDto>());
-        //    return CreatedAtAction(nameof(GetById), new { id = customerRequest.CreqEntityid }, customerRequest);
-        //}
-
-        [HttpPost("request/create")]
+        [HttpPost("request/create/user")]
         public async Task<IActionResult> CreateRequestByUser([FromBody] CustomerRequestRequestDto customerRequestDto)
         {
             var customerRequest = await _serviceCustomerManager.CustomerRequestService.CreateByUser(customerRequestDto);
+
+            var createServicePolisDto = new CreateServicePolisFeasibilityDto()
+            {
+                CreqId = customerRequest.CreqEntityid,
+                CustId = customerRequest.CreqCustEntityid,
+                AgentId = customerRequest.CreqAgenEntityid,
+                CreatePolisDate = customerRequest.CreqCreateDate,
+                PolisStartDate = customerRequest.CustomerInscAsset.CiasStartdate,
+                PolisEndDate = customerRequest.CustomerInscAsset.CiasEnddate
+            };
+
+            await _serviceRequestSOManager.ServiceRequest.CreateServicePolisFeasibility(createServicePolisDto);
+
+            return CreatedAtAction(nameof(GetById), new { id = customerRequest.CreqEntityid }, customerRequest);
+        }
+
+        [HttpPost("request/create/agen")]
+        public async Task<IActionResult> CreateRequestByEmployee([FromBody] CreateCustomerRequestByAgenDto customerRequestDto)
+        {
+            var customerRequest = await _serviceCustomerManager.CustomerRequestService.CreateByEmployee(customerRequestDto);
 
             var createServicePolisDto = new CreateServicePolisFeasibilityDto()
             {

@@ -37,7 +37,7 @@ namespace WebApi.Controllers.CR
 
         // POST api/<CustomerInscExtendController>
         [HttpPost]
-        public async Task<IActionResult> CreateCustomerInscExtend([FromBody] CustomerInscExtendCreateDto customerInscExtendDto)
+        public async Task<IActionResult> CreateCustomerInscExtend([FromBody] CustomerInscExtendRequestDto customerInscExtendDto)
         {
             var customerInscExtend = await _serviceCustomerManager.CustomerInscExtendService.CreateAsync(customerInscExtendDto.Adapt<CustomerInscExtendDto>());
             return CreatedAtAction(nameof(GetCustomerInscExtendById), new { id = customerInscExtend.CuexId }, customerInscExtend);
@@ -45,7 +45,7 @@ namespace WebApi.Controllers.CR
 
         // PUT api/<CustomerInscExtendController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCustomerInscExtend(int id, [FromBody] CustomerInscExtendUpdateDto customerInscExtendDto)
+        public async Task<IActionResult> UpdateCustomerInscExtend(int id, [FromBody] CustomerInscExtendRequestDto customerInscExtendDto)
         {
             await _serviceCustomerManager.CustomerInscExtendService.UpdateAsync(id, customerInscExtendDto.Adapt<CustomerInscExtendDto>());
             return NoContent();
