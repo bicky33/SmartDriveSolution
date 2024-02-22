@@ -23,6 +23,11 @@ namespace Persistence.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "testa_sync_partner",
+                table: "template_service_task",
+                schema: "mtr"
+            );
         }
     }
 }
