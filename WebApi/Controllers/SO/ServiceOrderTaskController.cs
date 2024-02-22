@@ -32,13 +32,6 @@ namespace WebApi.Controllers.SO
             var serviceOrderDto = await _serviceManager.ServiceOrderTaskService.GetByIdAsync(id, false);
             return Ok(serviceOrderDto);
         }
-        [HttpGet("Sero/{seroId}")]
-        public async Task<IActionResult> GetSeotBySeroId(string seroId)
-        {
-            var seot = await _serviceManager.ServiceOrderTaskService.GetAllByRelation("SeroId", seroId, false);
-            return Ok(seot);
-        }
-
 
         // POST api/<ServiceControlle>
         [HttpPost]

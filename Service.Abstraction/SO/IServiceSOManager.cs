@@ -12,7 +12,7 @@ namespace Service.Abstraction.SO
     {
         IServiceSORelationBase<ServiceDto,ServiceDtoCreate,int> ServiceService { get; }
         IServiceSOEntityBase<ServiceOrderDto,ServiceOrderDtoCreate,string> ServiceOrderService { get; }
-        IServiceSORelationBase<ServiceOrderTaskDto,ServiceOrderTaskDtoCreate,int> ServiceOrderTaskService { get; }
+        IServiceSOEntityBase<ServiceOrderTaskDto,ServiceOrderTaskDtoCreate,int> ServiceOrderTaskService { get; }
         IServiceSOEntityBase<ServiceOrderWorkorderDto, ServiceOrderWorkorderDtoCreate, int> ServiceOrderWorkorderService { get; }
         IServiceSOEntityBase<ClaimAssetEvidenceDto, ClaimAssetEvidenceDtoCreate, int> ClaimAssetEvidenceService { get; }
         IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartDtoCreate, int> ClaimAssetSparepartService { get; }

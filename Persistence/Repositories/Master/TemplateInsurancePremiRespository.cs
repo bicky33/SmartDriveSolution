@@ -1,11 +1,12 @@
 ﻿using Domain.Entities.Master;
 using Domain.Repositories.Base;
+using Domain.Repositories.Master;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
 
 namespace Persistence.Repositories.Master
 {
-    public class TemplateInsurancePremiRespository : RepositoryBase<TemplateInsurancePremi>, IRepositoryEntityBase<TemplateInsurancePremi>
+    public class TemplateInsurancePremiRespository : RepositoryBase<TemplateInsurancePremi>, IRepositoryTemplateInsurancePremi
     {
         public TemplateInsurancePremiRespository(SmartDriveContext dbContext) : base(dbContext)
         {
@@ -29,6 +30,12 @@ namespace Persistence.Repositories.Master
         public async Task<TemplateInsurancePremi> GetEntityById(int id, bool trackChanges)
         {
             return await GetByCondition(temi => temi.TemiId.Equals(id), trackChanges).SingleOrDefaultAsync();
+        }
+
+        public async Task<TemplateInsurancePremi> GetTemiByCateIDIntyNameZoneID(int cateId, string intyName, int zoneId, bool trackChanges)
+        {
+            return await GetByCondition(temi => temi.TemiCateId.Equals(cateId) &&  temi.TemiIntyName.Equals(intyName) && temi.TemiZonesId.Equals(zoneId), trackChanges).SingleOrDefaultAsync();
+            
         }
     }
 }

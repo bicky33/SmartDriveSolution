@@ -5,9 +5,9 @@ namespace Domain.Repositories.SO
 {
     public interface IRepositorySOManager
     {
-        IRepositoryRelationSOBase<Service,int> ServiceRepository { get; }
+        IRepositorySOEntityBase<Service,int> ServiceRepository { get; }
         IRepositorySOEntityBase<ServiceOrder,string> ServiceOrderRepository { get; }
-        IRepositoryRelationSOBase<ServiceOrderTask,int> ServiceOrderTaskRepository { get; }
+        IRepositorySOEntityBase<ServiceOrderTask,int> ServiceOrderTaskRepository { get; }
         IRepositorySOEntityBase<ServiceOrderWorkorder,int> ServiceOrderWorkorderRepository { get; }
         IRepositorySOEntityBase<ClaimAssetEvidence,int> ClaimAssetEvidenceRepository { get; }
         IRepositorySOEntityBase<ClaimAssetSparepart,int> ClaimAssetSparepartRepository { get; }

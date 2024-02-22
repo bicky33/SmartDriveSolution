@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -8,16 +8,20 @@
     <RootNamespace>Contract</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="DTO\Partner\**" />
+    <EmbeddedResource Remove="DTO\Partner\**" />
+    <None Remove="DTO\Partner\**" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 
 	<ItemGroup>
-    <Folder Include="DTO\CR\" />
     <Folder Include="DTO\HR\" />
-    <Folder Include="DTO\Partner\" />
+    <Folder Include="DTO\Master\" />
     <Folder Include="DTO\Payment\" />
-    <Folder Include="DTO\SO\" />
     <Folder Include="Records\" />
   </ItemGroup>
 

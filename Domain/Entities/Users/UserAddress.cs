@@ -10,6 +10,7 @@ namespace Domain.Entities.Users;
 public partial class UserAddress
 {
     [Key]
+    [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
     [Column("usdr_id")]
     public int UsdrId { get; set; }
 

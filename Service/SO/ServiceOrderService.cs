@@ -1,4 +1,5 @@
 ﻿using Contract.DTO.SO;
+using Domain.Entities.SO;
 using Domain.Exceptions.SO;
 using Domain.Repositories.SO;
 using Mapster;
@@ -46,8 +47,29 @@ namespace Service.SO
             if (serviceOrder == null)
                 throw new EntityNotFoundExceptionSO(id,"Service Order");
 
-            var ServiceOrderDtos = serviceOrder.Adapt<ServiceOrderDto>();
-            return ServiceOrderDtos;
+            var serviceOrderDtos = serviceOrder.Adapt<ServiceOrderDto>();
+            // service order task
+            serviceOrderDtos.Seots = serviceOrder.ServiceOrderTasks.Adapt<List<ServiceOrderTaskDto>>().Select(c => new ServiceOrderTaskDto
+            {
+                SeotId = c.SeotId,
+                SeotName = c.SeotName,
+                SeotStatus = c.SeotStatus,
+                SeotStartdate = c.SeotStartdate,
+                SeotEnddate = c.SeotEnddate,
+                Sowos = c.Sowos,
+            }).ToList();
+            // service order workorder
+            foreach (var seot in serviceOrder.ServiceOrderTasks.Select((value, index) => new { value, index }))
+            {
+                serviceOrderDtos.Seots[seot.index].Sowos = seot.value.ServiceOrderWorkorders.Adapt<ICollection<ServiceOrderWorkorderDto>>().Select(c => new ServiceOrderWorkorderDto
+                {
+                    SowoId = c.SowoId,
+                    SowoModifiedDate = c.SowoModifiedDate,
+                    SowoName = c.SowoName,
+                    SowoStatus = c.SowoStatus,
+                }).ToList();
+            }
+            return serviceOrderDtos;
         }
 
         public async Task<ServiceOrderDtoCreate> UpdateAsync(string id, ServiceOrderDtoCreate entity)
@@ -57,8 +79,8 @@ namespace Service.SO
                 throw new EntityNotFoundExceptionSO(id,"Service Order");
 
             serviceOrder.SeroId = id;
-            serviceOrder.SeroOrdtType=entity.SeroOrdtType.ToString();
-            serviceOrder.SeroStatus=entity.SeroStatus.ToString();
+            serviceOrder.SeroOrdtType=entity.SeroOrdtType;
+            serviceOrder.SeroStatus=entity.SeroStatus;
             serviceOrder.SeroReason=entity.SeroReason;
             serviceOrder.ServClaimNo=entity.ServClaimNo;
             serviceOrder.ServClaimStartdate=entity.ServClaimStartdate;

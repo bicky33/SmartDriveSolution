@@ -10,6 +10,9 @@ namespace Service.Abstraction.SO
 {
     public interface IServiceSORelationBase<TEntityDto, TEntityDtoCreate, TID> : IServiceSOEntityBase<TEntityDto, TEntityDtoCreate, TID>
     {
-        Task<IEnumerable<TEntityDto>> GetAllByRelation (string name, string value, bool trackChanges);
+        Task<TEntityDto> CreateServiceFeasibility(CreateServicePolisFeasibilityDto createServicePolisFeasibilityDto);
+        Task<TEntityDto> CreateServicePolis(CreateServicePolisDto createServicePolisDto);
+        Task<TEntityDto> CreateClaimPolis(CreateClaimPolisDto createClaimPolisDto);
+        Task<TEntityDto> ClosePolis(int servId, string reason);
     }
 }

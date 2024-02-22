@@ -34,6 +34,6 @@ namespace Contract.DTO.SO
 
         public ServiceOrderDto? SeotSero { get; set; }
 
-        public ICollection<ServiceOrderWorkorderDto> ServiceWorkorders { get; set; } = new List<ServiceOrderWorkorderDto>();
+        public ICollection<ServiceOrderWorkorderDto> Sowos { get; set; } = new List<ServiceOrderWorkorderDto>();
     }
 }

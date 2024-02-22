@@ -1,4 +1,5 @@
 ﻿using Contract.DTO.SO;
+using Contract.DTO.SO.Composite;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.SO;
 using System.Formats.Asn1;
@@ -21,16 +22,16 @@ namespace WebApi.Controllers.SO
         [HttpGet]
         public async Task<IActionResult> GetServices()
         {
-            var categoryDtos = await _serviceManager.ServiceService.GetAllAsync(false);
-            return Ok(categoryDtos);
+            var service = await _serviceManager.ServiceService.GetAllAsync(false);
+            return Ok(service);
         }
 
         // GET api/<ServiceController>/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetServiceById(int id)
         {
-            var categoryDto = await _serviceManager.ServiceService.GetByIdAsync(id, false);
-            return Ok(categoryDto);
+            var service = await _serviceManager.ServiceService.GetByIdAsync(id, false);
+            return Ok(service);
         }
 
         // POST api/<ServiceController>
@@ -65,6 +66,48 @@ namespace WebApi.Controllers.SO
                 return NotFound();
             await _serviceManager.ServiceService.DeleteAsync(id);
             return Ok();
+        }
+        // POST api/<ServiceController>
+        [HttpPost("CreateServiceFeasibility")]
+        public async Task<IActionResult> CreateServiceFeasibility([FromBody] CreateServicePolisFeasibilityDto createServicePolisFeasibilityDto)
+        {
+            if (createServicePolisFeasibilityDto == null)
+                return BadRequest("Service object is not valid");
+
+            var service = await _serviceManager.ServiceService.CreateServiceFeasibility(createServicePolisFeasibilityDto);
+
+            return CreatedAtAction(nameof(GetServiceById), new { id = service.ServId }, service);
+        }
+        // POST api/<ServiceController>
+        [HttpPost("CreateServicePolis")]
+        public async Task<IActionResult> CreateServicePolis([FromBody] CreateServicePolisDto createServicePolisDto)
+        {
+            if (createServicePolisDto == null)
+                return BadRequest("Service object is not valid");
+
+            var service = await _serviceManager.ServiceService.CreateServicePolis(createServicePolisDto);
+
+            return CreatedAtAction(nameof(GetServiceById), new { id = service.ServId }, service);
+        }
+        // POST api/<ServiceController>
+        [HttpPost("ClaimPolis")]
+        public async Task<IActionResult> ClaimPolis([FromBody] CreateClaimPolisDto createClaimPolisDto)
+        {
+            if (createClaimPolisDto == null)
+                return BadRequest("Service object is not valid");
+            var service = await _serviceManager.ServiceService.CreateClaimPolis(createClaimPolisDto);
+
+            return CreatedAtAction(nameof(GetServiceById), new { id = service.ServId }, service);
+        }
+        // POST api/<ServiceController>
+        [HttpPost("ClosePolis")]
+        public async Task<IActionResult> ClosePolis([FromBody] int servId, string reason)
+        {
+            if (reason == null)
+                return BadRequest("Reason Required");
+            var service = await _serviceManager.ServiceService.ClosePolis(servId,reason);
+
+            return CreatedAtAction(nameof(GetServiceById), new { id = service.ServId }, service);
         }
     }
 }

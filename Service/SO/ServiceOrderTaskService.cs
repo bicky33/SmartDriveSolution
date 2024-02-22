@@ -7,7 +7,7 @@ using Service.Abstraction.SO;
 
 namespace Service.SO
 {
-    public class ServiceOrderTaskService : IServiceSORelationBase<ServiceOrderTaskDto, ServiceOrderTaskDtoCreate, int>
+    public class ServiceOrderTaskService : IServiceSOEntityBase<ServiceOrderTaskDto, ServiceOrderTaskDtoCreate, int>
     {
         private readonly IRepositorySOManager _repositoryManager;
 
@@ -40,24 +40,20 @@ namespace Service.SO
             return serviceDtos;
         }
 
-        public async Task<IEnumerable<ServiceOrderTaskDto>> GetAllByRelation(string name, string value, bool trackChanges)
-        {
-            var allSeot= await _repositoryManager.ServiceOrderTaskRepository.GetAllByRelation(name, value, trackChanges);
-            var allSeotDto = allSeot.Adapt<ICollection<ServiceOrderTaskDto>>().ToList();
-            foreach (var seot in allSeot.Select((value, index) => new {value,index}))
-            {
-                allSeotDto[seot.index].ServiceWorkorders=seot.value.ServiceOrderWorkorders.Adapt<ICollection<ServiceOrderWorkorderDto>>();
-            }
-            return allSeotDto;
-        }
-
         public async Task<ServiceOrderTaskDto> GetByIdAsync(int id, bool trackChanges)
         {
-            var service = await _repositoryManager.ServiceOrderTaskRepository.GetEntityById(id, trackChanges);
-            if (service == null)
+            var task = await _repositoryManager.ServiceOrderTaskRepository.GetEntityById(id, trackChanges);
+            if (task == null)
                 throw new EntityNotFoundException(id, "ServiceOrderTask");
-            var serviceDtos = service.Adapt<ServiceOrderTaskDto>();
-            return serviceDtos;
+            var taskDto = task.Adapt<ServiceOrderTaskDto>();
+            taskDto.Sowos=task.ServiceOrderWorkorders.Adapt<ICollection<ServiceOrderWorkorderDto>>().Select(c=>new ServiceOrderWorkorderDto
+            {
+                SowoId = c.SowoId,
+                SowoModifiedDate = c.SowoModifiedDate,
+                SowoName = c.SowoName,
+                SowoStatus = c.SowoStatus,
+            }).ToList();
+            return taskDto;
         }
 
         public async Task<ServiceOrderTaskDtoCreate> UpdateAsync(int id, ServiceOrderTaskDtoCreate entity)
