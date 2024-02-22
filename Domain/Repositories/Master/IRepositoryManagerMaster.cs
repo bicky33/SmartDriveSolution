@@ -11,7 +11,7 @@ namespace Domain.Repositories.Master
         IRepositoryEntityBase<Category> CategoryRepository { get; }
         IRepositoryEntityBaseMaster<InsuranceType> InsuranceTypeRepository { get; }
         IRepositoryEntityBase<Zone> ZoneRepository { get; }
-        IRepositoryEntityBase<Provinsi> ProvinsiRepository { get; }
+        IRepositoryWithPaging<Provinsi> ProvinsiRepository { get; }
         IRepositoryEntityBase<City> CityRepository { get; }
         IRepositoryEntityBaseMaster<RegionPlat> RegionPlatRepository { get; }
         IRepositoryEntityBaseMaster<AreaWorkgroup> AreaWorkgroupRepository { get; }
