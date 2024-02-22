@@ -32,6 +32,9 @@ public partial class TemplateServiceTask
     [Column("testa_seqorder")]
     public int? TestaSeqorder { get; set; }
 
+    [Column("testa_sync_partner")]
+    public char TestaSyncPartner { get; set; }
+
     [InverseProperty("TewoTesta")]
     public virtual ICollection<TemplateTaskWorkorder> TemplateTaskWorkorders { get; set; } = new List<TemplateTaskWorkorder>();
 
