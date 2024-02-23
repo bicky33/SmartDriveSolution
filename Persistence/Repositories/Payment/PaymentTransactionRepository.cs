@@ -1,11 +1,14 @@
 ﻿using Domain.Entities.Payment;
 using Domain.Repositories.Base;
+using Domain.Repositories.Payment;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
+using System;
 
 namespace Persistence.Repositories.Payment
 {
-    public class PaymentTransactionRepository : RepositoryBase<PaymentTransaction>, IRepositoryEntityBase<PaymentTransaction>
+    public class PaymentTransactionRepository : RepositoryBase<PaymentTransaction>, IRepositoryEntityPaymentTransaction
     {
         public PaymentTransactionRepository(SmartDriveContext dbContext) : base(dbContext)
         {
@@ -31,5 +34,16 @@ namespace Persistence.Repositories.Payment
             return await GetByCondition(x => x.PatrTrxno.Equals(id), trackChanges).SingleOrDefaultAsync();
 
         }
+
+        public int GetNexTrxSequence()
+        {
+            //int result = _dbContext.Database.ExecuteSqlRaw("SELECT NEXT VALUE FOR patr_id_seq;"); 
+            var p = new SqlParameter("@result", System.Data.SqlDbType.Int);
+            p.Direction = System.Data.ParameterDirection.Output;
+            _dbContext.Database.ExecuteSqlRaw("set @result = next value for dbo.patr_id_seq", p);
+            var nextVal = (int)p.Value;
+            return nextVal;
+        }
+
     }
 }

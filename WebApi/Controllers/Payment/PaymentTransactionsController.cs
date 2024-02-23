@@ -1,4 +1,6 @@
 ﻿using Contract.DTO.Payment;
+using Domain.Enum;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.Payment;
 
@@ -24,35 +26,44 @@ namespace WebApi.Controllers.Payment
             return Ok(dto);
         }
 
-        // GET api/<PaymentTransactionsController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+
 
         // POST api/<PaymentTransactionsController>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] PaymentTransactionCreateDto paymentDto)
+        public async Task<IActionResult> Post([FromForm] PaymentTransactionCreateDto paymentDto)
         {
+            var from = await _serviceManager.UserAccountService.GetByAccountNoAsync(paymentDto.PatrUsacAccountNoFrom, false, ReturnException.RETURN_WHEN_NULL);
+
+            if (from.UsacDebet <= paymentDto.SendAmount)
+                return BadRequest("Balance is not enough");
+
+            //await _serviceManager.UserAccountService.GetByAccountNoAsync(paymentDto.PatrUsacAccountNoTo, false, ReturnException.RETURN_WHEN_NULL);
+
             if (paymentDto == null)
-                return BadRequest("Bank object is not valid");
+                return BadRequest("Payment object is not valid");
 
             var a = await _serviceManager.PaymentTransactionService.CreateAsync(paymentDto);
             return Ok(a);
         }
 
-        // PUT api/<PaymentTransactionsController>/5
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> Put(int id, [FromBody] PaymentTransactionDto paymentDto)
-        //{
-        //    return Ok("Created");
+        // POST api/<PaymentTransactionsController>
+        [HttpPost]
+        [Route("AddDeposit")]
+        public async Task<IActionResult> Deposit([FromBody] PaymentTransactionDepositDto paymentDto)
+        { 
+            //if (paymentDto.SendAmount)
+            //    return BadRequest("Balance is not enough");
 
-        // DELETE api/<PaymentTransactionsController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+            await _serviceManager.UserAccountService.GetByAccountNoAsync(paymentDto.PatrUsacAccountNoTo, false, ReturnException.RETURN_WHEN_NULL);
+
+            if (paymentDto == null)
+                return BadRequest("Payment object is not valid");
+
+            var a = await _serviceManager.PaymentTransactionService.CreateDepositAsync(paymentDto);
+            return Ok(a);
+        }
+
+        //TODO Paging with parameter userid
 
     }
 }

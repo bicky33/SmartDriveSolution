@@ -7,6 +7,7 @@ namespace Service.Abstraction.Payment
     {
         Task<IEnumerable<PaymentTransactionDto>> GetAllAsync(bool trackChanges);
         Task<PaymentTransactionDto> CreateAsync(PaymentTransactionCreateDto entity);
+        Task<PaymentTransactionDto> CreateDepositAsync(PaymentTransactionDepositDto entity);
         //Task<PaymentTransactionDto> GetByIdAsync(int id, bool trackChanges);
     }
 }

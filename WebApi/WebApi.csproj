@@ -31,9 +31,7 @@
     <Folder Include="Controllers\Payment\" />
     <Folder Include="Controllers\SO\" />
     <Folder Include="Controllers\User\" />
-    <Folder Include="Controllers\SO\" />
-    <Folder Include="Resources\Images\" />
-    <Folder Include="Resources\Images\Users\" />
+    <Folder Include="Controllers\SO\" /> 
   </ItemGroup>
 
   <ItemGroup>

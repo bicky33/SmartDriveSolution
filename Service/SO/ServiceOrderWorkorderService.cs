@@ -52,16 +52,15 @@ namespace Service.SO
         {
             var services = await _repositoryManager.ServiceOrderWorkorderRepository.GetEntityById(id, true);
             if (services == null)
-                throw new EntityNotFoundException(id,"ServiceOrderTask");
+                throw new EntityNotFoundException(id, "ServiceOrderTask");
 
             services.SowoId = id;
             services.SowoName = entity.SowoName;
-            services.SowoModifiedDate= entity.SowoStatus != services.SowoStatus ? DateTime.Now : entity.SowoModifiedDate;
-            services.SowoStatus=entity.SowoStatus;
-            services.SowoSeotId=entity.SowoSeotId;
+            services.SowoModifiedDate = entity.SowoModifiedDate;
+            services.SowoStatus = entity.SowoStatus;
+            services.SowoSeotId = entity.SowoSeotId;
 
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
-            
             return services.Adapt<ServiceOrderWorkorderDtoCreate>();
         }
     }
