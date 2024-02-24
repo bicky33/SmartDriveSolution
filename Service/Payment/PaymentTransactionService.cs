@@ -1,7 +1,10 @@
-﻿using Contract.DTO.Payment;
+﻿using Contract.DTO.Partners;
+using Contract.DTO.Payment;
+using Domain.Entities.Partners;
 using Domain.Entities.Payment;
 using Domain.Enum;
 using Domain.Repositories.Payment;
+using Domain.RequestFeatured;
 using Mapster;
 using Service.Abstraction.Base;
 using Service.Abstraction.Payment;
@@ -108,9 +111,13 @@ namespace Service.Payment
             return data.Adapt<IEnumerable<PaymentTransactionDto>>();
         }
 
-        //public Task<PaymentTransactionDto> GetByIdAsync(int id, bool trackChanges)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task<IEnumerable<PaymentTransactionDto>> GetAllPagingAsync(EntityPaymentTransactionParameter parameter, bool trackChanges)
+        {
+            PagedList<PaymentTransaction> partners = await _repositoryPaymentManager.PaymentTransactionRepository.GetAllPaging(trackChanges, parameter);
+            IEnumerable<PaymentTransactionDto> partnersDTO = partners.Adapt<IEnumerable<PaymentTransactionDto>>();
+            return partnersDTO;
+        }
+
+
     }
 }

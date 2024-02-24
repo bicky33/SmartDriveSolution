@@ -1,4 +1,6 @@
-﻿using Domain.Entities.Payment;
+﻿using Domain.Entities.Partners;
+using Domain.Entities.Payment;
+using Domain.RequestFeatured;
 
 namespace Domain.Repositories.Payment
 {
@@ -8,6 +10,7 @@ namespace Domain.Repositories.Payment
 
         Task<PaymentTransaction> GetEntityById(int id, bool trackChanges);
 
+        Task<PagedList<PaymentTransaction>> GetAllPaging(bool trackChanges, EntityPaymentTransactionParameter parameter);
         void CreateEntity(PaymentTransaction entity);
 
         void DeleteEntity(PaymentTransaction entity);

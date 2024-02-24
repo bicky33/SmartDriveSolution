@@ -1,6 +1,8 @@
-﻿using Contract.DTO.Payment;
+﻿using Contract.DTO.Partners;
+using Contract.DTO.Payment;
 using Domain.Enum;
 using Domain.Exceptions;
+using Domain.RequestFeatured;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.Payment;
 
@@ -64,6 +66,13 @@ namespace WebApi.Controllers.Payment
         }
 
         //TODO Paging with parameter userid
+        // GET: api/<PartnerController/paging>
+        [HttpGet("paging")]
+        public async Task<ActionResult<IEnumerable<PartnerDTO>>> GetPaging([FromQuery] EntityPaymentTransactionParameter request)
+        {
+            var response = await _serviceManager.PaymentTransactionService.GetAllPagingAsync(request, false);
+            return Ok(response);
+        }
 
     }
 }

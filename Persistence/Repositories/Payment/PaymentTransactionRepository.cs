@@ -1,6 +1,9 @@
-﻿using Domain.Entities.Payment;
+﻿using Domain.Entities.Partners;
+using Domain.Entities.Payment;
+using Domain.Entities.Users;
 using Domain.Repositories.Base;
 using Domain.Repositories.Payment;
+using Domain.RequestFeatured;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
@@ -27,6 +30,93 @@ namespace Persistence.Repositories.Payment
         public async Task<IEnumerable<PaymentTransaction>> GetAllEntity(bool trackChanges)
         {
             return await GetAll(trackChanges).OrderBy(x => x.PatrTrxno).ToListAsync();
+        }
+
+        public async Task<PagedList<PaymentTransaction>> GetAllPaging(bool trackChanges, EntityPaymentTransactionParameter parameter)
+        {
+            var transactions = new List<PaymentTransaction>();
+            IQueryable<PaymentTransaction> partners = string.IsNullOrEmpty(parameter.SearchBy) ? GetAll(trackChanges) : GetByCondition(c => c.PatrTrxno.StartsWith(parameter.SearchBy), trackChanges);
+
+            var resultOLD = _dbContext.UserAccounts
+              .Join(_dbContext.Users,
+                  ua => ua.UsacUserEntityid,
+                  us => us.UserEntityid,
+                  (ua, us) => new { UserAccount = ua, User = us })
+              .Join(_dbContext.PaymentTransactions,
+                  combined => combined.UserAccount.UsacAccountno,
+                  pt => pt.PatrUsacAccountNoFrom,
+                  (combined, pt) => new
+                  {
+                      combined.UserAccount.UsacUserEntityid,
+                      pt.PatrTrxno,
+                      pt.PatrCreatedOn,
+                      pt.PatrDebet,
+                      pt.PatrCredit,
+                      pt.PatrUsacAccountNoFrom,
+                      pt.PatrUsacAccountNoTo,
+                      pt.PatrType,
+                      pt.PatrInvoiceNo,
+                      pt.PatrNotes,
+                      pt.PatrTrxnoRev,
+                  })
+              .Where(x => x.UsacUserEntityid == parameter.UserEntityId)
+              .Select(x => new PaymentTransaction
+              {
+                  PatrTrxno = x.PatrTrxno,
+                  PatrCreatedOn = x.PatrCreatedOn,
+                  PatrDebet = x.PatrDebet,
+                  PatrCredit = x.PatrCredit,
+                  PatrUsacAccountNoFrom = x.PatrUsacAccountNoFrom,
+                  PatrUsacAccountNoTo = x.PatrUsacAccountNoTo,
+                  PatrType = x.PatrType,
+                  PatrInvoiceNo = x.PatrInvoiceNo,
+                  PatrNotes = x.PatrNotes,
+                  PatrTrxnoRev = x.PatrTrxnoRev
+              })
+              .ToList();
+
+            var resultNEW = _dbContext.UserAccounts
+              .Join(_dbContext.Users,
+                  ua => ua.UsacUserEntityid,
+                  us => us.UserEntityid,
+                  (ua, us) => new { UserAccount = ua, User = us })
+              .Join(_dbContext.PaymentTransactions,
+                  combined => combined.UserAccount.UsacAccountno,
+                  pt => pt.PatrUsacAccountNoTo,
+                  (combined, pt) => new
+                  {
+                      combined.UserAccount.UsacUserEntityid,
+                      pt.PatrTrxno,
+                      pt.PatrCreatedOn,
+                      pt.PatrDebet,
+                      pt.PatrCredit,
+                      pt.PatrUsacAccountNoFrom,
+                      pt.PatrUsacAccountNoTo,
+                      pt.PatrType,
+                      pt.PatrInvoiceNo,
+                      pt.PatrNotes,
+                      pt.PatrTrxnoRev,
+                  })
+              .Where(x => x.UsacUserEntityid == parameter.UserEntityId)
+              .Select(x => new PaymentTransaction
+              {
+                  PatrTrxno = x.PatrTrxno,
+                  PatrCreatedOn = x.PatrCreatedOn,
+                  PatrDebet = x.PatrDebet,
+                  PatrCredit = x.PatrCredit,
+                  PatrUsacAccountNoFrom = x.PatrUsacAccountNoFrom,
+                  PatrUsacAccountNoTo = x.PatrUsacAccountNoTo,
+                  PatrType = x.PatrType,
+                  PatrInvoiceNo = x.PatrInvoiceNo,
+                  PatrNotes = x.PatrNotes,
+                  PatrTrxnoRev = x.PatrTrxnoRev
+              })
+              .ToList();
+
+            transactions.AddRange(resultOLD);
+            transactions.AddRange(resultNEW);
+
+            return PagedList<PaymentTransaction>.ToPagedList(transactions.AsQueryable(), parameter.PageNumber, parameter.PageSize);
         }
 
         public async Task<PaymentTransaction> GetEntityById(int id, bool trackChanges)
