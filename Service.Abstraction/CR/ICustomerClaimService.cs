@@ -12,9 +12,8 @@ namespace Service.Abstraction.CR
 {
     public interface ICustomerClaimService : IServiceEntityBase<CustomerClaimDto>
     {
-        CustomerClaim CreateNewClaim(CustomerRequest customerRequest);
         Task<CustomerClaimResponseDto> GetClaimById(int cuclCreqEntityId);
-        Task<CustomerRequestResponseDto> ClaimPolis(CustomerClaimRequestDto customrClaimDto);
-        Task<CustomerRequestResponseDto> ClosePolis(CustomerCloseRequestDto customerCloseDto);
+        Task<CustomerRequestDto> ClaimPolis(CustomerClaimRequestDto customrClaimDto);
+        Task<CustomerRequestDto> ClosePolis(CustomerCloseRequestDto customerCloseDto);
     }
 }

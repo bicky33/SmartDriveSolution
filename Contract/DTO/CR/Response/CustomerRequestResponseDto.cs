@@ -1,4 +1,5 @@
-﻿using Contract.DTO.UserModule;
+﻿using Contract.DTO.SO;
+using Contract.DTO.UserModule;
 using Domain.Entities.HR;
 using Domain.Entities.SO;
 using Domain.Enum;
@@ -23,6 +24,6 @@ namespace Contract.DTO.CR.Response
         public UserDto? CreqCustEntity { get; set; }
         public CustomerClaimResponseDto? CustomerClaim { get; set; }
         public CustomerInscAssetResponseDto? CustomerInscAsset { get; set; }
-        //public ICollection<Service> Services { get; set; } = new List<Service>();
+        //public ICollection<ServiceDto> Services { get; set; } = new List<ServiceDto>();
     }
 }

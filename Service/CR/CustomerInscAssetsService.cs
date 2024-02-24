@@ -97,15 +97,18 @@ namespace Service.CR
             List<string> carBrandRateMax = new List<string> { "BMW", "MERCEDEZ BENZ", "AUDI", "VOLKSWAGEN", "LAND ROVER", "JAGUAR", "PEUGOT", "RENAULT", "SMART", "VOLVO", "MINI", "FLAT", "OPEN", "MAZDA" };
 
             var carSeries = await _repositoryManagerMaster.CarSeriesRepository.GetEntityById(carSeriesId, false);
-            var carBrandName = carSeries.CarsCarm.CarmCabr.CabrName;
-            var cities = await _repositoryManagerMaster.CityRepository.GetEntityById(cityId, false);
-            var zonesId = cities.CityProv.ProvZones.ZonesId;
+            var carModel = await _repositoryManagerMaster.CarModelRepository.GetEntityById((int)carSeries.CarsCarmId, false);
+            var carBrand = await _repositoryManagerMaster.CarBrandRepository.GetEntityById((int)carModel.CarmCabrId, false);
 
-            var templateInsurancePremi = await _repositoryManagerMaster.TemplateInsurancePremiRepository.GetTemiByCateIDIntyNameZoneID(1, insuranceType, zonesId, false) ?? throw new Exception("Template Insurance Premi is not found");
+            var cities = await _repositoryManagerMaster.CityRepository.GetEntityById(cityId, false);
+            var province = await _repositoryManagerMaster.ProvinsiRepository.GetEntityById((int)cities.CityProvId, false);
+            var zones = await _repositoryManagerMaster.ZoneRepository.GetEntityById((int)province.ProvZonesId, false);
+
+            var templateInsurancePremi = await _repositoryManagerMaster.TemplateInsurancePremiRepository.GetTemiByCateIDIntyNameZoneID(1, insuranceType, zones.ZonesId, false) ?? throw new Exception("Template Insurance Premi is not found");
 
             double temiRate;
 
-            if (carBrandRateMax.Contains(carBrandName))
+            if (carBrandRateMax.Contains(carBrand.CabrName))
             {
                 temiRate = (double)templateInsurancePremi.TemiRateMax;
             }

@@ -1,7 +1,9 @@
 ﻿using Contract.DTO.CR.Request;
 using Contract.DTO.CR.Response;
 using Contract.DTO.SO;
+using Domain.Entities.CR;
 using Domain.Exceptions;
+using Domain.RequestFeatured;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.CR;
@@ -39,7 +41,7 @@ namespace WebApi.Controllers.CR
 
             if (role == "Customer")
             {
-                var customerRequest = await _serviceCustomerManager.CustomerRequestService.GetAllByUser(userentityid, false);
+                var customerRequest = await _serviceCustomerManager.CustomerRequestService.GetAllByCustomer(userentityid, false);
                 return Ok(customerRequest);
 
             }
@@ -52,10 +54,17 @@ namespace WebApi.Controllers.CR
             return NoContent();
         }
 
+        [HttpGet("paging")]
+        public async Task<ActionResult<IEnumerable<CustomerRequestDto>>> GetCustomerRequestPaging([FromQuery] EntityParameter entityParameter)
+        {
+            var customerRequestDto = await _serviceCustomerManager.CustomerRequestService.GetAllPagingAsync(entityParameter, false);
+            return Ok(customerRequestDto);
+        }
+
 
         // GET api/<CustomerRequestController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<CustomerRequestResponseDto>> GetById(int id)
+        public async Task<ActionResult<CustomerRequestDto>> GetById(int id)
         {
             var customerRequestDto = await _serviceCustomerManager.CustomerRequestService.GetByIdAsync(id, false);
             return Ok(customerRequestDto);
@@ -72,14 +81,6 @@ namespace WebApi.Controllers.CR
 
             var customerRequest = await _serviceCustomerManager.CustomerRequestService.CreateRequest(request);
 
-            return CreatedAtAction(nameof(GetById), new { id = customerRequest.CreqEntityid }, customerRequest);
-        }
-
-        [HttpPost("request/create/user")]
-        public async Task<IActionResult> CreateRequestByUser([FromBody] CustomerRequestRequestDto customerRequestDto)
-        {
-            var customerRequest = await _serviceCustomerManager.CustomerRequestService.CreateByUser(customerRequestDto);
-
             var createServicePolisDto = new CreateServicePolisFeasibilityDto()
             {
                 CreqId = customerRequest.CreqEntityid,
@@ -95,27 +96,48 @@ namespace WebApi.Controllers.CR
             return CreatedAtAction(nameof(GetById), new { id = customerRequest.CreqEntityid }, customerRequest);
         }
 
-        [HttpPost("request/create/agen")]
-        public async Task<IActionResult> CreateRequestByEmployee([FromBody] CreateCustomerRequestByAgenDto customerRequestDto)
-        {
-            var customerRequest = await _serviceCustomerManager.CustomerRequestService.CreateByEmployee(customerRequestDto);
+        //[HttpPost("request/create/user")]
+        //public async Task<IActionResult> CreateRequestByUser([FromBody] CustomerRequestRequestDto customerRequestDto)
+        //{
+        //    var customerRequest = await _serviceCustomerManager.CustomerRequestService.CreateByUser(customerRequestDto);
 
-            var createServicePolisDto = new CreateServicePolisFeasibilityDto()
-            {
-                CreqId = customerRequest.CreqEntityid,
-                CustId = customerRequest.CreqCustEntityid,
-                AgentId = customerRequest.CreqAgenEntityid,
-                CreatePolisDate = customerRequest.CreqCreateDate,
-                PolisStartDate = customerRequest.CustomerInscAsset.CiasStartdate,
-                PolisEndDate = customerRequest.CustomerInscAsset.CiasEnddate
-            };
+        //    var createServicePolisDto = new CreateServicePolisFeasibilityDto()
+        //    {
+        //        CreqId = customerRequest.CreqEntityid,
+        //        CustId = customerRequest.CreqCustEntityid,
+        //        AgentId = customerRequest.CreqAgenEntityid,
+        //        CreatePolisDate = customerRequest.CreqCreateDate,
+        //        PolisStartDate = customerRequest.CustomerInscAsset.CiasStartdate,
+        //        PolisEndDate = customerRequest.CustomerInscAsset.CiasEnddate
+        //    };
 
-            await _serviceRequestSOManager.ServiceRequest.CreateServicePolisFeasibility(createServicePolisDto);
+        //    await _serviceRequestSOManager.ServiceRequest.CreateServicePolisFeasibility(createServicePolisDto);
 
-            return CreatedAtAction(nameof(GetById), new { id = customerRequest.CreqEntityid }, customerRequest);
-        }
+        //    return CreatedAtAction(nameof(GetById), new { id = customerRequest.CreqEntityid }, customerRequest);
+        //}
+
+        //[HttpPost("request/create/agen")]
+        //public async Task<IActionResult> CreateRequestByEmployee([FromBody] CreateCustomerRequestByAgenDto customerRequestDto)
+        //{
+        //    var customerRequest = await _serviceCustomerManager.CustomerRequestService.CreateByEmployee(customerRequestDto);
+
+        //    var createServicePolisDto = new CreateServicePolisFeasibilityDto()
+        //    {
+        //        CreqId = customerRequest.CreqEntityid,
+        //        CustId = customerRequest.CreqCustEntityid,
+        //        AgentId = customerRequest.CreqAgenEntityid,
+        //        CreatePolisDate = customerRequest.CreqCreateDate,
+        //        PolisStartDate = customerRequest.CustomerInscAsset.CiasStartdate,
+        //        PolisEndDate = customerRequest.CustomerInscAsset.CiasEnddate
+        //    };
+
+        //    await _serviceRequestSOManager.ServiceRequest.CreateServicePolisFeasibility(createServicePolisDto);
+
+        //    return CreatedAtAction(nameof(GetById), new { id = customerRequest.CreqEntityid }, customerRequest);
+        //}
 
         // PUT api/<CustomerRequestController>/5
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] CustomerRequestUpdateDto customerRequestDto)
         {
@@ -141,8 +163,6 @@ namespace WebApi.Controllers.CR
             {
                 var claimedRequest = await _serviceCustomerManager.CustomerClaimService.ClaimPolis(customerClaimDto);
 
-                //_serviceRequestSOManager.ServiceRequest.CreateClaimPolis()
-
                 return Ok(claimedRequest);
             }
             catch (EntityNotFoundException ex)
@@ -163,6 +183,6 @@ namespace WebApi.Controllers.CR
             {
                 return NotFound(ex.Message);
             }
-        }
+        }        
     }
 }
