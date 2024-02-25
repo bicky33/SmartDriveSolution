@@ -18,7 +18,6 @@
     <Folder Include="Exceptions\UserModule\" />
     <Folder Include="Interface\" />
     <Folder Include="Repositories\HR\" />
-    <Folder Include="Repositories\Master\" />
     <Folder Include="Repositories\Payment\" />
     <Folder Include="Repositories\SO\" />
     <Folder Include="Repositories\User\" />

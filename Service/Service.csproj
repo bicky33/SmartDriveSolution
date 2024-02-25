@@ -36,10 +36,4 @@
     <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Contract\Contract.csproj" />
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
-  </ItemGroup>
-
 </Project>
