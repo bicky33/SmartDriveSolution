@@ -26,6 +26,8 @@ using Service.UserModule;
 using System.Text;
 using Persistence.Repositories.SO;
 using Persistence.Repositories.CR;
+using Service.Abstraction.Payment;
+using Service.Base;
 
 namespace WebApi.Extensions
 {
@@ -68,6 +70,7 @@ namespace WebApi.Extensions
             services.AddScoped<IServiceSOManager, ServiceSOManager>();
             services.AddScoped<IServiceRequestSOManager, ServiceRequestSOManager>();
             services.AddScoped<IServicePartnerManager, ServicePartnerManager>();
+            services.AddScoped<IServicePaymentManager, ServicePaymentManager>();
         }
         public static void ConfigureMapster(this IServiceCollection services)
         {
@@ -76,7 +79,8 @@ namespace WebApi.Extensions
             services.AddSingleton(config);
         }
 
-        public static void ConfigureJwtGenerator(this IServiceCollection services, IConfiguration configuration) {
+        public static void ConfigureJwtGenerator(this IServiceCollection services, IConfiguration configuration)
+        {
             services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
             services.AddScoped<JwtTokenGenerator>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
