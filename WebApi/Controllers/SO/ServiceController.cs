@@ -1,5 +1,4 @@
 ﻿using Contract.DTO.SO;
-using Contract.DTO.SO.Composite;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.SO;
 using System.Formats.Asn1;
@@ -31,6 +30,13 @@ namespace WebApi.Controllers.SO
         public async Task<IActionResult> GetServiceById(int id)
         {
             var service = await _serviceManager.ServiceService.GetByIdAsync(id, false);
+            return Ok(service);
+        }
+        // GET api/<ServiceController>/5
+        [HttpGet("search")]
+        public async Task<IActionResult> GetServiceBySeroId(string seroid)
+        {
+            var service = await _serviceManager.ServiceService.SearchBySeroId(seroid);
             return Ok(service);
         }
 

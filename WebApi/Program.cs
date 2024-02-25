@@ -28,18 +28,6 @@ builder.Services.ConfigureService();
 builder.Services.ConfigureMapster();
 builder.Services.ConfigureJwtGenerator(builder.Configuration);
 
-// add cors policy
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: "SmartDrivePolicy",
-                      policy =>
-                      {
-                          policy.AllowAnyOrigin()
-                            .AllowAnyHeader()
-                            .AllowAnyMethod();
-                      });
-});
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -51,6 +39,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<GlobalHandlingException>();
 app.UseHttpsRedirection();
+app.UseCors("CorsPolicy");
 
 app.UseAuthorization();
 

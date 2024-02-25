@@ -10,6 +10,9 @@ using Mapster;
 using Service.Abstraction.Master;
 using Service.Abstraction.SO;
 using Domain.Entities.Users;
+using Contract.DTO.HR;
+using Service.Abstraction.Payment;
+using Contract.DTO.Payment;
 
 namespace Service.SO
 {
@@ -17,11 +20,13 @@ namespace Service.SO
     {
         private readonly IRepositorySOManager _repositoryManager;
         private readonly IServiceManagerMaster _serviceManagerMaster;
+        private readonly IServicePaymentManager _servicePaymentManager;
 
-        public ServiceService(IRepositorySOManager repositoryManager, IServiceManagerMaster serviceManagerMaster)
+        public ServiceService(IRepositorySOManager repositoryManager, IServiceManagerMaster serviceManagerMaster, IServicePaymentManager servicePaymentManager)
         {
             _repositoryManager = repositoryManager;
             _serviceManagerMaster = serviceManagerMaster;
+            _servicePaymentManager = servicePaymentManager;
         }
 
         public async Task<ServiceDto> ClosePolis(int servId, string reason)
@@ -276,6 +281,7 @@ namespace Service.SO
 
             // get area workgroup code
             var areaWorkgroupCode = await _repositoryManager.UnitOfWork.GetAgentAreaWorkgroup((int)serviceOrder.SeroAgentEntityid);
+
             // looping through template order task
             foreach (var task in TemplateTestaFeasibility.Select((value, index) => new { value, index }))
             {
@@ -313,7 +319,55 @@ namespace Service.SO
 
                 }
             }
-            
+
+            // service premi
+            var servicePremi = new ServicePremi()
+            {
+                SemiServId=service.ServId,
+                SemiStatus=EnumModuleServiceOrder.SERVSTATUS.ACTIVE.ToString(),
+                SemiModifiedDate=DateTime.Now,
+                SemiPaidType=serv.ServCreqEntity!.CustomerInscAsset!.CiasPaidType,
+                SemiPremiDebet=serv.ServCreqEntity!.CustomerInscAsset.CiasTotalPremi,
+            };
+            _repositoryManager.ServicePremiRepository.CreateEntity(servicePremi);
+            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+
+            // payment transaction
+
+
+            // service premi credit
+            if (servicePremi.SemiPaidType.Equals("CASH"))
+            {
+                
+
+                var servicePremiCredit = new ServicePremiCredit()
+                {
+                    SecrServId = service.ServId,
+                    SecrPremiDebet = servicePremi.SemiPremiDebet,
+                    SecrYear = serv.ServCreqEntity.CustomerInscAsset.CiasYear,
+                    SecrDuedate = DateTime.Today.AddDays(1),
+                };
+                _repositoryManager.ServicePremiCreditRepository.CreateEntity(servicePremiCredit);
+                await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            }
+            else
+            {
+                var creditTotal = servicePremi.SemiPremiDebet/12;
+                var dueDate = DateTime.Today.AddDays(1);
+                for (global::System.Int32 i = 0; i < 12; i++)
+                {
+                    var servicePremiCredit = new ServicePremiCredit()
+                    {
+                        SecrServId = service.ServId,
+                        SecrPremiDebet = creditTotal,
+                        SecrYear = serv.ServCreqEntity.CustomerInscAsset.CiasYear,
+                        SecrDuedate = dueDate.AddMonths(i),
+                    };
+                    _repositoryManager.ServicePremiCreditRepository.CreateEntity(servicePremiCredit);
+                    await _repositoryManager.UnitOfWork.SaveChangesAsync();
+                }
+            }
+
             // return service
             return service.Adapt<ServiceDto>();
         }
@@ -339,8 +393,23 @@ namespace Service.SO
             if (service == null)
                 throw new EntityNotFoundException(id,"Service");
             var serviceDtos = service.Adapt<ServiceDto>();
+            
             // service order
             serviceDtos.Seros = service.ServiceOrders.Adapt<List<ServiceOrderDto>>();
+
+            // customer
+            serviceDtos.ServCustEntity = service.ServCustEntity.Adapt<UserDto>();
+                
+            // creq -> customer insc asset && (employee area workgroup -> employee)
+            serviceDtos.ServCreqEntity = service.ServCreqEntity.Adapt<CustomerRequestDto>();
+            if (service.ServCreqEntity is not null &&
+                service.ServCreqEntity.CreqAgenEntity is not null &&
+                service.ServCreqEntity.CreqAgenEntity.EawgEntity is not null)
+                serviceDtos.ServCreqEntity.CreqAgenEntity!.EawgEntity = new EmployeeDto
+                {
+                    EmpName= service.ServCreqEntity.CreqAgenEntity.EawgEntity.EmpName
+                };
+
             // service order task
             foreach(var sero in service.ServiceOrders.Select((value, index) => new { value, index }))
             {
@@ -353,6 +422,7 @@ namespace Service.SO
                     SeotEnddate=c.SeotEnddate,
                     Sowos=c.Sowos,
                 }).ToList();
+
                 // service order workorder
                 foreach(var seot in sero.value.ServiceOrderTasks.Select((value, index) => new { value, index }))
                 {
@@ -368,6 +438,16 @@ namespace Service.SO
             return serviceDtos;
         }
 
+        public async Task<ServiceDto> SearchBySeroId(string seroId)
+        {
+            // get sero by seroid
+            var sero = await _repositoryManager.ServiceOrderRepository.GetEntityById(seroId,false);
+            // filter by sero.servId
+            if (sero.SeroServId is null)
+                throw new EntityBadRequestException("Entity with seroId not found");
+            return await GetByIdAsync((int)sero.SeroServId, false);
+        }
+
         public async Task<ServiceDtoCreate> UpdateAsync(int id, ServiceDtoCreate entity)
         {
             var services = await _repositoryManager.ServiceRepository.GetEntityById(id, true);
@@ -375,15 +455,15 @@ namespace Service.SO
                 throw new EntityNotFoundException(id,"Service");
 
             services.ServId = id;
-            services.ServCreatedOn = entity.ServCreatedOn;
-            services.ServType= entity.ServType;
-            services.ServInsuranceNo=entity.ServInsuranceNo;
-            services.ServStatus=entity.ServStatus;
-            services.ServVehicleNo=entity.ServVehicleNo;
-            services.ServStartdate=entity.ServStartdate;
-            services.ServEnddate=entity.ServEnddate;
-            services.ServCustEntityid = entity.ServCustEntityid;
-            services.ServCreqEntityid = entity.ServCreqEntityid;
+            services.ServCreatedOn = entity.ServCreatedOn is not null ? entity.ServCreatedOn : services.ServCreatedOn;
+            services.ServType= entity.ServType is not null ? entity.ServType : services.ServType;
+            services.ServInsuranceNo=entity.ServInsuranceNo is not null ? entity.ServInsuranceNo : services.ServInsuranceNo;
+            services.ServStatus=entity.ServStatus is not null ? entity.ServStatus : services.ServStatus;
+            services.ServVehicleNo=entity.ServVehicleNo is not null ? entity.ServVehicleNo : services.ServVehicleNo;
+            services.ServStartdate=entity.ServStartdate is not null ? entity.ServStartdate : services.ServStartdate;
+            services.ServEnddate=entity.ServEnddate is not null ? entity.ServEnddate : services.ServEnddate;
+            services.ServCustEntityid = entity.ServCustEntityid is not null ? entity.ServCustEntityid : services.ServCustEntityid;
+            services.ServCreqEntityid = entity.ServCreqEntityid is not null ? entity.ServCreqEntityid : services.ServCreqEntityid;
 
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
             return services.Adapt<ServiceDtoCreate>();

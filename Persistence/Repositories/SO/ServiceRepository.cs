@@ -36,6 +36,10 @@ namespace Persistence.Repositories.SO
             return await GetByCondition(c => c.ServId.Equals(newId), trackChanges)
                     .Include(c => c.ServCustEntity)
                     .Include(c => c.ServCreqEntity)
+                        .ThenInclude(c=>c.CreqAgenEntity)
+                            .ThenInclude(c=>c.EawgEntity)
+                    .Include(c => c.ServCreqEntity)
+                        .ThenInclude(c => c.CustomerInscAsset)
                     .Include(c => c.ServiceOrders)
                         .ThenInclude(c=>c.ServiceOrderTasks)
                             .ThenInclude(c=>c.ServiceOrderWorkorders)
@@ -60,6 +64,7 @@ namespace Persistence.Repositories.SO
                         {
                             UserFullName = c.ServCustEntity.UserFullName,
                         },
+                        ServCreqEntity=c.ServCreqEntity,
                         ServiceOrders = c.ServiceOrders,
                     })
                     .FirstOrDefaultAsync();

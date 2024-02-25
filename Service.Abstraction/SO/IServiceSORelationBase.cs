@@ -14,5 +14,6 @@ namespace Service.Abstraction.SO
         Task<TEntityDto> CreateServicePolis(CreateServicePolisDto createServicePolisDto);
         Task<TEntityDto> CreateClaimPolis(CreateClaimPolisDto createClaimPolisDto);
         Task<TEntityDto> ClosePolis(int servId, string reason);
+        Task<TEntityDto> SearchBySeroId(string seroId);
     }
 }

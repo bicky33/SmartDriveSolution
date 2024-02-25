@@ -79,16 +79,16 @@ namespace Service.SO
                 throw new EntityNotFoundExceptionSO(id,"Service Order");
 
             serviceOrder.SeroId = id;
-            serviceOrder.SeroOrdtType=entity.SeroOrdtType;
-            serviceOrder.SeroStatus=entity.SeroStatus;
-            serviceOrder.SeroReason=entity.SeroReason;
-            serviceOrder.ServClaimNo=entity.ServClaimNo;
-            serviceOrder.ServClaimStartdate=entity.ServClaimStartdate;
-            serviceOrder.ServClaimEnddate=entity.ServClaimEnddate;
-            serviceOrder.SeroServId = entity.SeroServId;
-            serviceOrder.SeroSeroId = entity.SeroSeroId;
-            serviceOrder.SeroAgentEntityid = entity.SeroAgentEntityid;
-            serviceOrder.SeroPartId = entity.SeroPartId;
+            serviceOrder.SeroOrdtType=entity.SeroOrdtType is not null? entity.SeroOrdtType: serviceOrder.SeroOrdtType;
+            serviceOrder.SeroStatus= entity.SeroStatus is not null ? entity.SeroStatus : serviceOrder.SeroStatus;
+            serviceOrder.SeroReason= entity.SeroReason is not null ? entity.SeroReason : serviceOrder.SeroReason;
+            serviceOrder.ServClaimNo= entity.ServClaimNo is not null ? entity.ServClaimNo : serviceOrder.ServClaimNo;
+            serviceOrder.ServClaimStartdate= entity.ServClaimStartdate is not null ? entity.ServClaimStartdate : serviceOrder.ServClaimStartdate;
+            serviceOrder.ServClaimEnddate= entity.ServClaimEnddate is not null ? entity.ServClaimEnddate : serviceOrder.ServClaimEnddate;
+            serviceOrder.SeroServId = entity.SeroServId is not null ? entity.SeroServId : serviceOrder.SeroServId;
+            serviceOrder.SeroSeroId = entity.SeroSeroId is not null ? entity.SeroSeroId : serviceOrder.SeroSeroId;
+            serviceOrder.SeroAgentEntityid = entity.SeroAgentEntityid is not null ? entity.SeroAgentEntityid : serviceOrder.SeroAgentEntityid;
+            serviceOrder.SeroPartId = entity.SeroPartId is not null ? entity.SeroPartId : serviceOrder.SeroPartId;
 
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
             return serviceOrder.Adapt<ServiceOrderDtoCreate>();
