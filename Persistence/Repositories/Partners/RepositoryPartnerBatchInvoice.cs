@@ -1,38 +1,43 @@
-﻿using Domain.Entities.Partners;
-using Domain.Repositories.Base;
-using Persistence.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Entities.SO;
+using Domain.Enum;
+using Domain.Repositories.Partners;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repositories.Partners
 {
-    internal class RepositoryPartnerBatchInvoice : RepositoryBase<BatchPartnerInvoice>, IRepositoryEntityBase<BatchPartnerInvoice>
+    internal class RepositoryPartnerBatchInvoice : IPartnerBatchInvoice
     {
-        public RepositoryPartnerBatchInvoice(SmartDriveContext dbContext) : base(dbContext)
+        private readonly SmartDriveContext _context;
+
+        public RepositoryPartnerBatchInvoice(SmartDriveContext context)
         {
+            _context = context;
         }
 
-        public void CreateEntity(BatchPartnerInvoice entity)
+        public async Task<IEnumerable<Service>> GetAllData()
         {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteEntity(BatchPartnerInvoice entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<BatchPartnerInvoice>> GetAllEntity(bool trackChanges)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<BatchPartnerInvoice?> GetEntityById(int id, bool trackChanges)
-        {
-            throw new NotImplementedException();
+            IQueryable<Service> data =  _context.Services.Where(x =>
+                x.ServType != null &&  x.ServType.Equals(EnumModuleServiceOrder.SERVTYPE.CLAIM.ToString()) &&
+                x.ServiceOrders.All(xx => xx.SeroStatus != null && xx.SeroStatus.Equals(EnumModuleServiceOrder.SEROSTATUS.CLOSED) && xx.SeroPartId != null)
+            ).Select( xxx => new Service
+            {
+                ServInsuranceNo = xxx.ServInsuranceNo,
+                ServVehicleNo = xxx.ServVehicleNo,
+                ServiceOrders = xxx.ServiceOrders.Select(x => 
+                    new ServiceOrder { 
+                        SeroId = x.SeroId,
+                        SeroStatus = x.SeroStatus,
+                        ClaimAssetEvidences = x.ClaimAssetEvidences.Select(xx => new ClaimAssetEvidence
+                        {
+                            CaevServiceFee = xx.CaevServiceFee
+                        }).ToList(),
+                        ClaimAssetSpareparts = x.ClaimAssetSpareparts.Select(xx => new ClaimAssetSparepart
+                        {
+                            CaspSubtotal = xx.CaspSubtotal
+                        }).ToList()
+                    }).ToList()
+            });
+            return await data.ToListAsync();
         }
     }
 }

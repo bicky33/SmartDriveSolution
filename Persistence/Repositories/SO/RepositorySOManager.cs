@@ -1,7 +1,9 @@
 ﻿using Domain.Entities.Master;
 using Domain.Entities.SO;
+using Domain.Repositories.Partners;
 using Domain.Repositories.SO;
 using Persistence.Repositories;
+using Persistence.Repositories.Partners;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +22,7 @@ namespace Persistence.Repositories.SO
         private readonly Lazy<IRepositorySOEntityBase<ClaimAssetSparepart, int>> _claimAssetSparepartRepository;
         private readonly Lazy<IRepositorySOEntityBase<ServicePremi, int>> _servicePremiRepository;
         private readonly Lazy<IRepositorySOEntityBase<ServicePremiCredit, int>> _servicePremiCreditRepository;
+        private readonly Lazy<IRepositoryPartnerClaimAssetEvidenceBatch> _repositoryPartnerClaimAssetEvidenceBatch;
         private readonly Lazy<IUnitOfWorksSO> _unitOfWork;
 
         public RepositorySOManager(SmartDriveContext dbContext)
@@ -33,6 +36,7 @@ namespace Persistence.Repositories.SO
             _claimAssetSparepartRepository = new Lazy<IRepositorySOEntityBase<ClaimAssetSparepart, int>>(() => new ClaimAssetSparepartRepository(dbContext));
             _servicePremiRepository = new Lazy<IRepositorySOEntityBase<ServicePremi, int>>(() => new ServicePremiRepository(dbContext));
             _servicePremiCreditRepository = new Lazy<IRepositorySOEntityBase<ServicePremiCredit, int>>(() => new ServicePremiCreditRepository(dbContext));
+            _repositoryPartnerClaimAssetEvidenceBatch = new Lazy<IRepositoryPartnerClaimAssetEvidenceBatch>(() => new RepositoryPartnerClaimAssetEvidenceBatch(dbContext));
 
 
         }
@@ -50,5 +54,7 @@ namespace Persistence.Repositories.SO
         public IRepositorySOEntityBase<ServicePremi, int> ServicePremiRepository => _servicePremiRepository.Value;
 
         public IRepositorySOEntityBase<ServicePremiCredit, int> ServicePremiCreditRepository => _servicePremiCreditRepository.Value;
+
+        public IRepositoryPartnerClaimAssetEvidenceBatch RepositoryPartnerClaimAssetEvidenceBatch => _repositoryPartnerClaimAssetEvidenceBatch.Value;
     }
 }

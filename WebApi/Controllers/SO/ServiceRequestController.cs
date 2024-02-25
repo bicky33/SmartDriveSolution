@@ -1,4 +1,5 @@
-﻿using Contract.DTO.SO;
+﻿
+using Contract.DTO.SO;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.SO;
 

@@ -63,5 +63,13 @@ namespace WebApi.Controllers.Partners
             await _servicePartnerManager.ServicePartner.DeleteAsync(id);
             return NoContent();
         }
+
+        [HttpGet("workorder")]
+        public async Task<ActionResult> GetWorkorder([FromQuery] int seroPartId, [FromQuery] string seotArwgCode)
+        {
+            IEnumerable<PartnerWorkOrderResponse> data = await _servicePartnerManager.ServicePartnerWorkOrder.GetAll(seroPartId, seotArwgCode);
+            return Ok(data);
+
+        }
     }
 }

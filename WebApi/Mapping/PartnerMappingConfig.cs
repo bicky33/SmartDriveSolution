@@ -1,4 +1,5 @@
 ﻿using Contract.DTO.Partners;
+using Contract.DTO.SO;
 using Domain.Entities.Partners;
 using Domain.Enum;
 using Mapster;
@@ -39,7 +40,8 @@ namespace WebApi.Mapping
             config.NewConfig<PartnerContact, PartnerContactDTO>()
                 .Map(dest => dest.PacoStatus, src => Enum.Parse<PartnerStatus>(src.PacoStatus ?? "ACTIVE"))
                 .Map(dest => dest.FullName, src => src.PacoUserEntity != null ? src.PacoUserEntity.UserFullName : null )
-                .Map(dest => dest.PhoneNumber, src => src.PacoUserEntity != null && src.PacoUserEntity.UserPhones != null ? src.PacoUserEntity.UserPhones.Select(d => d.UsphPhoneNumber).FirstOrDefault() : null);
+                .Map(dest => dest.PhoneNumber, src => src.PacoUserEntity != null 
+                && src.PacoUserEntity.UserPhones != null ? src.PacoUserEntity.UserPhones.Select(d => d.UsphPhoneNumber).FirstOrDefault() : null);
 
         }
     }

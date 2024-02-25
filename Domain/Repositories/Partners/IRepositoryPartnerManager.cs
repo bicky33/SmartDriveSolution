@@ -17,12 +17,13 @@ namespace Domain.Repositories.Partners
         public IRepositoryUserRole RepositoryUserRole { get; }
 
 
+        public IRepositoryPartnerWorkOrder RepositoryPartnerWorkOrder { get; }
         public IRepositoryPartner RepositoryPartner { get; }
         public IRepositoryPartnerAreaWorkgroup RepositoryPartnerAreaWorkgroup { get; }
         public IRepositoryPartnerContact RepositoryPartnerContact { get; }
-        public IRepositoryEntityBase<BatchPartnerInvoice> RepositoryPartnerBatchInvoice { get; }
+        public IPartnerBatchInvoice RepositoryPartnerBatchInvoice { get; }
         public IRepositoryBusinessEntity<BusinessEntity> RepositoryBusinessEntity { get; }
-
+        public IRepositoryPartnerClaimAssetSparepartBatch RepositoryClaimAssetSparepartBatch { get; }
         public IUnitOfWorks UnitOfWorks { get; }
     }
 }

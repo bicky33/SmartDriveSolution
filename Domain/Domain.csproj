@@ -22,7 +22,6 @@
     <Folder Include="Repositories\Payment\" />
     <Folder Include="Repositories\SO\" />
     <Folder Include="Repositories\User\" />
-
   </ItemGroup>
 
   <ItemGroup>

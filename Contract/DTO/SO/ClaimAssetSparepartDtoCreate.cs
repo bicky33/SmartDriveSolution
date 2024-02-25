@@ -11,22 +11,28 @@ using System.Threading.Tasks;
 
 namespace Contract.DTO.SO
 {
-    public class ClaimAssetSparepartDtoCreate
-    {
-        public int? CaspId { get; init; }
+    public record ClaimAssetSparepartDtoCreate(
+        [Range(1, int.MaxValue, ErrorMessage = "Please provide a valid CaspId.")]
+        int? CaspId,
 
-        public string? CaspItemName { get; init; }
+        [Required(ErrorMessage = "CaspItemName is required.")]
+        string? CaspItemName,
 
-        public int? CaspQuantity { get; init; }
+        [Range(1, int.MaxValue, ErrorMessage = "Please provide a valid CaspQuantity.")]
+        int? CaspQuantity,
 
-        public decimal? CaspItemPrice { get; init; }
+        [Range(0.01, double.MaxValue, ErrorMessage = "Please provide a valid CaspItemPrice.")]
+        decimal? CaspItemPrice,
 
-        public decimal? CaspSubtotal { get; init; }
+        [Range(0.01, double.MaxValue, ErrorMessage = "Please provide a valid CaspSubtotal.")]
+        decimal? CaspSubtotal,
 
-        public int? CaspPartEntityid { get; init; }
+        [Range(1, int.MaxValue, ErrorMessage = "Please provide a valid CaspPartEntityid.")]
+        int? CaspPartEntityid,
 
-        public string? CaspSeroId { get; init; }
+        string? CaspSeroId,
 
-        public DateTime? CaspCreatedDate { get; init; }
-    }
+        DateTime? CaspCreatedDate
+     );
+        
 }

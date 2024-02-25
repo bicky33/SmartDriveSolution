@@ -49,7 +49,7 @@ namespace Persistence.Repositories.Partners
 
         public async Task<PagedList<PartnerContact>> GetAllPagingAsync(bool trackChanges, EntityParameter parameter)
         {
-            IQueryable<PartnerContact> partnerContacts = _dbContext.PartnerContacts
+            IQueryable<PartnerContact> partnerContacts =  _dbContext.PartnerContacts
                 .Include(c => c.PacoUserEntity)
                 .Select(c => new PartnerContact
                 {

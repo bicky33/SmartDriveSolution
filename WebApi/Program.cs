@@ -1,7 +1,3 @@
-using Contract.DTO.Partners;
-using Domain.Entities.Partners;
-using Domain.Enum;
-using Mapster;
 using Microsoft.Extensions.FileProviders;
 using System.Text.Json.Serialization;
 using WebApi.Extensions;
@@ -9,7 +5,6 @@ using WebApi.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers().AddJsonOptions(x =>
 {
     x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
