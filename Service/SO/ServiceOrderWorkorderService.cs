@@ -52,7 +52,7 @@ namespace Service.SO
         {
             var services = await _repositoryManager.ServiceOrderWorkorderRepository.GetEntityById(id, true);
             if (services == null)
-                throw new EntityNotFoundException(id,"ServiceOrderTask");
+                throw new EntityNotFoundException(id, "ServiceOrderTask");
 
             services.SowoId = id;
             services.SowoName = entity.SowoName is not null ? entity.SowoName : services.SowoName;
@@ -61,7 +61,6 @@ namespace Service.SO
             services.SowoSeotId=entity.SowoSeotId is not null? entity.SowoSeotId : services.SowoSeotId;
 
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
-            
             return services.Adapt<ServiceOrderWorkorderDtoCreate>();
         }
     }

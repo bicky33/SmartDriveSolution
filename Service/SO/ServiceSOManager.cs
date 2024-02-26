@@ -1,6 +1,7 @@
 ﻿using Contract.DTO.SO;
 using Domain.Repositories.SO;
 using Service.Abstraction.Master;
+using Service.Abstraction.Payment;
 using Service.Abstraction.SO;
 
 namespace Service.SO
@@ -16,9 +17,9 @@ namespace Service.SO
         private readonly Lazy<IServiceSOEntityBase<ServicePremiDto, ServicePremiDtoCreate, int>> _servicePremiService;
         private readonly Lazy<IServiceSOEntityBase<ServicePremiCreditDto, ServicePremiCreditDtoCreate, int>> _servicePremiCreditService;
 
-        public ServiceSOManager(IRepositorySOManager repositoryManager, IServiceManagerMaster serviceManagerMaster)
+        public ServiceSOManager(IRepositorySOManager repositoryManager, IServiceManagerMaster serviceManagerMaster,IServicePaymentManager servicePaymentManager)
         {
-            _serviceService = new Lazy<IServiceSORelationBase<ServiceDto,ServiceDtoCreate,int>>(()=> new ServiceService(repositoryManager, serviceManagerMaster));
+            _serviceService = new Lazy<IServiceSORelationBase<ServiceDto,ServiceDtoCreate,int>>(()=> new ServiceService(repositoryManager, serviceManagerMaster, servicePaymentManager));
             _serviceOrderService = new Lazy<IServiceSOEntityBase<ServiceOrderDto, ServiceOrderDtoCreate, string>>(()=> new ServiceOrderService(repositoryManager));
             _serviceOrderTaskService = new Lazy<IServiceSOEntityBase<ServiceOrderTaskDto, ServiceOrderTaskDtoCreate, int>>(()=> new ServiceOrderTaskService(repositoryManager));
             _serviceOrderWorkorderService = new Lazy<IServiceSOEntityBase<ServiceOrderWorkorderDto, ServiceOrderWorkorderDtoCreate, int>>(()=> new ServiceOrderWorkorderService(repositoryManager));

@@ -259,7 +259,7 @@ namespace Service.SO
             _repositoryManager.ServiceRepository.CreateEntity(service);
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
 
-            // get sero by serv id
+             //get sero by serv id
             var allSero = await _repositoryManager.ServiceOrderRepository.GetAllEntity(false);
             var sero = allSero.Where(c => c.SeroServId.Equals(serv.ServId)).FirstOrDefault();
 
@@ -332,37 +332,49 @@ namespace Service.SO
             _repositoryManager.ServicePremiRepository.CreateEntity(servicePremi);
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
 
+            // check if user acccount of axa exist
+            
             // payment transaction
-
+            var creditTotal = servicePremi.SemiPremiDebet / 12;
+            var payment = new PaymentTransactionDepositDto()
+            {
+                PatrType = PaymentTypeEnum.PREMI,
+                SendAmount = servicePremi.SemiPaidType!.Equals("CASH")?servicePremi.SemiPremiDebet:creditTotal,
+                PatrUsacAccountNoTo = "AXA",
+            };
+            var servId = service.ServId;
+            var paymentReturn = await _servicePaymentManager.PaymentTransactionService.CreateDepositAsync(payment);
+            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            //_repositoryManager.UnitOfWork.DisableTracking();
 
             // service premi credit
-            if (servicePremi.SemiPaidType.Equals("CASH"))
+            if (servicePremi.SemiPaidType!.Equals("CASH"))
             {
-                
-
                 var servicePremiCredit = new ServicePremiCredit()
                 {
-                    SecrServId = service.ServId,
+                    SecrServId = servicePremi.SemiServId,
                     SecrPremiDebet = servicePremi.SemiPremiDebet,
                     SecrYear = serv.ServCreqEntity.CustomerInscAsset.CiasYear,
                     SecrDuedate = DateTime.Today.AddDays(1),
+                    SecrPatrTrxno = paymentReturn.PatrTrxno,
                 };
                 _repositoryManager.ServicePremiCreditRepository.CreateEntity(servicePremiCredit);
                 await _repositoryManager.UnitOfWork.SaveChangesAsync();
             }
             else
             {
-                var creditTotal = servicePremi.SemiPremiDebet/12;
                 var dueDate = DateTime.Today.AddDays(1);
+
                 for (global::System.Int32 i = 0; i < 12; i++)
                 {
                     var servicePremiCredit = new ServicePremiCredit()
                     {
-                        SecrServId = service.ServId,
+                        SecrServId = servicePremi.SemiServId,
                         SecrPremiDebet = creditTotal,
                         SecrYear = serv.ServCreqEntity.CustomerInscAsset.CiasYear,
                         SecrDuedate = dueDate.AddMonths(i),
                     };
+                    if (i.Equals(0)) servicePremiCredit.SecrPatrTrxno = paymentReturn.PatrTrxno;
                     _repositoryManager.ServicePremiCreditRepository.CreateEntity(servicePremiCredit);
                     await _repositoryManager.UnitOfWork.SaveChangesAsync();
                 }

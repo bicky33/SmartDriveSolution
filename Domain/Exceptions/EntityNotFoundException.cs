@@ -9,5 +9,7 @@
         public EntityNotFoundException(string? id, string message) : base($"Entity {message} with identifier {id} not found")
         {
         }
+
+
     }
 }
