@@ -56,12 +56,11 @@ namespace Service.SO
 
             services.SowoId = id;
             services.SowoName = entity.SowoName;
-            services.SowoModifiedDate= entity.SowoStatus != services.SowoStatus ? DateTime.Now : entity.SowoModifiedDate;
-            services.SowoStatus=entity.SowoStatus;
-            services.SowoSeotId=entity.SowoSeotId;
+            services.SowoModifiedDate = entity.SowoModifiedDate;
+            services.SowoStatus = entity.SowoStatus;
+            services.SowoSeotId = entity.SowoSeotId;
 
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
-            
             return services.Adapt<ServiceOrderWorkorderDtoCreate>();
         }
     }

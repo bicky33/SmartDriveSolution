@@ -1,14 +1,13 @@
-﻿using Domain.Entities.Master;
+﻿using Contract.DTO.Master;
+using Domain.Entities.Master;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.Master;
-
-using Contract.DTO.Master;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApi.Controllers.Master
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/master/[controller]")]
     [ApiController]
     public class TemplateInsurancePremiController : ControllerBase
     {
@@ -19,7 +18,6 @@ namespace WebApi.Controllers.Master
             _serviceManagerMaster = serviceManagerMaster;
         }
 
-        // GET: api/<CarSeriesController>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TemplateInsurancePremi>>> Get()
         {
@@ -27,7 +25,6 @@ namespace WebApi.Controllers.Master
             return Ok(temi);
         }
 
-        // GET api/<CarSeriesController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TemplateInsurancePremi>> Get(int id)
         {
@@ -35,7 +32,6 @@ namespace WebApi.Controllers.Master
             return Ok(temi);
         }
 
-        // POST api/<CarSeriesController>
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] TemplateInsurancePremiResponse request)
         {
@@ -47,7 +43,6 @@ namespace WebApi.Controllers.Master
             return CreatedAtAction(nameof(Get), new { id = temi.TemiId }, temi);
         }
 
-        // PUT api/<CarSeriesController>/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] TemplateInsurancePremiResponse request)
         {
@@ -55,7 +50,6 @@ namespace WebApi.Controllers.Master
             return CreatedAtAction(nameof(Get), new { id = request.TemiId }, request);
         }
 
-        // DELETE api/<CarSeriesController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

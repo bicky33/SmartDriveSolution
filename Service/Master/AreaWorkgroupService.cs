@@ -1,5 +1,6 @@
 ﻿using Contract.DTO.Master;
 using Domain.Entities.Master;
+using Domain.Exceptions;
 using Domain.Repositories.Master;
 using Mapster;
 using Service.Abstraction.Master;
@@ -29,8 +30,7 @@ namespace Service.Master
             var areaWorkgroup = await _repositoryManagerMaster.AreaWorkgroupRepository.GetEntityByNameMaster(name, false);
             if (areaWorkgroup == null)
             {
-                //throw new EntityNotFoundException(name);
-                throw new Exception($"Data {name} Not Found");
+                throw new EntityNotFoundException(name, nameof(areaWorkgroup));
             }
             _repositoryManagerMaster.AreaWorkgroupRepository.DeleteEntityMaster(areaWorkgroup);
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
@@ -48,27 +48,24 @@ namespace Service.Master
             var areaWorkgroup = await _repositoryManagerMaster.AreaWorkgroupRepository.GetEntityByNameMaster(name, false);
             if (areaWorkgroup == null)
             {
-                //throw new EntityNotFoundException(name);
-                throw new Exception($"Data {name} Not Found");
+                throw new EntityNotFoundException(name, nameof(areaWorkgroup));
             }
             var areaWorkgroupResponse = areaWorkgroup.Adapt<AreaWorkgroupResponse>();
             return areaWorkgroupResponse;
         }
 
-        public async Task<AreaWorkgroupResponse> UpdateAsyncMaster(string name, AreaWorkgroupResponse entity)
+        public async Task UpdateAsyncMaster(string name, AreaWorkgroupResponse entity)
         {
             var areaWorkgroup = await _repositoryManagerMaster.AreaWorkgroupRepository.GetEntityByNameMaster(name, true);
             if (areaWorkgroup == null)
             {
-                //throw new EntityNotFoundException(id);
-                throw new Exception($"Data {name} Not Found");
+                throw new EntityNotFoundException(name, nameof(entity));
             }
             areaWorkgroup.ArwgCode = entity.ArwgCode;
             areaWorkgroup.ArwgDesc = entity.ArwgDesc;
             areaWorkgroup.ArwgCityId = entity.ArwgCityId;
 
             await _repositoryManagerMaster.UnitOfWork.SaveChangesAsync();
-            return areaWorkgroup.Adapt<AreaWorkgroupResponse>();
         }
     }
 }

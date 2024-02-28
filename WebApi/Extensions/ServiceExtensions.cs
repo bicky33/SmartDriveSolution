@@ -26,6 +26,8 @@ using Service.UserModule;
 using System.Text;
 using Persistence.Repositories.SO;
 using Persistence.Repositories.CR;
+using Service.Abstraction.Payment;
+using Service.Base;
 using Service.HR;
 using Service.Abstraction.HR;
 using Domain.Repositories.HR;
@@ -73,6 +75,7 @@ namespace WebApi.Extensions
             services.AddScoped<IServiceSOManager, ServiceSOManager>();
             services.AddScoped<IServiceRequestSOManager, ServiceRequestSOManager>();
             services.AddScoped<IServicePartnerManager, ServicePartnerManager>();
+            services.AddScoped<IServicePaymentManager, ServicePaymentManager>();
             services.AddScoped<IServiceHRManager, ServiceHRManager>();
         }
         public static void ConfigureMapster(this IServiceCollection services)
@@ -83,7 +86,8 @@ namespace WebApi.Extensions
             
         }
 
-        public static void ConfigureJwtGenerator(this IServiceCollection services, IConfiguration configuration) {
+        public static void ConfigureJwtGenerator(this IServiceCollection services, IConfiguration configuration)
+        {
             services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
             services.AddScoped<JwtTokenGenerator>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

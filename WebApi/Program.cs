@@ -1,8 +1,13 @@
+using Contract;
+using Contract.Attributes;
 using Contract.DTO.Partners;
 using Domain.Entities.Partners;
+using Domain.Entities.SO;
 using Domain.Enum;
 using Mapster;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using WebApi.Extensions;
 
@@ -13,6 +18,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddJsonOptions(x =>
 {
     x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
+    c.SchemaFilter<ConditionalPropertySchemaFilter>(); // Register the custom schema filter
 });
 builder.Services.ConfigureCors();
 builder.Services.AddCors();

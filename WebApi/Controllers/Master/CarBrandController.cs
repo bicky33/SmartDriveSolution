@@ -7,7 +7,7 @@ using Service.Abstraction.Master;
 
 namespace WebApi.Controllers.Master
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/master/[controller]")]
     [ApiController]
     public class CarBrandController : ControllerBase
     {
@@ -18,15 +18,13 @@ namespace WebApi.Controllers.Master
             _serviceManagerMaster = serviceManagerMaster;
         }
 
-        // GET: api/<CarBrandController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CarBrand>>> Get()
+        public async Task<ActionResult<IEnumerable<CarBrandResponse>>> Get()
         {
             var carBrands = await _serviceManagerMaster.CarBrandService.GetAllAsync(false);
             return Ok(carBrands);
         }
 
-        // GET api/<CarBrandController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CarBrand>> Get(int id)
         {
@@ -34,7 +32,6 @@ namespace WebApi.Controllers.Master
             return Ok(carBrand);
         }
 
-        // POST api/<CarBrandController>
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CarBrandResponse request)
         {
@@ -46,16 +43,13 @@ namespace WebApi.Controllers.Master
             return CreatedAtAction(nameof(Get), new { id = carBrand.CabrId }, carBrand);
         }
 
-        // PUT api/<CarBrandController>/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] CarBrandResponse request)
         {
             await _serviceManagerMaster.CarBrandService.UpdateAsync(id, request);
-            //return CreatedAtAction(nameof(Get), new { id = request.CabrId }, request);
             return NoContent();
         }
 
-        // DELETE api/<CarBrandController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

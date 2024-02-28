@@ -26,8 +26,8 @@ namespace Service.Payment
                 .BusinessEntityRepository.CreateEntity();
             await _repositoryManager.UnitOfWorks.SaveChangesAsync();
 
+            entity.BankEntityid = bussinessEntity.Entityid;
             var bank = entity.Adapt<Bank>();
-            bank.BankEntityid = bussinessEntity.Entityid;
             _repositoryManager.BankRepository.CreateEntity(bank);
             await _repositoryManager.UnitOfWorks.SaveChangesAsync();
 

@@ -7,7 +7,7 @@ using Service.Abstraction.Master;
 
 namespace WebApi.Controllers.Master
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/master/[controller]")]
     [ApiController]
     public class AreaWorkgroupController : ControllerBase
     {
@@ -18,7 +18,6 @@ namespace WebApi.Controllers.Master
             _serviceManagerMaster = serviceManagerMaster;
         }
 
-        // GET: api/<CarSeriesController>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AreaWorkgroup>>> Get()
         {
@@ -26,7 +25,6 @@ namespace WebApi.Controllers.Master
             return Ok(areaWorkgroups);
         }
 
-        // GET api/<CarSeriesController>/5
         [HttpGet("{name}")]
         public async Task<ActionResult<AreaWorkgroup>> Get(string name)
         {
@@ -34,7 +32,6 @@ namespace WebApi.Controllers.Master
             return Ok(areaWorkgroup);
         }
 
-        // POST api/<CarSeriesController>
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AreaWorkgroupResponse request)
         {
@@ -46,16 +43,13 @@ namespace WebApi.Controllers.Master
             return CreatedAtAction(nameof(Get), new { name = areaWorkgroup.ArwgCode}, areaWorkgroup);
         }
 
-        // PUT api/<CarSeriesController>/5
         [HttpPut("{name}")]
         public async Task<IActionResult> Update(string name, [FromBody] AreaWorkgroupResponse request)
         {
             await _serviceManagerMaster.AreaWorkgroupService.UpdateAsyncMaster(name, request);
-            // return CreatedAtAction(nameof(Get), new { name = request.ArwgCode }, request);
             return NoContent();
         }
 
-        // DELETE api/<CarSeriesController>/5
         [HttpDelete("{name}")]
         public async Task<IActionResult> DeleteInsuranceType(string name)
         {

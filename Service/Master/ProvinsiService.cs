@@ -1,13 +1,16 @@
 ﻿using Contract.DTO.Master;
 using Domain.Entities.Master;
 using Domain.Exceptions;
+using Domain.Repositories.Base;
 using Domain.Repositories.Master;
+using Domain.RequestFeatured;
 using Mapster;
 using Service.Abstraction.Base;
+using Service.Abstraction.Master;
 
 namespace Service.Master
 {
-    public class ProvinsiService : IServiceEntityBase<ProvinsiResponse>
+    public class ProvinsiService :  IServiceWithPaging<ProvinsiResponse>
     {
         private readonly IRepositoryManagerMaster _repositoryManagerMaster;
 
@@ -41,6 +44,15 @@ namespace Service.Master
             var categories = await _repositoryManagerMaster.ProvinsiRepository.GetAllEntity(false);
             var categoriesResponse = categories.Adapt<IEnumerable<ProvinsiResponse>>();
             return categoriesResponse;
+        }
+
+        public async Task<IEnumerable<ProvinsiResponse>> GetAllWithPagingAsync(EntityParameter entityParams, bool trackChanges)
+        {
+
+            var provinces = await _repositoryManagerMaster.ProvinsiRepository.GetWithPaging(entityParams, trackChanges);
+            //var categories = await _repositoryManager.CategoryRepository.GetAllPaging(entityParams, trackChanges);
+            var provinceDtos = provinces.Adapt<IEnumerable<ProvinsiResponse>>();
+            return provinceDtos;
         }
 
         public async Task<ProvinsiResponse> GetByIdAsync(int id, bool trackChanges)

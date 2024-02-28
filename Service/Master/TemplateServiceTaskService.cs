@@ -62,16 +62,6 @@ namespace Service.Master
             return templateServiceTaskResponse;
         }
 
-        public async Task<TemplateServiceTaskResponse> GetTestaByTestaTetyIdAsync(int id, bool trackChanges)
-        {
-            var templateServiceTask = await _repositoryManagerMaster.TemplateServiceTaskRepository.GetTestaByTestaTetyID(id, false);
-            if (templateServiceTask == null)
-            {
-                throw new EntityNotFoundException(id, nameof(templateServiceTask));
-            }
-            var templateServiceTaskResponse = templateServiceTask.Adapt<TemplateServiceTaskResponse>();
-            return templateServiceTaskResponse;
-        }
 
         public async Task UpdateAsync(int id, TemplateServiceTaskResponse entity)
         {

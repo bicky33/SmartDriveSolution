@@ -1,4 +1,6 @@
 ﻿using Contract.DTO.Payment;
+using Domain.Entities.Payment;
+using Domain.Enum;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.Payment;
 
@@ -35,13 +37,16 @@ namespace WebApi.Controllers.Payment
 
         // POST api/<UserAccountsController>
         [HttpPost]
-        public async Task<ActionResult<UserAccountDto>> Post([FromBody] UserAccountDto dto)
+        public async Task<ActionResult<UserAccountDto>> Post(AccountTypeEnum accountType, [FromBody] UserAccountCreateDto dto)
         {
-            if (dto == null)
-                return BadRequest("Bank object is not valid");
-            await _serviceManager.UserAccountService.CreateAsync(dto);
+            var existData = await _serviceManager.UserAccountService.GetByAccountNoAsync(dto.UsacAccountno, false, ReturnException.RETURN_WHEN_EXIST);
+            if (existData != null)
+                return BadRequest("Account Number Already Exsist");
 
-            return CreatedAtAction(nameof(GetById), new { id = dto.UsacId }, dto);
+            if (dto == null)
+                return BadRequest("Bank object is not valid"); 
+            var a = await _serviceManager.UserAccountService.CreateAsync(accountType, dto); 
+            return CreatedAtAction(nameof(GetById), new { id = a.UsacId }, a);
         }
 
         // PUT api/<UserAccountsController>/5
