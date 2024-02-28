@@ -1,4 +1,6 @@
 ﻿using Domain.Entities.HR;
+using Domain.Entities.Master;
+using Domain.Entities.Partners;
 using Domain.Repositories.HR;
 using Domain.RequestFeatured;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +31,42 @@ namespace Persistence.Repositories.HR
 
         public async Task<IEnumerable<EmployeeAreWorkgroup>> GetAllEntity(bool trackChanges)
         {
-            return await GetAll(trackChanges).OrderBy(c => c.EawgId).ToListAsync();
+            IQueryable<EmployeeAreWorkgroup> result = _dbContext.EmployeeAreWorkgroups.AsNoTracking().Where(x => x.SoftDelete == "ACTIVE")
+                 .Include(c => c.EawgArwgCodeNavigation)
+                     .ThenInclude(d => d.ArwgCity)
+                         .ThenInclude(e => e.CityProv)
+                             .ThenInclude(f => f.ProvZones)
+                 .Include(g => g.EawgEntity).Where(x => x.EawgEntity.SoftDelete == "ACTIVE")
+             .Select(c => new EmployeeAreWorkgroup
+             {
+                 EawgId = c.EawgId,
+                 EawgArwgCodeNavigation = new AreaWorkgroup
+                 {
+                     ArwgCode = c.EawgArwgCodeNavigation.ArwgCode,
+                     ArwgCity = new City
+                     {
+                         CityId = c.EawgArwgCodeNavigation.ArwgCity.CityId,
+                         CityName = c.EawgArwgCodeNavigation.ArwgCity.CityName,
+                         CityProv = new Provinsi
+                         {
+                             ProvId = c.EawgArwgCodeNavigation.ArwgCity.CityProv.ProvId,
+                             ProvName = c.EawgArwgCodeNavigation.ArwgCity.CityProv.ProvName,
+                             ProvZones = new Zone
+                             {
+                                 ZonesId = c.EawgArwgCodeNavigation.ArwgCity.CityProv.ProvZones.ZonesId,
+                                 ZonesName = c.EawgArwgCodeNavigation.ArwgCity.CityProv.ProvZones.ZonesName,
+                             }
+                         }
+                     }
+                 },
+                 EawgEntity = new Employee
+                 {
+                     EmpName = c.EawgEntity.EmpName,
+                 }
+             });
+
+
+            return result;
         }
 
         public async Task<EmployeeAreWorkgroup> GetEntityById(int id, bool trackChanges)
@@ -39,8 +76,80 @@ namespace Persistence.Repositories.HR
 
         public async Task<PagedList<EmployeeAreWorkgroup>> GetAllPaging(EntityParameter entityParams, bool trackChanges)
         {
-            var arwg = GetByCondition(C => C.EawgArwgCode.StartsWith(entityParams.SearchBy), false).OrderBy(c => c.EawgId);
+            IQueryable<EmployeeAreWorkgroup> arwg = _dbContext.EmployeeAreWorkgroups.AsNoTracking().Where(x => x.SoftDelete == "ACTIVE")
+                 .Include(c => c.EawgArwgCodeNavigation)
+                     .ThenInclude(d => d.ArwgCity)
+                         .ThenInclude(e => e.CityProv)
+                             .ThenInclude(f => f.ProvZones)
+                 .Include(g => g.EawgEntity).Where(x => x.EawgEntity.SoftDelete == "ACTIVE" && EF.Functions.Like(x.EawgEntity.EmpName, $"%{entityParams.SearchBy}%"))
+             .Select(c => new EmployeeAreWorkgroup
+             {
+                 EawgId = c.EawgId,
+                 EawgArwgCodeNavigation = new AreaWorkgroup
+                 {
+                     ArwgCode = c.EawgArwgCodeNavigation.ArwgCode,
+                     ArwgCity = new City
+                     {
+                         CityId = c.EawgArwgCodeNavigation.ArwgCity.CityId,
+                         CityName = c.EawgArwgCodeNavigation.ArwgCity.CityName,
+                         CityProv = new Provinsi
+                         {
+                             ProvId = c.EawgArwgCodeNavigation.ArwgCity.CityProv.ProvId,
+                             ProvName = c.EawgArwgCodeNavigation.ArwgCity.CityProv.ProvName,
+                             ProvZones = new Zone
+                             {
+                                 ZonesId = c.EawgArwgCodeNavigation.ArwgCity.CityProv.ProvZones.ZonesId,
+                                 ZonesName = c.EawgArwgCodeNavigation.ArwgCity.CityProv.ProvZones.ZonesName,
+                             }
+                         }
+                     }
+                 },
+                 EawgEntity = new Employee
+                 {
+                     EmpName = c.EawgEntity.EmpName,
+                 }
+             });
             return  PagedList<EmployeeAreWorkgroup>.ToPagedList(arwg, entityParams.PageNumber, entityParams.PageSize);
+        }
+
+        public async Task<IEnumerable<EmployeeAreWorkgroup>> FindEmployeeById(int id)
+        {
+            IQueryable<EmployeeAreWorkgroup> result = _dbContext.EmployeeAreWorkgroups.AsNoTracking().Where(x => x.SoftDelete == "ACTIVE" && x.EawgId == id)
+                 .Include(c => c.EawgArwgCodeNavigation)
+                     .ThenInclude(d => d.ArwgCity)
+                         .ThenInclude(e => e.CityProv)
+                             .ThenInclude(f => f.ProvZones)
+                 .Include(g => g.EawgEntity).Where(x => x.EawgEntity.SoftDelete == "ACTIVE")
+             .Select(c => new EmployeeAreWorkgroup
+             {
+                 EawgId = c.EawgId,
+                 EawgArwgCodeNavigation = new AreaWorkgroup
+                 {
+                     ArwgCode = c.EawgArwgCodeNavigation.ArwgCode,
+                     ArwgCity = new City
+                     {
+                         CityId = c.EawgArwgCodeNavigation.ArwgCity.CityId,
+                         CityName = c.EawgArwgCodeNavigation.ArwgCity.CityName,
+                         CityProv = new Provinsi
+                         {
+                             ProvId = c.EawgArwgCodeNavigation.ArwgCity.CityProv.ProvId,
+                             ProvName = c.EawgArwgCodeNavigation.ArwgCity.CityProv.ProvName,
+                             ProvZones = new Zone
+                             {
+                                 ZonesId = c.EawgArwgCodeNavigation.ArwgCity.CityProv.ProvZones.ZonesId,
+                                 ZonesName = c.EawgArwgCodeNavigation.ArwgCity.CityProv.ProvZones.ZonesName,
+                             }
+                         }
+                     }
+                 },
+                 EawgEntity = new Employee
+                 {
+                     EmpName = c.EawgEntity.EmpName,
+                 }
+             });
+
+
+            return result;
         }
     }
 }

@@ -12,11 +12,12 @@ namespace Contract.DTO.HR.CompositeDto
 {
     public class UserPhoneCompositeDto
     {
-        public int UsphEntityid { get; set; }
+
         public string UsphPhoneNumber { get; set; } = null!;
 
 
         public string? UsphPhoneType { get; set; }
+        public DateTime? UsphModifiedDate { get; set; }
 
 
 

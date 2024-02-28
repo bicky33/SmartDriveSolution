@@ -1,5 +1,6 @@
 ﻿using Contract.DTO.HR;
 using Contract.DTO.HR.CompositeDto;
+using Contract.DTO.HR.UpdateEmployee;
 using Domain.Entities.HR;
 using Domain.Entities.Master;
 using Domain.RequestFeatured;
@@ -26,8 +27,8 @@ namespace WebApi.Controllers.HR
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployee()
         {
-           var employees = await _serviceManager.EmployeeService.GetAllAsync(false);
-
+           var employees = await _serviceManager.EmployeeService.GetData(false);
+            
             return Ok(employees);
         }
 
@@ -40,28 +41,39 @@ namespace WebApi.Controllers.HR
         }
 
         // GET api/<EmployeeController>/5
-        [HttpGet("{id}")]
+        /*[HttpGet("{id}")]
         public async Task<ActionResult<Employee>> GetEmployeeById(int id)
         {
             var category = await _serviceManager.EmployeeService.GetByIdAsync(id, false);
+            return Ok(category);
+        }*/
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Employee>> FindEmployeeById(int id)
+        {
+            var category = await _serviceManager.EmployeeService.FindEmployeeById(id);
             return Ok(category);
         }
 
         // POST api/<EmployeeController>
         [HttpPost]
-        public  async Task<IActionResult> CreateEmployee([FromBody] BusinessEntityCompositeDto employeeDto)
+        public  async Task<IActionResult> CreateEmployee([FromBody] EmployeeCreateDto employeeDto)
         {
-           // employeeDto.UserComposite.UserEntityid = employeeDto.Entityid;
-            var data = await _serviceManager.EmployeeService.CreateEmployee(employeeDto);
+            // employeeDto.UserComposite.UserEntityid = employeeDto.Entityid;
+            
+            var emp = await _serviceManager.EmployeeService.CreateEmployee(employeeDto);
 
 
-          return Ok(data);
+          return Ok(emp);
         }
 
         // PUT api/<EmployeeController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> UpdateData(int id, [FromBody] EmployeeUpdateDto value)
         {
+            await _serviceManager.EmployeeService.UpdateData(id, value);
+
+            return Ok(value);
         }
 
         // DELETE api/<EmployeeController>/5

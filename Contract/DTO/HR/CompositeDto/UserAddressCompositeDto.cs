@@ -13,10 +13,14 @@ namespace Contract.DTO.HR.CompositeDto
 {
     public class UserAddressCompositeDto
     {
-        public int UsdrEntityid { get; set; }
+/*  [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        [Column("usdr_id")]*/
+        public int UsdrId { get; set; } 
         public string? UsdrAddress1 { get; set; }
 
         public string? UsdrAddress2 { get; set; }
+
+        public DateTime? UsdrModifiedDate { get; set; }
 
         public int? UsdrCityId { get; set; }
 

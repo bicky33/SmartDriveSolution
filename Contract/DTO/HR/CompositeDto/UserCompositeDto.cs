@@ -18,20 +18,21 @@ namespace Contract.DTO.HR.CompositeDto
     public class UserCompositeDto
     {
 
-        public int UserEntityid { get; set; }
 
         public string UserEmail { get; set; } = null!;
 
         public string UserNationalId { get; set; } = null!;
+        public string? UserNpwp { get; set; }
+        public DateTime? UserModifiedDate { get; set; }
 
 
-        public virtual EmployeeDto? EmployeeDto { get; set; }    
+        //public virtual EmployeeDto? EmployeeDto { get; set; }    
 
         //public virtual BusinessEntityCompositeDto? BusinessEntityCompositeDto { get; set; }
-        public virtual ICollection<UserAddressCompositeDto> UserAddressCompositeDto { get; set; } = new List<UserAddressCompositeDto>();
+        public virtual UserAddressCompositeDto UserAddressCompositeDto { get; set; } 
 
-        public virtual ICollection<UserPhoneCompositeDto> UserPhoneCompositeDto { get; set; } = new List<UserPhoneCompositeDto>();
+        public virtual UserPhoneCompositeDto UserPhoneCompositeDto { get; set; }
 
-        public virtual ICollection<UserRoleCompositeDto> UserRoleCompositeDto { get; set; } = new List<UserRoleCompositeDto>();
+        public virtual UserRoleCompositeDto UserRoleCompositeDto { get; set; } 
     }
 }

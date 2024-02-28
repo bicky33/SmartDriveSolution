@@ -11,6 +11,9 @@ namespace Service.Abstraction.HR
 {
     public interface IEmployeeArwgService : IServiceEntityBase<EmployeeAreaWorkGroupDto>
     {
-        Task<IEnumerable<EmployeeAreaWorkGroupDto>> GetAllPagingAsync(EntityParameter entityParameter, bool trackChanges);
+        Task<IEnumerable<EmployeeAreaWorkGroupShowDto>> GetAllPagingAsync(EntityParameter entityParameter, bool trackChanges);
+        Task<IEnumerable<EmployeeAreaWorkGroupShowDto>> GetAllData(bool trackChanges);
+
+        Task<IEnumerable<EmployeeAreaWorkGroupShowDto>> FindEmployeeById(int id);
     }
 }

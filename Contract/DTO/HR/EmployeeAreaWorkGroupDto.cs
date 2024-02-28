@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Contract.DTO.HR.CompositeDto;
 
 namespace Contract.DTO.HR
 {
@@ -28,9 +29,12 @@ namespace Contract.DTO.HR
         public string? EawgArwgCode { get; set; }
 
         public DateTime? EawgModifiedDate { get; set; }
+        public ArwgCompositeDto? EawgArwgCodeNavigation { get; set; }
 
-/*        public AreaWorkgroup? EawgArwgCodeNavigation { get; set; }
-        public Employee EawgEntity { get; set; } = null!;*/
+        public string? SoftDelete {get; set; }
+
+        /*        public AreaWorkgroup? EawgArwgCodeNavigation { get; set; }
+                public Employee EawgEntity { get; set; } = null!;*/
 
 
     }

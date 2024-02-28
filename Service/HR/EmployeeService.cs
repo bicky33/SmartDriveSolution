@@ -1,12 +1,18 @@
 ﻿using Contract.DTO.HR;
 using Contract.DTO.HR.CompositeDto;
+using Contract.DTO.HR.UpdateEmployee;
 using Contract.DTO.UserModule;
 using Domain.Entities.HR;
+using Domain.Entities.Master;
 using Domain.Entities.Users;
+using Domain.Exceptions;
 using Domain.Repositories.HR;
+using Domain.Repositories.UserModule;
 using Domain.RequestFeatured;
 using Mapster;
+using Service.Abstraction.Base;
 using Service.Abstraction.HR;
+using System.Transactions;
 
 namespace Service.HR
 {
@@ -14,99 +20,128 @@ namespace Service.HR
     {
 
         private readonly IRepositoryHRManager _repositoryManager;
+        private readonly IRepositoryManagerUser _userRepositoryManager;
 
 
-        public EmployeeService(IRepositoryHRManager repositoryManager)
+        public EmployeeService(IRepositoryHRManager repositoryManager, IRepositoryManagerUser userRepositoryManager)
         {
             _repositoryManager = repositoryManager;
+            _userRepositoryManager = userRepositoryManager;
         }
 
-        public async Task<BusinessEntityCompositeDto> CreateEmployee(BusinessEntityCompositeDto entity)
+        public async Task<EmployeeCreateDto> CreateEmployee(EmployeeCreateDto entity)
         {
-            /*            var emp = entity.Adapt<Employee>();
+            using var transaction = new TransactionScope(
+                TransactionScopeOption.Required,
+                TransactionScopeAsyncFlowOption.Enabled
 
-                        var userDto = entity.Adapt<User>();
-                        var userAddress = entity.Adapt<UserAddress>();
-                        var userPhone = entity.Adapt<UserPhone>();
-                        var userRole = entity.Adapt<UserRole>();
-
-                        userDto.UserEntityid = emp.EmpEntityid;
-                        userAddress.UsdrEntityid = emp.EmpEntityid;
-                        userRole.UsroEntityid = emp.EmpEntityid;
-                        userPhone.UsphEntityid = emp.EmpEntityid;*/
-            var be = entity.Adapt<BusinessEntity>();
-            var user = entity.UserComposite.Adapt<User>();
-            var userAddress = entity.UserComposite.UserAddressCompositeDto.Adapt<IEnumerable<UserAddress>>();
-            var userPhone = entity.UserComposite.UserPhoneCompositeDto.Adapt<IEnumerable<UserPhone>>();
-            var userRole = entity.UserComposite.UserRoleCompositeDto.Adapt<IEnumerable<UserRole>>();
-            var employee = entity.UserComposite.EmployeeDto.Adapt<Employee>();
-
-
-/*            var user = userDto.Adapt<User>();
-            var userAddress = userAddressDto.Adapt<UserAddress>();
-            var userPhone = userPhoneDto.Adapt<UserPhone>();
-            var userRole = userRoleDto.Adapt<UserRole>();
-            var employee = employeeDto.Adapt<Employee>();*/
-
-            user.UserEntityid = be.Entityid;
-
-
-            foreach (var address in userAddress)
+                );
+            try
             {
+                var be = _userRepositoryManager.BusinessEntityRepository.CreateEntity();
+                await _userRepositoryManager.UnitOfWork.SaveChangesAsync();
+
+                var emp = entity.Adapt<Employee>();
+                emp.SoftDelete = "ACTIVE";
+                var phone = entity.UserComposite.UserPhoneCompositeDto.Adapt<UserPhone>();
+                var address = entity.UserComposite.UserAddressCompositeDto.Adapt<UserAddress>();
+                var role = entity.UserComposite.UserRoleCompositeDto.Adapt<UserRole>();
+
+                emp.EmpEntityid = be.Entityid;
+
+                var user = entity.UserComposite.Adapt<User>();
+                user.UserEntityid = be.Entityid;
+
+                // address.UsdrId = be.Entityid;
                 address.UsdrEntityid = be.Entityid;
-            }
-
-            foreach (var phone in userPhone)
-            {
-                phone.UsphEntityid = be.Entityid;
-                user.UserPassword = phone.UsphPhoneNumber;
-
-            }
-
-            foreach (var role in userRole)
-            {
                 role.UsroEntityid = be.Entityid;
+                phone.UsphEntityid = be.Entityid;
+                user.UserFullName = emp.EmpName;
+
+                //asign username dan password
+                user.UserName = phone.UsphPhoneNumber;
+                user.UserPassword = BCrypt.Net.BCrypt.HashPassword(phone.UsphPhoneNumber);
+
+                _userRepositoryManager.UserRepository.CreateEntity(user);
+                await _userRepositoryManager.UnitOfWork.SaveChangesAsync();
+
+                if (entity.grantUser = true)
+                {
+                    role.UsroRoleName = "EM";
+                    role.UsroStatus = "ACTIVE";
+                    _userRepositoryManager.UserRoleRepository.CreateEntity(role);
+                    await _userRepositoryManager.UnitOfWork.SaveChangesAsync();
+                }
+                else
+                {
+                    role.UsroRoleName = "EM";
+                    role.UsroStatus = "INACTIVE";
+                    _userRepositoryManager.UserRoleRepository.CreateEntity(role);
+                    await _userRepositoryManager.UnitOfWork.SaveChangesAsync();
+                }
+
+                _userRepositoryManager.UserAddressRepository.CreateEntity(address);
+                await _userRepositoryManager.UnitOfWork.SaveChangesAsync();
+
+
+                _userRepositoryManager.UserPhoneRepository.CreateEntity(phone);
+                await _userRepositoryManager.UnitOfWork.SaveChangesAsync();
+
+                _repositoryManager.EmployeeRepository.CreateEntity(emp);
+                await _repositoryManager.UnitOfWorks.SaveChangesAsync();
+
+                transaction.Complete();
+                return entity;
             }
-            employee.EmpEntityid = be.Entityid;
+            catch (Exception)
+            {
+                throw;
+            }
 
+        }
 
-            user.UserFullName = employee.EmpName;
-
-            user.UserEmail = user.UserEmail;
-
-            var dataAddress = userAddress.FirstOrDefault();
-            var dataPhone = userPhone.FirstOrDefault();
-            var dataRole = userRole.FirstOrDefault();
-
-            _repositoryManager.EmployeeRepository.CreateEmployee(be,user,dataAddress,dataPhone,dataRole,employee);
-            await _repositoryManager.UnitOfWorks.SaveChangesAsync();
-
+        public async Task<EmployeeDto> CreateAsync(EmployeeDto entity)
+        {
+            var be = _userRepositoryManager.BusinessEntityRepository.CreateEntity();
             return entity;
         }
 
-        public Task<EmployeeDto> CreateAsync(EmployeeDto entity)
+
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
+            try
+            {
+                var category = await _repositoryManager.EmployeeRepository.GetEntityById(id, true);
+                if (category == null)
+                {
+                    throw new EntityNotFoundException(id, nameof(Employee));
+                }
+                category.SoftDelete = "INACTIVE";
+                await _repositoryManager.UnitOfWorks.SaveChangesAsync();
+
+                transaction.Complete();
+            } 
+            catch(Exception)
+            {
+                throw;
+            }
+           
         }
 
-
-        public Task DeleteAsync(int id)
+        public async Task<IEnumerable<EmployeeShowDto>> GetData(bool trackChanges)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<EmployeeDto>> GetAllAsync(bool trackChanges)
-        {
-            var employee = await _repositoryManager.EmployeeRepository.GetAllEntity(false);
-            var employeeDto = employee.Adapt<IEnumerable<EmployeeDto>>();
+            var employee = await _repositoryManager.EmployeeRepository.GetAllEntity(trackChanges);
+            var employeeDto = employee.Adapt<IEnumerable<EmployeeShowDto>>();
             return employeeDto;
         }
 
-        public async Task<IEnumerable<EmployeeDto>> GetAllPagingAsync(EntityParameter entityParameter, bool trackChanges)
+        public async Task<IEnumerable<EmployeeShowDto>> GetAllPagingAsync(EntityParameter entityParameter, bool trackChanges)
         {
             var categories = await _repositoryManager.EmployeeRepository.GetAllPaging(entityParameter, trackChanges);
 
-            var categoryDto = categories.Adapt<IEnumerable<EmployeeDto>>();
+            var categoryDto = categories.Adapt<IEnumerable<EmployeeShowDto>>();
 
             return categoryDto;
         }
@@ -114,19 +149,83 @@ namespace Service.HR
         public async Task<EmployeeDto> GetByIdAsync(int id, bool trackChanges)
         {
             var category = await _repositoryManager.EmployeeRepository.GetEntityById(id, false);
-            /* if (category == null)
-             {
-                 throw new EntityBadRequestException(id, "Category");
-             }*/
+            if (category == null)
+            {
+                throw new EntityNotFoundException(id, nameof(EmployeeDto));
+            }
 
             var data = category.Adapt<EmployeeDto>();
 
             return data;
         }
 
+        public async Task UpdateData(int id, EmployeeUpdateDto entity)
+        {
+            using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
+            try
+            {
+                //update employee
+                var data = await _repositoryManager.EmployeeRepository.GetEntityById(id, true);
+                if (data == null)
+                {
+                    throw new EntityNotFoundException(id, nameof(Employee));
+                }
+                data.EmpName = entity.EmpName;
+                data.EmpGraduate = entity.EmpGraduate.ToString();
+                data.EmpNetSalary = entity.EmpNetSalary;
+                data.EmpJobCode = entity.EmpJobCode;
+                data.EmpModifiedDate = DateTime.Now;
+                data.EmpAccountNumber = entity.EmpAccountNumber;
+                await _repositoryManager.UnitOfWorks.SaveChangesAsync();
+
+                //Update user
+                var user = await _userRepositoryManager.UserRepository.GetEntityById(id, true);
+
+                if (user == null)
+                {
+                    throw new EntityNotFoundException(id, nameof(User));
+                }
+
+                user.UserFullName = data.EmpName;
+                await _userRepositoryManager.UnitOfWork.SaveChangesAsync();
+
+                var userAddress = await _userRepositoryManager.UserAddressRepository.GetAllEntityById(id, true);
+                if (userAddress == null)
+                {
+                    throw new EntityNotFoundException(id, nameof(UserAddress));
+                }
+                var address = userAddress.FirstOrDefault();
+                address.UsdrAddress1 = entity.UserComposite.UserAddressCompositeDto.UsdrAddress1;
+                address.UsdrAddress2 = entity.UserComposite.UserAddressCompositeDto.UsdrAddress2;
+                address.UsdrCityId = entity.UserComposite.UserAddressCompositeDto.UsdrCityId;
+
+                await _userRepositoryManager.UnitOfWork.SaveChangesAsync();
+
+                transaction.Complete();
+            } 
+            catch (Exception)
+            {
+                throw;
+            }
+
+
+        }
+            Task<IEnumerable<EmployeeDto>> IServiceEntityBase<EmployeeDto>.GetAllAsync(bool trackChanges)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task UpdateAsync(int id, EmployeeDto entity)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<EmployeeShowDto>> FindEmployeeById(int id)
+        {
+            var employee = await _repositoryManager.EmployeeRepository.FindEmployeeById(id);
+            var employeeDto = employee.Adapt<IEnumerable<EmployeeShowDto>>();
+            return employeeDto;
         }
     }
 }

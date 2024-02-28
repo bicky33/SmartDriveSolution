@@ -65,4 +65,6 @@ public partial class Employee
     [InverseProperty("EmsaEmpEntity")]
     public virtual ICollection<EmployeeSalaryDetail> EmployeeSalaryDetails { get; set; } = new List<EmployeeSalaryDetail>();
 
+    [Column("soft_delete")]
+    public string? SoftDelete { get; set; }
 }

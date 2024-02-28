@@ -24,16 +24,23 @@ namespace WebApi.Controllers.HR
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EmployeeAreWorkgroup>>> GetEmployeeArwg()
         {
-            var categories = await _serviceManager.EmployeeArwgService.GetAllAsync(false);
+            var categories = await _serviceManager.EmployeeArwgService.GetAllData(false);
 
             return Ok(categories);
         }
 
         // GET api/<EmployeeArwgController>/5
+        /*        [HttpGet("{id}")]
+                public async Task<ActionResult<EmployeeAreWorkgroup>> GetEmployeArwgById(int id)
+                {
+                    var arwg = await _serviceManager.EmployeeArwgService.GetByIdAsync(id, false);
+                    return Ok(arwg);
+                }*/
+
         [HttpGet("{id}")]
         public async Task<ActionResult<EmployeeAreWorkgroup>> GetEmployeArwgById(int id)
         {
-            var arwg = await _serviceManager.EmployeeArwgService.GetByIdAsync(id, false);
+            var arwg = await _serviceManager.EmployeeArwgService.FindEmployeeById(id);
             return Ok(arwg);
         }
 
@@ -80,7 +87,7 @@ namespace WebApi.Controllers.HR
         public async Task<ActionResult<IEnumerable<EmployeeAreWorkgroup>>> GetAllPaging([FromQuery] EntityParameter entityParameter)
         {
             var arwg = await _serviceManager.EmployeeArwgService.GetAllPagingAsync(entityParameter, false);
-
+           // var arwgDto = arwg.Adapt<EmployeeAreaWorkGroupShowDto>();
             return Ok(arwg);
         }
     }

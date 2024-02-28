@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Service.Abstraction.User;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,5 +15,10 @@ namespace Service.Abstraction.HR
         IBatchEmployeeSalaryService BatchEmployeeSalaryService { get; }
         IEmployeeSalaryDetailService EmployeeSalaryDetailService { get; }
         ITemplateSalaryService TemplateSalaryService { get; }
+/*        IServiceBusinessEntity BusinessEntityService { get; }
+        IServiceUser UserService { get; }
+        IServiceUserAddress UserAddressService { get; }
+        IServiceUserRole UserRoleService { get; }
+        IServiceUserPhone UserPhoneService { get; }*/
     }
 }

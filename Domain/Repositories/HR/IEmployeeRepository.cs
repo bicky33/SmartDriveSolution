@@ -8,7 +8,8 @@ namespace Domain.Repositories.HR
     public interface IEmployeeRepository : IRepositoryEntityBase<Employee>
     {
         Task<PagedList<Employee>> GetAllPaging(EntityParameter entityParams, bool trackChanges); 
-        void CreateEmployee(BusinessEntity be, User user, UserAddress userAddress, UserPhone userPhone, UserRole userRole, Employee employee); 
-
+        void CreateEmployee(BusinessEntity be, User user, UserAddress userAddress, UserPhone userPhone, UserRole userRole, Employee employee);
+        Task<IEnumerable<Employee>> FindEmployeeById(int id);
+        //Task<Employee> GetData();
     }
 }

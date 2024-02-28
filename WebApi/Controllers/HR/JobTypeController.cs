@@ -56,7 +56,7 @@ namespace WebApi.Controllers.HR
 
         // PUT api/<JobTypeController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateJobType(string id, [FromBody] JobTypeDtoCreate jobTypeDto)
+        public async Task<IActionResult> UpdateJobType(string id, [FromBody] JobTypeUpdateDto jobTypeDto)
         {
            /* var jobType = new JobTypeDto
             {
@@ -69,7 +69,7 @@ namespace WebApi.Controllers.HR
            var jobType = jobTypeDto.Adapt<JobTypeDto>();
             await _serviceManager.JobTypeService.UpdateDataAsync(id, jobType);
 
-            return Ok(jobType);
+            return Ok(jobTypeDto);
         }
 
         // DELETE api/<JobTypeController>/5

@@ -4,6 +4,7 @@ using Domain.Exceptions;
 using Domain.Repositories.HR;
 using Domain.RequestFeatured;
 using Mapster;
+using Service.Abstraction.Base;
 using Service.Abstraction.HR;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace Service.HR
         {
 
             var data = entity.Adapt<EmployeeAreWorkgroup>();
+            data.SoftDelete = "ACTIVE";
             _repositoryManager.EmployeeArwgRepository.CreateEntity(data);
             await _repositoryManager.UnitOfWorks.SaveChangesAsync();
 
@@ -34,28 +36,40 @@ namespace Service.HR
 
         public async Task DeleteAsync(int id)
         {
-            var arwg = await _repositoryManager.EmployeeArwgRepository.GetEntityById(id, false);
+            var arwg = await _repositoryManager.EmployeeArwgRepository.GetEntityById(id, true);
             if (arwg == null)
             {
                 throw new EntityNotFoundException(id, nameof(EmployeeAreWorkgroup));
             }
-            _repositoryManager.EmployeeArwgRepository.DeleteEntity(arwg);
+            arwg.SoftDelete = "INACTIVE";
             await _repositoryManager.UnitOfWorks.SaveChangesAsync();
 
         }
 
-        public async Task<IEnumerable<EmployeeAreaWorkGroupDto>> GetAllAsync(bool trackChanges)
+        public async Task<IEnumerable<EmployeeAreaWorkGroupShowDto>> FindEmployeeById(int id)
         {
-            var arwg = await _repositoryManager.EmployeeArwgRepository.GetAllEntity(false);
-            var arwgDto = arwg.Adapt<IEnumerable<EmployeeAreaWorkGroupDto>>();
+            var arwg = await _repositoryManager.EmployeeArwgRepository.FindEmployeeById(id);
+            var arwgDto = arwg.Adapt<IEnumerable<EmployeeAreaWorkGroupShowDto>>();
             return arwgDto;
         }
 
-        public async Task<IEnumerable<EmployeeAreaWorkGroupDto>> GetAllPagingAsync(EntityParameter entityParameter, bool trackChanges)
+        public Task<IEnumerable<EmployeeAreaWorkGroupDto>> GetAllAsync(bool trackChanges)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<EmployeeAreaWorkGroupShowDto>> GetAllData(bool trackChanges)
+        {
+            var arwg = await _repositoryManager.EmployeeArwgRepository.GetAllEntity(trackChanges);
+            var arwgDto = arwg.Adapt<IEnumerable<EmployeeAreaWorkGroupShowDto>>();
+            return arwgDto;
+        }
+
+        public async Task<IEnumerable<EmployeeAreaWorkGroupShowDto>> GetAllPagingAsync(EntityParameter entityParameter, bool trackChanges)
         {
             var arwg = await _repositoryManager.EmployeeArwgRepository.GetAllPaging(entityParameter, trackChanges);
 
-            var arwgDto = arwg.Adapt<IEnumerable<EmployeeAreaWorkGroupDto>>();
+            var arwgDto = arwg.Adapt<IEnumerable<EmployeeAreaWorkGroupShowDto>>();
 
             return arwgDto;
         }
@@ -89,5 +103,7 @@ namespace Service.HR
             await _repositoryManager.UnitOfWorks.SaveChangesAsync();
 
         }
+
+
     }
 }

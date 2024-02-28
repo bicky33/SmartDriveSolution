@@ -7,7 +7,7 @@ using Service.Abstraction.User;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace WebApi.Controllers.User
+namespace WebApi.Controllers.Users
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -44,7 +44,7 @@ namespace WebApi.Controllers.User
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] UserDto body)
         {
-            if(body == null)
+            if (body == null)
             {
                 return BadRequest();
             }
@@ -74,7 +74,7 @@ namespace WebApi.Controllers.User
         public async Task<IActionResult> Put(int id, [FromBody] UserDto body)
         {
             var me = _serviceManager.LoginService.GetCurrentUser(HttpContext.User);
-            if(me.Sub != id.ToString())
+            if (me.Sub != id.ToString())
             {
                 return Forbid();
             }
@@ -111,7 +111,7 @@ namespace WebApi.Controllers.User
         [HttpPut("UpdatePassword/{id}")]
         public async Task<IActionResult> UpdatePassword(int id, [FromBody] UserUpdatePasswordRequestDto body)
         {
-            if(body == null)
+            if (body == null)
             {
                 return BadRequest();
             }

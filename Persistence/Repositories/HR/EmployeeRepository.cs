@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.HR;
+using Domain.Entities.Partners;
 using Domain.Entities.Users;
 using Domain.Repositories.HR;
 using Domain.RequestFeatured;
@@ -33,16 +34,62 @@ namespace Persistence.Repositories.HR
             Delete(entity);
         }
 
+        public async Task<IEnumerable<Employee>> FindEmployeeById(int id)
+        {
+
+            return await _dbContext.Employees.Where(x => x.SoftDelete == "ACTIVE" && x.EmpEntityid == id).Include(x => x.EmpJobCodeNavigation).Select(x => new Employee
+            {
+                EmpName = x.EmpName,
+                EmpJoinDate = x.EmpJoinDate,
+                EmpGraduate = x.EmpGraduate,
+                EmpJobCodeNavigation = new JobType
+                {
+                    JobDesc = x.EmpJobCodeNavigation.JobDesc,
+                },
+                EmpNetSalary = x.EmpNetSalary,
+                EmpAccountNumber = x.EmpAccountNumber,
+                EmpEntityid = x.EmpEntityid,
+            }).OrderBy(x => x.EmpName).ToListAsync();
+        }
+
         public async Task<IEnumerable<Employee>> GetAllEntity(bool trackChanges)
         {
-            return await GetAll(trackChanges).OrderBy(c => c.EmpEntityid).ToListAsync();
+            return await _dbContext.Employees.Where(x => x.SoftDelete == "ACTIVE").Include(x => x.EmpJobCodeNavigation).Select(x => new Employee
+            {
+                EmpName = x.EmpName, 
+                EmpJoinDate = x.EmpJoinDate,
+                EmpGraduate = x.EmpGraduate,
+                EmpJobCodeNavigation = new JobType
+                {
+                    JobDesc = x.EmpJobCodeNavigation.JobDesc,
+                },
+                EmpNetSalary = x.EmpNetSalary,
+                EmpAccountNumber = x.EmpAccountNumber,
+                EmpEntityid = x.EmpEntityid,
+            }).OrderBy(x => x.EmpName).ToListAsync();
         }
+
 
         public async Task<PagedList<Employee>> GetAllPaging(EntityParameter entityParams, bool trackChanges)
         {
-            var categories = GetByCondition(C => C.EmpName.StartsWith(entityParams.SearchBy), false).OrderBy(c => c.EmpEntityid);
+            //users = users.Where(u => EF.Functions.Like(u.UserName, $"%{entityParams.SearchBy}%"));
+            IQueryable <Employee>categories =  _dbContext.Employees.Where(x => x.SoftDelete == "ACTIVE"  && EF.Functions.Like(x.EmpName, $"%{entityParams.SearchBy}%")).Include(x => x.EmpJobCodeNavigation).Select(x => new Employee
+            {
+                EmpName = x.EmpName,
+                EmpJoinDate = x.EmpJoinDate,
+                EmpGraduate = x.EmpGraduate,
+                EmpJobCodeNavigation = new JobType
+                {
+                    JobDesc = x.EmpJobCodeNavigation.JobDesc,
+                },
+                EmpNetSalary = x.EmpNetSalary,
+                EmpAccountNumber = x.EmpAccountNumber,
+                EmpEntityid = x.EmpEntityid,
+            }).OrderBy(x => x.EmpName);
             return PagedList<Employee>.ToPagedList(categories, entityParams.PageNumber, entityParams.PageSize);
         }
+
+
 
         public async Task<Employee> GetEntityById(int id, bool trackChanges)
         {

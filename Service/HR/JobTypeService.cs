@@ -98,8 +98,8 @@ namespace Service.HR
             }
 
             category.JobCode = entity.JobCode;
-            category.JobModifiedDate = entity.JobModifiedDate;
-            category.JobDesc = entity.JobDesc;
+            category.JobModifiedDate = DateTime.Now;
+            category.JobDesc = "iu9ohyhu9yho9u";
             category.JobRateMin = entity.JobRateMin;
             category.JobRateMax = entity.JobRateMax;
             await _repositoryManager.UnitOfWorks.SaveChangesAsync();
@@ -109,9 +109,7 @@ namespace Service.HR
         {
             var category = await _repositoryManager.JobTypeRepository.GetJobTypeById(id, true);
 
-
-            category.JobCode = entity.JobCode;
-            category.JobModifiedDate = entity.JobModifiedDate;
+            category.JobModifiedDate = DateTime.Now;
             category.JobDesc = entity.JobDesc;
             category.JobRateMin = entity.JobRateMin;
             category.JobRateMax = entity.JobRateMax;

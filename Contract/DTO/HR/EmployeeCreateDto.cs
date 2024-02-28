@@ -10,12 +10,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Contract.DTO.UserModule;
 using Contract.DTO.HR.CompositeDto;
+using Domain.Enum.HR;
 
 namespace Contract.DTO.HR
 {
     public class EmployeeCreateDto
     {
 
+        [StringLength(85)]
 
         public string? EmpName { get; set; }
 
@@ -24,28 +26,32 @@ namespace Contract.DTO.HR
 
 
 
-        public string? EmpType { get; set; }
+        public EmployeeType? EmpType { get; set; }
 
 
-        public string? EmpStatus { get; set; }
+        public Status? EmpStatus { get; set; }
 
-        public string? EmpGraduate { get; set; }
+        public EmployeeGraduate? EmpGraduate { get; set; }
 
 
         public decimal? EmpNetSalary { get; set; }
 
-
+        [StringLength(15)]
         public string? EmpAccountNumber { get; set; }
 
 
         public DateTime? EmpModifiedDate { get; set; }
 
-
+        [StringLength(5)]
         public string? EmpJobCode { get; set; }
 
         public virtual UserCompositeDto UserComposite { get; set; } = null!;
+        public bool grantUser {  get; set; }
 
-       // public virtual JobTypeDto? JobTypeDto { get; set; }
+       // [Column("soft_delete")]
+       // public string? SoftDelete { get; set; }
+
+        // public virtual JobTypeDto? JobTypeDto { get; set; }
 
 
     }

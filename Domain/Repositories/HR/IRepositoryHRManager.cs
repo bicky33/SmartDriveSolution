@@ -18,6 +18,10 @@ namespace Domain.Repositories.HR
         IEmployeeSalaryDetailRepository EmployeeSalaryDetailRepository { get; }
         ITemplateSalaryRepository TemplateSalaryRepository { get; }
         IRepositoryBusinessEntity<BusinessEntity> BusinessEntityRepository { get; }
+        IRepositoryUser RepositoryUser { get; }
+        IRepositoryUserAddress RepositoryUserAddress { get; }
+        IRepositoryUserPhone RepositoryUserPhone { get; }
+        IRepositoryUserRole RepositoryUserRole { get; }
         IUnitOfWorks UnitOfWorks { get; }
     }
 }
