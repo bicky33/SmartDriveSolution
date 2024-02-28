@@ -26,6 +26,7 @@ builder.Services.AddSwaggerGen(c =>
     c.SchemaFilter<ConditionalPropertySchemaFilter>(); // Register the custom schema filter
 });
 builder.Services.ConfigureCors();
+builder.Services.AddCors();
 builder.Services.ConfigureDbContext(builder.Configuration);
 builder.Services.AddTransient<GlobalHandlingException>();
 

@@ -1,5 +1,4 @@
-﻿using Domain.Entities.Master;
-using Domain.Entities.SO;
+﻿using Domain.Entities.SO;
 using Domain.Repositories.SO;
 using Persistence.Repositories;
 using System;

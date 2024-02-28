@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.User;
 using System.Security.Claims;
 
-namespace WebApi.Controllers.User
+namespace WebApi.Controllers.Users
 {
     [Route("api/[controller]")]
     [ApiController]
