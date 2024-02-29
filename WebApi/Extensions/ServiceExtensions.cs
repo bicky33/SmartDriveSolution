@@ -28,6 +28,10 @@ using Persistence.Repositories.SO;
 using Persistence.Repositories.CR;
 using Service.Abstraction.Payment;
 using Service.Base;
+using Service.HR;
+using Service.Abstraction.HR;
+using Domain.Repositories.HR;
+using Persistence.Repositories.HR;
 
 namespace WebApi.Extensions
 {
@@ -62,6 +66,7 @@ namespace WebApi.Extensions
             services.AddScoped<IRepositorySOManager, RepositorySOManager>();
             services.AddScoped<IRepositoryCustomerManager, RepositoryCustomerManager>();
             services.AddScoped<IRepositoryPartnerManager, RepositoryPartnerManager>();
+            services.AddScoped<IRepositoryHRManager, RepositoryHRManager>();
         }
         public static void ConfigureService(this IServiceCollection services)
         {
@@ -70,12 +75,14 @@ namespace WebApi.Extensions
             services.AddScoped<IServiceSOManager, ServiceSOManager>();
             services.AddScoped<IServicePartnerManager, ServicePartnerManager>();
             services.AddScoped<IServicePaymentManager, ServicePaymentManager>();
+            services.AddScoped<IServiceHRManager, ServiceHRManager>();
         }
         public static void ConfigureMapster(this IServiceCollection services)
         {
             var config = TypeAdapterConfig.GlobalSettings;
             config.Scan(Assembly.GetExecutingAssembly());
             services.AddSingleton(config);
+            
         }
 
         public static void ConfigureJwtGenerator(this IServiceCollection services, IConfiguration configuration)

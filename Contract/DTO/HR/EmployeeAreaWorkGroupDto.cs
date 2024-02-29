@@ -30,7 +30,7 @@ namespace Contract.DTO.HR
 
         public DateTime? EawgModifiedDate { get; set; }
         public ArwgCompositeDto? EawgArwgCodeNavigation { get; set; }
-        
+
 
         public string? SoftDelete {get; set; }
 

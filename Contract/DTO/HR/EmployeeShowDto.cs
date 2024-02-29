@@ -17,10 +17,10 @@ namespace Contract.DTO.HR
 
         public decimal? EmpNetSalary { get; set; }
 
-        public string? EmpStatus { get; set; } 
+        //public string? EmpStatus { get; set; } 
         public string? EmpAccountNumber { get; set; }
 
 
-        //public JobTypeShowDto? EmpJobCodeNavigation { get; set; }
+        public JobTypeShowDto? EmpJobCodeNavigation { get; set; }
     }
 }
