@@ -27,20 +27,27 @@
   <ItemGroup>
     <Folder Include="Controllers\HR\" />
     <Folder Include="Controllers\Master\" />
+    <Folder Include="Controllers\CR\" />
+    <Folder Include="Controllers\Master\" />
+
+    <Folder Include="Controllers\Master\" />
+
     <Folder Include="Controllers\Partner\" />
     <Folder Include="Controllers\Payment\" />
+    <Folder Include="Controllers\Users\" />
     <Folder Include="Controllers\SO\" />
     <Folder Include="Controllers\User\" />
-    <Folder Include="Controllers\SO\" />
-    <Folder Include="Resources\Images\" />
-    <Folder Include="Resources\Images\Users\" />
+    <Folder Include="Controllers\SO\" /> 
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Contract\Contract.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Persistence\Persistence.csproj" />
-    <ProjectReference Include="..\Service\Service.csproj" />
+    <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
+    <ProjectReference Include="..\Service\Services.csproj" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

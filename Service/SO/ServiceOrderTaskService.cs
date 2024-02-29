@@ -1,4 +1,5 @@
 ﻿using Contract.DTO.SO;
+using Domain.Entities.SO;
 using Domain.Exceptions;
 using Domain.Repositories.SO;
 using Mapster;
@@ -41,11 +42,18 @@ namespace Service.SO
 
         public async Task<ServiceOrderTaskDto> GetByIdAsync(int id, bool trackChanges)
         {
-            var service = await _repositoryManager.ServiceOrderTaskRepository.GetEntityById(id, trackChanges);
-            if (service == null)
+            var task = await _repositoryManager.ServiceOrderTaskRepository.GetEntityById(id, trackChanges);
+            if (task == null)
                 throw new EntityNotFoundException(id, "ServiceOrderTask");
-            var serviceDtos = service.Adapt<ServiceOrderTaskDto>();
-            return serviceDtos;
+            var taskDto = task.Adapt<ServiceOrderTaskDto>();
+            taskDto.Sowos=task.ServiceOrderWorkorders.Adapt<ICollection<ServiceOrderWorkorderDto>>().Select(c=>new ServiceOrderWorkorderDto
+            {
+                SowoId = c.SowoId,
+                SowoModifiedDate = c.SowoModifiedDate,
+                SowoName = c.SowoName,
+                SowoStatus = c.SowoStatus,
+            }).ToList();
+            return taskDto;
         }
 
         public async Task<ServiceOrderTaskDtoCreate> UpdateAsync(int id, ServiceOrderTaskDtoCreate entity)
@@ -55,14 +63,14 @@ namespace Service.SO
                 throw new EntityNotFoundException(id, "ServiceOrderTask");
 
             services.SeotId = id;
-            services.SeotName = entity.SeotName;
-            services.SeotStartdate = entity.SeotStartdate;
-            services.SeotEnddate = entity.SeotEnddate;
-            services.SeotActualStartdate = entity.SeotActualStartdate;
-            services.SeotActualEnddate = entity.SeotActualEnddate;
-            services.SeotStatus = entity.SeotStatus;
-            services.SeotArwgCode = entity.SeotArwgCode;
-            services.SeotSeroId = entity.SeotSeroId;
+            services.SeotName = entity.SeotName is not null? entity.SeotName: services.SeotName;
+            services.SeotStartdate = entity.SeotStartdate is not null ? entity.SeotStartdate : services.SeotStartdate;
+            services.SeotEnddate = entity.SeotEnddate is not null ? entity.SeotEnddate : services.SeotEnddate;
+            services.SeotActualStartdate = entity.SeotActualStartdate is not null? entity.SeotActualStartdate : services.SeotActualStartdate;
+            services.SeotActualEnddate = entity.SeotActualEnddate is not null ? entity.SeotActualEnddate : services.SeotActualEnddate;
+            services.SeotStatus = entity.SeotStatus is not null ? entity.SeotStatus : services.SeotStatus;
+            services.SeotArwgCode = entity.SeotArwgCode is not null? entity.SeotArwgCode: services.SeotArwgCode;
+            services.SeotSeroId = entity.SeotSeroId is not null ? entity.SeotSeroId : services.SeotSeroId;
 
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
             return services.Adapt<ServiceOrderTaskDtoCreate>();

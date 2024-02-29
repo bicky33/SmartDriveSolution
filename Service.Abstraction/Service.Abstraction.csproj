@@ -13,9 +13,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="HR\" />
+    <Folder Include="Master\" />
     <Folder Include="CR\" />
     <Folder Include="SO\" />
-    <Folder Include="Payment\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contract\Contract.csproj" />

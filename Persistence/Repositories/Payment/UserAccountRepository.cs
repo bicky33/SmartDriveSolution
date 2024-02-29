@@ -1,11 +1,12 @@
 ﻿using Domain.Entities.Payment;
 using Domain.Repositories.Base;
+using Domain.Repositories.Payment;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
 
 namespace Persistence.Repositories.Payment
 {
-    public class UserAccountRepository : RepositoryBase<UserAccount>, IRepositoryEntityBase<UserAccount>
+    public class UserAccountRepository : RepositoryBase<UserAccount>, IRepositoryEntityUserAccount
     {
         public UserAccountRepository(SmartDriveContext dbContext) : base(dbContext)
         {
@@ -30,6 +31,11 @@ namespace Persistence.Repositories.Payment
         {
             return await GetByCondition(x => x.UsacId.Equals(id), trackChanges).SingleOrDefaultAsync();
 
+        }
+
+        public async Task<UserAccount> GetUserAccountByAccountNo(string id, bool trackChanges)
+        {
+            return await GetByCondition(x => x.UsacAccountno.Equals(id), trackChanges).SingleOrDefaultAsync();
         }
     }
 }

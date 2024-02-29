@@ -97,11 +97,14 @@ namespace Persistence.Repositories.SO
             var agentEntity=await _dbContext.EmployeeAreWorkgroups.Where(c => c.EawgId.Equals(agentId)).FirstAsync();
             if (agentEntity.EawgArwgCode.IsNullOrEmpty())
                 return "";
-            return agentEntity.EawgArwgCode.ToString();
+            return agentEntity.EawgArwgCode!.ToString();
         }
-        public void Debugging()
+        public void DisableTracking()
         {
-            throw new NotImplementedException();
+            _dbContext.ChangeTracker.Clear();
+            _dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
+            var entryentity = _dbContext.ChangeTracker.Entries();
+
         }
 
         public string GenerateInsuranceNo()

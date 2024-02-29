@@ -17,6 +17,7 @@
   <ItemGroup>
     <Folder Include="Repositories\CR\" />
     <Folder Include="Repositories\HR\" />
+    <Folder Include="Repositories\Partner\" />
     <Folder Include="Repositories\Master\" />
     <Folder Include="Repositories\Payment\" />
     <Folder Include="Repositories\Users\" />
@@ -30,9 +31,10 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-  </ItemGroup>
+	
+	<ItemGroup>
+	  <ProjectReference Include="..\Contract\Contract.csproj" />
+	  <ProjectReference Include="..\Domain\Domain.csproj" />
+	</ItemGroup>
 
 </Project>

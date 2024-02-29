@@ -14,12 +14,16 @@
     <None Remove="DTO\Partner\**" />
   </ItemGroup>
 
-	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-	</ItemGroup>
+	<ItemGroup> 
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" /> 
+  </ItemGroup>
 
 	<ItemGroup>
-    <Folder Include="DTO\HR\" />
+    <Folder Include="DTO\CR\" />
+    <Folder Include="DTO\Master\" />
+    <Folder Include="DTO\Partner\" />
     <Folder Include="DTO\Master\" />
     <Folder Include="DTO\Payment\" />
     <Folder Include="DTO\SO\" />

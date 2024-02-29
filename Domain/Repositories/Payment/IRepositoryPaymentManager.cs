@@ -12,8 +12,8 @@ namespace Domain.Repositories.Payment
     {
         IRepositoryEntityBase<Bank> BankRepository { get; }
         IRepositoryEntityBase<Fintech> FintechRepository { get; }
-        IRepositoryEntityBase<UserAccount> UserAccountRepository { get; }
-        IRepositoryEntityBase<PaymentTransaction> PaymentTransactionRepository { get; }
+        IRepositoryEntityUserAccount UserAccountRepository { get; }
+        IRepositoryEntityPaymentTransaction PaymentTransactionRepository { get; }
 
         IUnitOfWorks UnitOfWorks { get; }
     }

@@ -16,6 +16,7 @@ namespace Contract.DTO.SO
         [Required]
         public int SecrServId { get; init; }
 
+        [StringLength(4)]
         public string? SecrYear { get; init; }
 
         public decimal? SecrPremiDebet { get; init; }
@@ -26,6 +27,7 @@ namespace Contract.DTO.SO
 
         public DateTime? SecrDuedate { get; init; }
 
+        [StringLength(55)]
         public string? SecrPatrTrxno { get; init; }
 
         public PaymentTransaction? SecrPatrTrxnoNavigation { get; set; }
