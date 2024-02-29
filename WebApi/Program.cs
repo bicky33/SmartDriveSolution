@@ -40,6 +40,8 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<GlobalHandlingException>();
 app.UseHttpsRedirection();
 
+app.UseCors("CorsPolicy");
+
 app.UseAuthorization();
 
 app.UseStaticFiles();
