@@ -14,6 +14,7 @@ namespace Contract.DTO.SO
         [Required]
         public int SeotId { get; init; }
 
+        [StringLength(256)]
         public string? SeotName { get; set; }
 
         public DateTime? SeotStartdate { get; init; }
@@ -24,10 +25,13 @@ namespace Contract.DTO.SO
 
         public DateTime? SeotActualEnddate { get; init; }
 
+        [StringLength(15)]
         public string? SeotStatus { get; init; }
 
+        [StringLength(15)]
         public string? SeotArwgCode { get; init; }
 
+        [StringLength(25)]
         public string? SeotSeroId { get; init; }
 
         //public AreaWorkgroup? SeotArwgCodeNavigation { get; set; }

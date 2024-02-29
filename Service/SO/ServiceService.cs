@@ -29,6 +29,13 @@ namespace Service.SO
             _servicePaymentManager = servicePaymentManager;
         }
 
+        public async Task<bool> AvailableServicePolis(int servId)
+        {
+            var allServ=await _repositoryManager.ServiceRepository.GetAllEntity(false);
+            var isAvailable=allServ.Any(c => c.ServServId.Equals(servId));
+            return isAvailable;
+        }
+
         public async Task<ServiceDto> ClosePolis(int servId, string reason)
         {
             // get service by id
@@ -421,7 +428,8 @@ namespace Service.SO
                 {
                     EmpName= service.ServCreqEntity.CreqAgenEntity.EawgEntity.EmpName
                 };
-
+            // service premi credit
+            serviceDtos.Secrs = service.ServicePremiCredits.Adapt<ICollection<ServicePremiCreditDto>>();
             // service order task
             foreach(var sero in service.ServiceOrders.Select((value, index) => new { value, index }))
             {

@@ -14,14 +14,19 @@ namespace Contract.DTO.SO
     public class ServiceOrderDto
     {
         [Required]
+        [StringLength(25)]
         public string SeroId { get; init; } = null!;
 
+        [StringLength(15)]
         public string? SeroOrdtType { get; init; }
 
+        [StringLength(15)]
         public string? SeroStatus { get; set; }
 
+        [StringLength(256)]
         public string? SeroReason { get; set; }
 
+        [StringLength(12)]
         public string? ServClaimNo { get; init; }
 
         public DateTime? ServClaimStartdate { get; init; }
@@ -30,6 +35,7 @@ namespace Contract.DTO.SO
 
         public int? SeroServId { get; init; }
 
+        [StringLength(25)]
         public string? SeroSeroId { get; init; }
 
         public int? SeroAgentEntityid { get; init; }

@@ -17,8 +17,10 @@ namespace Contract.DTO.SO
 
         public decimal? SemiPremiCredit { get; init; }
 
+        [StringLength(15)]
         public string? SemiPaidType { get; init; }
 
+        [StringLength(15)]
         public string? SemiStatus { get; init; }
 
         public DateTime? SemiModifiedDate { get; init; }

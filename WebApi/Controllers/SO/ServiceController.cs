@@ -39,7 +39,13 @@ namespace WebApi.Controllers.SO
             var service = await _serviceManager.ServiceService.SearchBySeroId(seroid);
             return Ok(service);
         }
-
+        // GET api/<ServiceController>/5
+        [HttpGet("ispolisavailable")]
+        public async Task<IActionResult> AvailableServicePolis(int servId)
+        {
+            var isAvailable = await _serviceManager.ServiceService.AvailableServicePolis(servId);
+            return Ok(isAvailable);
+        }
         // POST api/<ServiceController>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ServiceDtoCreate serviceDto)

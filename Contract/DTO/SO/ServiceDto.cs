@@ -20,22 +20,26 @@ namespace Contract.DTO.SO
 
         public DateTime? ServCreatedOn { get; init; }
 
+        [StringLength(15)]
         public string? ServType { get; set; }
 
+        [StringLength(12)]
         public string? ServInsuranceNo { get; init; }
 
+        [StringLength(12)]
         public string? ServVehicleNo { get; init; }
 
         public DateTime? ServStartdate { get; init; }
 
         public DateTime? ServEnddate { get; init; }
 
+        [StringLength(15)]
         public string? ServStatus { get; set; }
 
         public int? ServServId { get; init; }
-
+        [Required]
         public int? ServCustEntityid { get; init; }
-
+        [Required]
         public int? ServCreqEntityid { get; init; }
 
         public ICollection<ServiceDto> InverseServServ { get; set; } = new List<ServiceDto>();

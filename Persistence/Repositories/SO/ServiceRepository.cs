@@ -36,13 +36,13 @@ namespace Persistence.Repositories.SO
             return await GetByCondition(c => c.ServId.Equals(newId), trackChanges)
                     .Include(c => c.ServCustEntity)
                     .Include(c => c.ServCreqEntity)
-                        .ThenInclude(c=>c.CreqAgenEntity)
-                            .ThenInclude(c=>c.EawgEntity)
+                        .ThenInclude(c => c.CreqAgenEntity)
+                            .ThenInclude(c => c.EawgEntity)
                     .Include(c => c.ServCreqEntity)
                         .ThenInclude(c => c.CustomerInscAsset)
                     .Include(c => c.ServiceOrders)
-                        .ThenInclude(c=>c.ServiceOrderTasks)
-                            .ThenInclude(c=>c.ServiceOrderWorkorders)
+                        .ThenInclude(c => c.ServiceOrderTasks)
+                            .ThenInclude(c => c.ServiceOrderWorkorders)
                     .Include(c => c.ServicePremi)
                     .Include(c => c.ServicePremiCredits)
                     .Select(c => new Service
@@ -57,14 +57,22 @@ namespace Persistence.Repositories.SO
                         ServType = c.ServType,
                         ServicePremi = c.ServicePremi,
                         ServicePremiCredits = c.ServicePremiCredits,
-                        ServVehicleNo = c.ServVehicleNo,
                         ServInsuranceNo = c.ServInsuranceNo,
                         ServServId = c.ServServId,
                         ServCustEntity = new User
                         {
-                            UserFullName = c.ServCustEntity.UserFullName,
+                            UserFullName = c.ServCustEntity!.UserFullName,
                         },
-                        ServCreqEntity=c.ServCreqEntity,
+                        ServCreqEntity = new Domain.Entities.CR.CustomerRequest
+                        {
+                            CreqAgenEntity = new Domain.Entities.HR.EmployeeAreWorkgroup
+                            {
+                                EawgEntity = new Domain.Entities.HR.Employee
+                                {
+                                    EmpName = c.ServCreqEntity!.CreqAgenEntity!.EawgEntity.EmpName
+                                }
+                            }
+                        },
                         ServiceOrders = c.ServiceOrders,
                     })
                     .FirstOrDefaultAsync();
