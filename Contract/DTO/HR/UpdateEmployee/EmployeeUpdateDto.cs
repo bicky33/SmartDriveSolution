@@ -15,7 +15,6 @@ namespace Contract.DTO.HR.UpdateEmployee
         public string? EmpName { get; set; }
 
 
-        public EmployeeType EmpType { get; set; }
 
 
         public string? EmpStatus { get; set; }

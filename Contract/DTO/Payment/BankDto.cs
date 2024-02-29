@@ -12,7 +12,7 @@ namespace Contract.DTO.Payment
 {
     public class BankDto
     {
-        [JsonIgnore]
+        //[JsonIgnore]
         public int BankEntityid { get; set; }
         [StringLength(5)]
         public string? BankName { get; set; }

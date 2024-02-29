@@ -31,10 +31,11 @@ namespace Contract.DTO.HR
         public DateTime? EawgModifiedDate { get; set; }
         public ArwgCompositeDto? EawgArwgCodeNavigation { get; set; }
 
+
         public string? SoftDelete {get; set; }
 
-        /*        public AreaWorkgroup? EawgArwgCodeNavigation { get; set; }
-                public Employee EawgEntity { get; set; } = null!;*/
+        //public AreaWorkgroup? EawgArwgCodeNavigation { get; set; }
+        public EmployeeDto EawgEntity { get; set; } = null!;
 
 
     }

@@ -16,6 +16,8 @@ namespace Contract.DTO.SO
         [Required]
         public int AgentId { get; init; }
         [Required]
+        public string ServVehicleNo { get; init; }
+        [Required]
         public DateTime CreatePolisDate { get; init; }
         [Required]
         public DateTime PolisStartDate { get; init; }

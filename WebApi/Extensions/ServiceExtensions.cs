@@ -73,7 +73,6 @@ namespace WebApi.Extensions
             services.AddScoped<IServiceManagerMaster, ServiceManagerMaster>();
             services.AddScoped<IServiceManagerUser, ServiceManagerUser>();
             services.AddScoped<IServiceSOManager, ServiceSOManager>();
-            services.AddScoped<IServiceRequestSOManager, ServiceRequestSOManager>();
             services.AddScoped<IServicePartnerManager, ServicePartnerManager>();
             services.AddScoped<IServicePaymentManager, ServicePaymentManager>();
             services.AddScoped<IServiceHRManager, ServiceHRManager>();
