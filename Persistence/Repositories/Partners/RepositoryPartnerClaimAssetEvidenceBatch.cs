@@ -53,7 +53,7 @@ namespace Persistence.Repositories.Partners
 
         public async Task<IEnumerable<ClaimAssetEvidence>> GetData(int CaspPartEntityid, string CaspSeroId)
         {
-            return await _context.ClaimAssetEvidences
+            return await _context.ClaimAssetEvidences.AsNoTracking()
                    .Where(x => x.CaevPartEntityid.Equals(CaspPartEntityid)
                    && x.CaevSeroId != null
                    && x.CaevSeroId.Equals(CaspSeroId)).ToListAsync();

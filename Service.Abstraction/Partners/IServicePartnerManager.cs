@@ -12,5 +12,7 @@ namespace Service.Abstraction.Partners
         public IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartDtoCreate, int> ServicePartnerClaimAssetSparepart { get; }
         public IServicePartnerWorkOrder ServicePartnerWorkOrder { get; }
         public IServicePartnerClaimAssetEvidence ServicePartnerClaimAssetEvidence { get; }
+
+        public IServicePartnerBatchInvoice ServicePartnerBatchInvoice { get; }
     }
 }

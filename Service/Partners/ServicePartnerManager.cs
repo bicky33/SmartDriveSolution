@@ -18,6 +18,7 @@ namespace Service.Partners
         private readonly Lazy<IServicePartnerContact> _servicePartnerContact;
         private readonly Lazy<IServicePartnerClaimAssetSparepartBatch> _servicePartnerClaimAssetSparepartBatch;
         private readonly Lazy<IServicePartnerWorkOrder> _servicePartnerWorkOrder;
+        private readonly Lazy<IServicePartnerBatchInvoice> _servicePartnerBatchInvoice;
 
         private readonly Lazy<IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartDtoCreate, int>> _servicePartnerClaimAssetSparepart;
         private readonly Lazy<IServicePartnerClaimAssetEvidence> _servicePartnerClaimAssetEvidence;
@@ -30,6 +31,7 @@ namespace Service.Partners
             _servicePartnerContact = new Lazy<IServicePartnerContact>(() => new ServicePartnerContact(_repositoryPartnerManager));
             _servicePartnerClaimAssetSparepartBatch = new Lazy<IServicePartnerClaimAssetSparepartBatch>(() => new ServicePartnerClaimAssetSparepartBatch(_repositoryPartnerManager));
             _servicePartnerWorkOrder = new Lazy<IServicePartnerWorkOrder>(() => new ServicePartnerWorkOrder(_repositoryPartnerManager));
+            _servicePartnerBatchInvoice = new Lazy<IServicePartnerBatchInvoice>(() => new ServicePartnerBatchInvoice(_repositoryPartnerManager));
 
             _servicePartnerClaimAssetSparepart = new Lazy<IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartDtoCreate, int>>(() => new ClaimAssetSparepartService(_repositorySOManager));
             _servicePartnerClaimAssetEvidence = new Lazy<IServicePartnerClaimAssetEvidence>(() => new ClaimAssetEvidenceService(_repositorySOManager, _fileServer.Value));
@@ -44,5 +46,7 @@ namespace Service.Partners
         public IServicePartnerClaimAssetEvidence ServicePartnerClaimAssetEvidence => _servicePartnerClaimAssetEvidence.Value;
 
         public IServicePartnerWorkOrder ServicePartnerWorkOrder => _servicePartnerWorkOrder.Value;
+
+        public IServicePartnerBatchInvoice ServicePartnerBatchInvoice => _servicePartnerBatchInvoice.Value;
     }
 }

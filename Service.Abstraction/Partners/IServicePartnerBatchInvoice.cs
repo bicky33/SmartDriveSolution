@@ -1,4 +1,6 @@
-﻿using Domain.Repositories.Partners;
+﻿using Contract.DTO.Partners;
+using Domain.Repositories.Partners;
+using Domain.RequestFeatured;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,8 @@ namespace Service.Abstraction.Partners
 {
     public interface IServicePartnerBatchInvoice
     {
-        public Task<IPartnerBatchInvoice> GetAll();
-        public Task CreateBatch();
+        Task<IEnumerable<PartnerBatchInvoiceResponse>> GetAll();
+        Task CreateBatch();
+        Task<IEnumerable<PartnerBatchInvoiceResponse>> GetAllPagingAsync(EntityParameter parameter);
     }
 }

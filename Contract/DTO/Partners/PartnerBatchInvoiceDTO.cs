@@ -1,16 +1,4 @@
-﻿using Domain.Entities.Partners;
-using Domain.Entities.Payment;
-using Domain.Entities.SO;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Contract.DTO.Partners
+﻿namespace Contract.DTO.Partners
 {
     public record PartnerBatchInvoiceDTO(
         string? BpinInvoiceNo,
@@ -22,5 +10,18 @@ namespace Contract.DTO.Partners
         int? BpinPatrnEntityid,
         string? BpinPatrTrxno,
         string BpinSeroId
+    );
+
+    public record PartnerBatchInvoiceResponse(
+        string? InvoiceNo,
+        DateTime? CreateOn,
+        string? PolisNumber,
+        string? PoliceNumber,
+        decimal Subtotal,
+        decimal Tax,
+        string? AccountNumber,
+        DateTime? PaidDate,
+        string? PartnerName
+
     );
 }

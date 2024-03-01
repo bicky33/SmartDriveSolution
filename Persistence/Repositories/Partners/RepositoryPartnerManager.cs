@@ -1,8 +1,10 @@
-﻿using Domain.Entities.Partners;
+﻿using Domain.Entities.Master;
+using Domain.Entities.Partners;
 using Domain.Entities.Users;
 using Domain.Repositories.Base;
 using Domain.Repositories.Partners;
 using Domain.Repositories.UserModule;
+using Persistence.Repositories.Master;
 using Persistence.Repositories.UserModule;
 using System;
 using System.Collections.Generic;
@@ -25,6 +27,7 @@ namespace Persistence.Repositories.Partners
         private readonly Lazy<IRepositoryBusinessEntity<BusinessEntity>> _repositoryBusinessEntity;
         private readonly Lazy<IRepositoryPartnerClaimAssetSparepartBatch> _repositoryClaimAssetSparepartBatch;
         private readonly Lazy<IRepositoryPartnerWorkOrder> _repositoryPartnerWorkOrder;
+        private readonly Lazy<IRepositoryEntityBase<City>> _repositoryCity;
 
 
         private readonly Lazy<IUnitOfWorks> _unitOfWorks;
@@ -42,6 +45,7 @@ namespace Persistence.Repositories.Partners
             _repositoryBusinessEntity = new Lazy<IRepositoryBusinessEntity<BusinessEntity>>(() => new BusinessEntityRepository(_context));
             _repositoryClaimAssetSparepartBatch = new Lazy<IRepositoryPartnerClaimAssetSparepartBatch>(() => new RepositoryPartnerClaimAssetSparepartBatch(_context));
             _repositoryPartnerWorkOrder = new Lazy<IRepositoryPartnerWorkOrder>(() => new RepositoryPartnerWorkOrder(_context));
+            _repositoryCity = new Lazy<IRepositoryEntityBase<City>>(() => new CityRepository(_context));
 
 
             _unitOfWorks = new Lazy<IUnitOfWorks>(() => new UnitOfWorks(_context));
@@ -58,5 +62,6 @@ namespace Persistence.Repositories.Partners
         public IRepositoryPartnerClaimAssetSparepartBatch RepositoryClaimAssetSparepartBatch => _repositoryClaimAssetSparepartBatch.Value;
         public IRepositoryPartnerWorkOrder RepositoryPartnerWorkOrder => _repositoryPartnerWorkOrder.Value;
 
+        public IRepositoryEntityBase<City> RepositoryCity => _repositoryCity.Value;
     }
 }

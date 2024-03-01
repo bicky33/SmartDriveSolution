@@ -1,4 +1,5 @@
 ﻿using Contract.DTO.Partners;
+using Contract.Records;
 using Domain.RequestFeatured;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.Partners;
@@ -30,7 +31,7 @@ namespace WebApi.Controllers.Partners
         [HttpGet("paging")]
         public async Task<ActionResult<IEnumerable<PartnerDTO>>> GetPaging([FromQuery] EntityParameter request)
         {
-            var response = await _servicePartnerManager.ServicePartner.GetAllPagingAsync(request, false);
+            PaginationDTO<PartnerDTO> response = await _servicePartnerManager.ServicePartner.GetAllPagingAsync(request, false);
             return Ok(response);
         }
         // GET api/<PartnerController>/5
@@ -52,8 +53,8 @@ namespace WebApi.Controllers.Partners
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] PartnerDTO request)
         {
-            await _servicePartnerManager.ServicePartner.UpdateAsync(id, request);
-            return NoContent();
+            PartnerDTO response =  await _servicePartnerManager.ServicePartner.UpdateReturnAsync(id, request);
+            return Ok(response);
         }
 
         // DELETE api/<PartnerController>/5

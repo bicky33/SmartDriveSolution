@@ -7,7 +7,6 @@ namespace Contract.DTO.Partners
         [Range(1, int.MaxValue, ErrorMessage = "Partner entity ID must be greater than zero.")]
         int PacoPatrnEntityid,
 
-        [Range(1, int.MaxValue, ErrorMessage = "User entity ID must be greater than zero.")]
         int PacoUserEntityid,
 
         [EnumDataType(typeof(PartnerStatus), ErrorMessage = "Invalid partner status.")]
@@ -18,6 +17,8 @@ namespace Contract.DTO.Partners
 
         [RegularExpression(@"^\+?\d{0,15}$", ErrorMessage = "Invalid phone number format.")]
         string? PhoneNumber,
+
+        string? PacoPatrnEntityName,
 
         bool IsGranted
     );

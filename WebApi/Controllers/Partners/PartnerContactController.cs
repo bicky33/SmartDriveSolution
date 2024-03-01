@@ -1,4 +1,5 @@
 ﻿using Contract.DTO.Partners;
+using Contract.Records;
 using Domain.RequestFeatured;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.Partners;
@@ -22,7 +23,7 @@ namespace WebApi.Controllers.Partners
         [HttpGet]
         public async Task<ActionResult> Get()
         {
-            var patnerContacts = await _servicePartnerManager.ServicePartnerContact.GetAllAsync(false);
+            IEnumerable<PartnerContactDTO> patnerContacts = await _servicePartnerManager.ServicePartnerContact.GetAllAsync(false);
             return Ok(patnerContacts);
         }
 
@@ -30,7 +31,7 @@ namespace WebApi.Controllers.Partners
         [HttpGet("paging")]
         public async Task<ActionResult> GetPaging([FromQuery] EntityParameter request)
         {
-            var patnerContacts = await _servicePartnerManager.ServicePartnerContact.GetAllPagingAsync(request);
+            PaginationDTO<PartnerContactDTO> patnerContacts = await _servicePartnerManager.ServicePartnerContact.GetAllPagingAsync(request);
             return Ok(patnerContacts);
         }
 
@@ -46,8 +47,8 @@ namespace WebApi.Controllers.Partners
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] PartnerContactDTO request)
         {
-            await _servicePartnerManager.ServicePartnerContact.CreateAsync(request);
-            return NoContent();
+            PartnerContactDTO  partnerContact = await _servicePartnerManager.ServicePartnerContact.CreateAsync(request);
+            return Ok(partnerContact);
         }
 
         // PUT api/<PartnerContactController>/5

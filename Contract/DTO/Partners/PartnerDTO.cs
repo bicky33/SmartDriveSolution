@@ -28,6 +28,8 @@ namespace Contract.DTO.Partners
         [Range(1, int.MaxValue, ErrorMessage = "Please provide a valid city ID.")]
         int PartCityId,
 
+        string? CityName,
+
         [EnumDataType(typeof(PartnerStatus), ErrorMessage = "Invalid partner status.")]
         PartnerStatus PartStatus
     );

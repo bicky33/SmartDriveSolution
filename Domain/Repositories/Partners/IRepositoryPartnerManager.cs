@@ -1,4 +1,5 @@
-﻿using Domain.Entities.Partners;
+﻿using Domain.Entities.Master;
+using Domain.Entities.Partners;
 using Domain.Entities.Users;
 using Domain.Repositories.Base;
 using Domain.Repositories.UserModule;
@@ -25,5 +26,7 @@ namespace Domain.Repositories.Partners
         public IRepositoryBusinessEntity<BusinessEntity> RepositoryBusinessEntity { get; }
         public IRepositoryPartnerClaimAssetSparepartBatch RepositoryClaimAssetSparepartBatch { get; }
         public IUnitOfWorks UnitOfWorks { get; }
+        public IRepositoryEntityBase<City> RepositoryCity { get; }
+
     }
 }

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.RequestFeatured
+namespace Domain.Enum
 {
-    public class EntityParameter : RequestParameters
+    public enum BpinStatus
     {
-        public string? SearchBy { get; set; }
+        PAID,
+        NOT_PAID
     }
 }

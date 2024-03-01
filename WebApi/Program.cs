@@ -32,12 +32,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("CorsPolicy");
 app.UseMiddleware<GlobalHandlingException>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.UseStaticFiles();
+
 
 app.UseStaticFiles(
     new StaticFileOptions()
