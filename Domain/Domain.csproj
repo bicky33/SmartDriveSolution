@@ -26,7 +26,6 @@
     <Folder Include="Repositories\SO\" />
     <Folder Include="Repositories\Partner\" />
     <Folder Include="Repositories\User\" />
-
   </ItemGroup>
 
   <ItemGroup>

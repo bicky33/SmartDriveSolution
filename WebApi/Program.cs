@@ -14,7 +14,6 @@ using WebApi.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers().AddJsonOptions(x =>
 {
     x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -56,6 +55,7 @@ app.UseCors("CorsPolicy");
 app.UseAuthorization();
 
 app.UseStaticFiles();
+
 
 app.UseStaticFiles(
     new StaticFileOptions()

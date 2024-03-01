@@ -1,5 +1,6 @@
 ﻿using Domain.Entities.Partners;
 using Domain.Entities.Users;
+using Domain.Enum;
 using Domain.Exceptions;
 using Domain.Repositories.Partners;
 using Domain.RequestFeatured;
@@ -49,8 +50,8 @@ namespace Persistence.Repositories.Partners
 
         public async Task<PagedList<PartnerContact>> GetAllPagingAsync(bool trackChanges, EntityParameter parameter)
         {
-            IQueryable<PartnerContact> partnerContacts = _dbContext.PartnerContacts
-                .Include(c => c.PacoUserEntity)
+            IQueryable<PartnerContact> partnerContacts =  _dbContext.PartnerContacts
+                .OrderBy(x => x.PacoUserEntityid)
                 .Select(c => new PartnerContact
                 {
                     PacoPatrnEntityid = c.PacoPatrnEntityid,
@@ -66,6 +67,18 @@ namespace Persistence.Repositories.Partners
                             UsphPhoneType = d.UsphPhoneType,
                             UsphStatus = d.UsphStatus
                         }).ToList(),
+                        UserRoles = c.PacoUserEntity.UserRoles
+                        .Where(x => x.UsroRoleName.Equals(EnumRoleType.PR))
+                        .Select(x => new UserRole
+                        {
+                            UsroRoleName = x.UsroRoleName,
+                            UsroStatus = x.UsroStatus
+                        }).ToList()
+                    },
+                    PacoPatrnEntity = new Partner
+                    {
+                        PartEntityid = c.PacoPatrnEntity.PartEntityid,
+                        PartName = c.PacoPatrnEntity.PartName,
                     }
                 });
             return PagedList<PartnerContact>.ToPagedList(partnerContacts, parameter.PageNumber, parameter.PageSize);

@@ -1,5 +1,6 @@
 ﻿using Contract.DTO.Partners;
 using Contract.DTO.UserModule;
+using Contract.Records;
 using Domain.Entities.Partners;
 using Domain.Entities.Users;
 using Domain.Enum;
@@ -66,10 +67,15 @@ namespace Service.Partners
                     PacoUserEntityid = businessEntity.Entityid,
                     PacoStatus = statusRoles,
                 };
+                Partner partner = await _repositoryPartnerManager.RepositoryPartner.GetEntityById(entity.PacoPatrnEntityid, false);
+                PartnerContactDTO response = partnerContact.Adapt<PartnerContactDTO>() with
+                {
+                    PacoPatrnEntityName = partner.PartName,
+                };
                  _repositoryPartnerManager.RepositoryPartnerContact.CreateEntity(partnerContact);
                 await _repositoryPartnerManager.UnitOfWorks.SaveChangesAsync();
                 transaction.Complete();
-                return partnerContact.Adapt<PartnerContactDTO>();
+                return response;
             }
             catch (Exception)
             {
@@ -113,11 +119,12 @@ namespace Service.Partners
             return partnerContactDTO;
         }
 
-        public async Task<IEnumerable<PartnerContactDTO>> GetAllPagingAsync(EntityParameter parameter)
+        public async Task<PaginationDTO<PartnerContactDTO>> GetAllPagingAsync(EntityParameter parameter)
         {
             PagedList<PartnerContact> partnerContact = await _repositoryPartnerManager.RepositoryPartnerContact.GetAllPagingAsync(false, parameter);
             IEnumerable<PartnerContactDTO> partnerContactDTO = partnerContact.Adapt<IEnumerable<PartnerContactDTO>>();
-            return partnerContactDTO;
+            PaginationDTO<PartnerContactDTO> pagination = new(partnerContact.TotalPages, partnerContact.CurrentPage, partnerContactDTO.ToList());
+            return pagination;
         }
         public async Task<PartnerContactDTO> GetByIdAsync(int pacoPatrnEntityid, int pacoUserEntityid, bool trackChanges)
         {
@@ -151,7 +158,6 @@ namespace Service.Partners
 
                 if (entity.PhoneNumber != userPhone.UsphPhoneNumber)
                 {
-                    var oldPhone = userPhone.UsphPhoneNumber;
                     _repositoryPartnerManager.RepositoryUserPhone.DeleteEntity(userPhone);
                     await _repositoryPartnerManager.UnitOfWorks.SaveChangesAsync();
                     userPhone.UsphPhoneNumber = entity.PhoneNumber;
