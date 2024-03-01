@@ -9,6 +9,7 @@ namespace Service.Abstraction.Payment
         Task<IEnumerable<UserAccountDto>> GetAllAsync(bool trackChanges);
         Task<UserAccountDto> GetByIdAsync(int id, bool trackChanges);
         Task<UserAccountDto> GetByAccountNoAsync(string id, bool trackChanges, ReturnException returnException);
+        Task<IEnumerable<UserAccountDto>> GetAllUserAccountByUserId(int userId, bool trackChanges);
         Task<UserAccountDto> CreateAsync(AccountTypeEnum accountType, UserAccountCreateDto entity);
         Task UpdateAsync(int id, UserAccountDto entity);
         Task DeleteAsync(int id);
