@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.SO;
+using Domain.Exceptions.SO;
 using Domain.Repositories.SO;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
@@ -28,7 +29,6 @@ namespace Persistence.Repositories.SO
             Delete(entity);
 
         }
-
         public async Task<IEnumerable<ServiceOrderTask>> GetAllEntity(bool trackChanges)
         {
             return await GetAll(trackChanges).OrderBy(x=>x.SeotId).ToListAsync();
@@ -37,7 +37,9 @@ namespace Persistence.Repositories.SO
         public async Task<ServiceOrderTask> GetEntityById(int id, bool trackChanges)
         {
             var newId = (int)id;
-            return await GetByCondition(c => c.SeotId.Equals(newId), trackChanges).SingleOrDefaultAsync();
+            return await GetByCondition(c => c.SeotId.Equals(newId), trackChanges)
+                .Include(c=>c.ServiceOrderWorkorders)
+                .SingleOrDefaultAsync();
         }
         
     }

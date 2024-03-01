@@ -13,6 +13,7 @@ namespace Domain.Entities.HR;
 public partial class EmployeeAreWorkgroup
 {
     [Key]
+    [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
     [Column("eawg_id")]
     public int EawgId { get; set; }
 
@@ -44,4 +45,7 @@ public partial class EmployeeAreWorkgroup
     public virtual Employee EawgEntity { get; set; } = null!;
 
     public virtual ICollection<ServiceOrder> ServiceOrders { get; set; } = new List<ServiceOrder>();
+
+    [Column("soft_delete")]
+    public string? SoftDelete { get; set; }
 }

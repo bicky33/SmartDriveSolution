@@ -22,13 +22,11 @@ namespace Service.Payment
 
         public async Task<FintechDto> CreateAsync(FintechDto entity)
         {
-            //TODO create BussinessEntity first,
-            //then apply it to bank id (fintech.entitiyId= BussinessEntityId)
             var bussinessEntity = _repositoryManagerUser.BusinessEntityRepository.CreateEntity();
             await _repositoryManager.UnitOfWorks.SaveChangesAsync();
 
+            entity.FintEntityid = bussinessEntity.Entityid;
             var fintech = entity.Adapt<Fintech>();
-            fintech.FintEntityid = bussinessEntity.Entityid;
             _repositoryManager.FintechRepository.CreateEntity(fintech);
             await _repositoryManager.UnitOfWorks.SaveChangesAsync();
             return fintech.Adapt<FintechDto>();
@@ -56,7 +54,7 @@ namespace Service.Payment
 
         public async Task<FintechDto> GetByIdAsync(int id, bool trackChanges)
         {
-            var fintech = await _repositoryManager.BankRepository.GetEntityById(id, false);
+            var fintech = await _repositoryManager.FintechRepository.GetEntityById(id, false);
             if (fintech == null)
                 throw new EntityNotFoundException(id, "Fintech");
             var dto = fintech.Adapt<FintechDto>();
