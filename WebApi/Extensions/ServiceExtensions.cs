@@ -32,6 +32,8 @@ using Service.HR;
 using Service.Abstraction.HR;
 using Domain.Repositories.HR;
 using Persistence.Repositories.HR;
+using Service.Abstraction.CR;
+using Service.CR;
 
 namespace WebApi.Extensions
 {
@@ -76,6 +78,7 @@ namespace WebApi.Extensions
             services.AddScoped<IServicePartnerManager, ServicePartnerManager>();
             services.AddScoped<IServicePaymentManager, ServicePaymentManager>();
             services.AddScoped<IServiceHRManager, ServiceHRManager>();
+            services.AddScoped<IServiceCustomerManager, ServiceCustomerManager>();
         }
         public static void ConfigureMapster(this IServiceCollection services)
         {
