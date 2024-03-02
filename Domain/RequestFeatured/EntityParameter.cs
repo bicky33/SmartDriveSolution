@@ -9,6 +9,5 @@ namespace Domain.RequestFeatured
     public class EntityParameter : RequestParameters
     {
         public string? SearchBy { get; set; }
-
     }
 }

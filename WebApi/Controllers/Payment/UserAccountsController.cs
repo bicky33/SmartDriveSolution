@@ -1,8 +1,10 @@
 ﻿using Contract.DTO.Payment;
 using Domain.Entities.Payment;
 using Domain.Enum;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.Payment;
+using Service.Abstraction.User;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,10 +15,12 @@ namespace WebApi.Controllers.Payment
     public class UserAccountsController : ControllerBase
     {
         private readonly IServicePaymentManager _serviceManager;
+        private readonly IServiceManagerUser _serviceManagerUser;
 
-        public UserAccountsController(IServicePaymentManager serviceManager)
+        public UserAccountsController(IServicePaymentManager serviceManager, IServiceManagerUser serviceManagerUser)
         {
             _serviceManager = serviceManager;
+            _serviceManagerUser = serviceManagerUser;
         }
 
         // GET: api/<UserAccountsController>
@@ -24,6 +28,13 @@ namespace WebApi.Controllers.Payment
         public async Task<ActionResult<IEnumerable<UserAccountDto>>> GetAll()
         {
             var userAccount = await _serviceManager.UserAccountService.GetAllAsync(false);
+            return Ok(userAccount);
+        }
+
+        [HttpGet("GetAllByUserId/{userId}")]
+        public async Task<ActionResult<IEnumerable<UserAccountDto>>> GetUserAccountByUserId(int userId)
+        { 
+            var userAccount = await _serviceManager.UserAccountService.GetAllUserAccountByUserId(userId, false); 
             return Ok(userAccount);
         }
 
@@ -44,8 +55,8 @@ namespace WebApi.Controllers.Payment
                 return BadRequest("Account Number Already Exsist");
 
             if (dto == null)
-                return BadRequest("Bank object is not valid"); 
-            var a = await _serviceManager.UserAccountService.CreateAsync(accountType, dto); 
+                return BadRequest("Bank object is not valid");
+            var a = await _serviceManager.UserAccountService.CreateAsync(accountType, dto);
             return CreatedAtAction(nameof(GetById), new { id = a.UsacId }, a);
         }
 

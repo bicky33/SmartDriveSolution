@@ -40,7 +40,52 @@ namespace Persistence.Repositories.Partners
 
         public async Task<PagedList<Partner>> GetAllPaging(bool trackChanges, EntityParameter parameter)
         {
-            IQueryable<Partner> partners = string.IsNullOrEmpty(parameter.SearchBy) ? GetAll(trackChanges) : GetByCondition(c => c.PartName.StartsWith(parameter.SearchBy), trackChanges);
+            IQueryable<Partner> partners;
+
+            if (string.IsNullOrEmpty(parameter.SearchBy))
+            {
+                partners = partners = _dbContext.Partners
+                    .Select(xx => new Partner()
+                    {
+                        PartEntityid = xx.PartEntityid,
+                        PartNpwp = xx.PartNpwp,
+                        PartAccountNo = xx.PartAccountNo,
+                        PartName = xx.PartName,
+                        PartAddress = xx.PartAddress,
+                        PartJoinDate = xx.PartJoinDate,
+                        PartStatus = xx.PartStatus,
+                        PartCityId = xx.PartCityId,
+                        PartCity = new City
+                        {
+                            CityId = xx.PartCity.CityId,
+                            CityName = xx.PartCity.CityName
+                        }
+                    });
+            } else
+            {
+                partners = _dbContext.Partners
+                    .Where(x =>
+                    x.PartName != null &&
+                    x.PartName.Contains(parameter.SearchBy) ||
+                    x.PartNpwp != null && x.PartNpwp.Contains(parameter.SearchBy)
+                    ).Select(xx => new Partner()
+                    {
+                        PartEntityid = xx.PartEntityid,
+                        PartNpwp = xx.PartNpwp,
+                        PartAccountNo = xx.PartAccountNo,
+                        PartName = xx.PartName,
+                        PartAddress = xx.PartAddress,
+                        PartJoinDate = xx.PartJoinDate,
+                        PartStatus = xx.PartStatus,
+                        PartCityId = xx.PartCityId,
+                        PartCity = new City
+                        {
+                            CityId = xx.PartCity.CityId,
+                            CityName = xx.PartCity.CityName
+                        }
+                    });
+            }
+ 
             return PagedList<Partner>.ToPagedList(partners, parameter.PageNumber, parameter.PageSize);
 
         }

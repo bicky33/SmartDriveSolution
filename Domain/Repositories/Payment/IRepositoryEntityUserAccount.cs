@@ -8,6 +8,7 @@ namespace Domain.Repositories.Payment
 
         Task<UserAccount> GetEntityById(int id, bool trackChanges);
         Task<UserAccount> GetUserAccountByAccountNo(string id, bool trackChanges);
+        Task<IEnumerable<UserAccount>> GetAllUserAccountByUserId(int id, bool trackChanges);
 
         void CreateEntity(UserAccount entity);
 

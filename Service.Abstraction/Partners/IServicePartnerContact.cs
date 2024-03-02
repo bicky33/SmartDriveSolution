@@ -1,4 +1,5 @@
 ﻿using Contract.DTO.Partners;
+using Contract.Records;
 using Domain.RequestFeatured;
 using Service.Abstraction.Base;
 using System;
@@ -11,7 +12,7 @@ namespace Service.Abstraction.Partners
 {
     public interface IServicePartnerContact
     {
-        Task<IEnumerable<PartnerContactDTO>> GetAllPagingAsync(EntityParameter parameter);
+        Task<PaginationDTO<PartnerContactDTO>> GetAllPagingAsync(EntityParameter parameter);
         Task<PartnerContactDTO> GetByIdAsync(int pacoPatrnEntityid, int pacoUserEntityid, bool trackChanges);
         Task<IEnumerable<PartnerContactDTO>> GetAllAsync(bool trackChanges);
         Task<PartnerContactDTO> CreateAsync(PartnerContactDTO entity);

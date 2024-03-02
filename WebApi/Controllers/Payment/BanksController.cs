@@ -60,7 +60,7 @@ namespace WebApi.Controllers.Payment
         public async Task<IActionResult> Delete(int id)
         {
             await _serviceManager.BankService.DeleteAsync(id);
-            return Ok($"ID {id} Succesfully deleted");
+            return Ok();
         }
     }
 }

@@ -7,7 +7,6 @@ using WebApi.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers().AddJsonOptions(x =>
 {
     x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -23,15 +22,15 @@ builder.Services.AddTransient<GlobalHandlingException>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.ConfigureCors();
 builder.Services.ConfigureDbContext(builder.Configuration);
 builder.Services.ConfigureRepository();
 builder.Services.ConfigureService();
 builder.Services.ConfigureMapster();
 builder.Services.ConfigureJwtGenerator(builder.Configuration);
 
-var app = builder.Build();
 
+var app = builder.Build();
+app.UseCors("CorsPolicy");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -45,6 +44,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.UseStaticFiles();
+
 
 app.UseStaticFiles(
     new StaticFileOptions()

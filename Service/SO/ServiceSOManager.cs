@@ -23,7 +23,7 @@ namespace Service.SO
             _serviceOrderService = new Lazy<IServiceSOEntityBase<ServiceOrderDto, ServiceOrderDtoCreate, string>>(()=> new ServiceOrderService(repositoryManager));
             _serviceOrderTaskService = new Lazy<IServiceSOEntityBase<ServiceOrderTaskDto, ServiceOrderTaskDtoCreate, int>>(()=> new ServiceOrderTaskService(repositoryManager));
             _serviceOrderWorkorderService = new Lazy<IServiceSOEntityBase<ServiceOrderWorkorderDto, ServiceOrderWorkorderDtoCreate, int>>(()=> new ServiceOrderWorkorderService(repositoryManager));
-            _claimAssetEvidenceService = new Lazy<IServiceSOEntityBase<ClaimAssetEvidenceDto, ClaimAssetEvidenceDtoCreate, int>>(()=> new ClaimAssetEvidenceService(repositoryManager));
+            //_claimAssetEvidenceService = new Lazy<IServiceSOEntityBase<ClaimAssetEvidenceDto, ClaimAssetEvidenceDtoCreate, int>>(()=> new ClaimAssetEvidenceService(repositoryManager));
             _claimAssetSparepartService = new Lazy<IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartDtoCreate, int>>(()=> new ClaimAssetSparepartService(repositoryManager));
             _servicePremiService = new Lazy<IServiceSOEntityBase<ServicePremiDto, ServicePremiDtoCreate, int>>(() => new ServicePremiService(repositoryManager));
             _servicePremiCreditService = new Lazy<IServiceSOEntityBase<ServicePremiCreditDto, ServicePremiCreditDtoCreate, int>>(() => new ServicePremiCreditService(repositoryManager));
