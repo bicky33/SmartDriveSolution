@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace Contract.DTO.UserModule
 {
-    public class LoginDto
+    public class RoleDto
     {
-        [Required]
-        public string UserName {  get; set; }
-        [Required]
-        public string UserPassword {  get; set; }
+        [StringLength(55)]
+        public string RoleName { get; set; }
+
+        [StringLength(55)]
+        public string RoleDescription { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using Domain.Entities.Users;
 using Domain.Enum;
 using Domain.Exceptions;
 using Domain.Repositories.UserModule;
+using Domain.RequestFeatured;
 using Mapster;
 using Service.Abstraction.User;
 using System.Net.Http.Headers;
@@ -49,9 +50,7 @@ namespace Service.UserModule
 
             _repositoryManager.UserRepository.CreateEntity(user);
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
-            //return user.Adapt<UserDto>();
 
-            //var mapsterConfig = TypeAdapterConfig<User, UserDto>.NewConfig().Ignore(dest => dest.UserPassword);
             var mapsterConfig = TypeAdapterConfig.GlobalSettings.Clone();
             mapsterConfig.Default.Ignore("UserPassword");
             return user.Adapt<UserDto>(mapsterConfig);
@@ -73,12 +72,26 @@ namespace Service.UserModule
                 throw new EntityBadRequestException("email already exist");
             }
 
-            //check if role type is valid with enum types
-            bool isRoleValid = typeof(EnumRoleType)
-           .GetFields()
-           .Any(f => f.GetValue(null).ToString() == roleType);
+            var checkNationalId = await _repositoryManager.UserRepository.GetUserByNationalId(entity.UserNationalId, false);
 
-            if (!isRoleValid)
+            if (checkNationalId != null)
+            {
+                throw new EntityBadRequestException("National ID already exist");
+            }
+
+            var checkNpwp = await _repositoryManager.UserRepository.GetUserByNpwp(entity.UserNpwp, false);
+
+            if (checkNpwp != null)
+            {
+                throw new EntityBadRequestException("National ID already exist");
+            }
+
+
+            //check if rolename is valid with enum types
+
+            var checkRoleName = await _repositoryManager.RoleRepository.GetRole(roleType, false);
+
+            if (checkRoleName == null)
             {
                 throw new EntityBadRequestException($"Invalid Role Name");
             }
@@ -117,11 +130,6 @@ namespace Service.UserModule
             _repositoryManager.UserRepository.CreateEntity(user);
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
 
-            var mapsterConfig = TypeAdapterConfig.GlobalSettings.Clone();
-            mapsterConfig.Default.Ignore("UserPassword");
-
-            var userDto = user.Adapt<UserDto>(mapsterConfig);
-
             //assign role
             var entityRole = new UserRole()
             {
@@ -133,6 +141,12 @@ namespace Service.UserModule
 
             _repositoryManager.UserRoleRepository.CreateEntity(entityRole);
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
+
+            var mapsterConfig = TypeAdapterConfig.GlobalSettings.Clone();
+            mapsterConfig.Default.Ignore("UserPassword");
+
+            var userDto = user.Adapt<UserDto>(mapsterConfig);
+
 
             return userDto;
         }
@@ -153,9 +167,10 @@ namespace Service.UserModule
         public async Task<IEnumerable<UserDto>> GetAllAsync(bool trackChanges)
         {
             var users = await _repositoryManager.UserRepository.GetAllEntity(trackChanges);
-            var usersDto = users.Adapt<IEnumerable<UserDto>>();
 
-            return usersDto;
+            var mapsterConfig = TypeAdapterConfig.GlobalSettings.Clone();
+            mapsterConfig.Default.Ignore("UserPassword");
+            return users.Adapt<IEnumerable<UserDto>>(mapsterConfig);
         }
 
         public async Task<UserDto> GetByIdAsync(int id, bool trackChanges)
@@ -166,8 +181,10 @@ namespace Service.UserModule
                 throw new EntityNotFoundException(id, "user");
             }
 
-            var userDto = user.Adapt<UserDto>();
-            return userDto;
+            var mapsterConfig = TypeAdapterConfig.GlobalSettings.Clone();
+            mapsterConfig.Default.Ignore("UserPassword");
+
+            return user.Adapt <UserDto> (mapsterConfig);
         }
 
         public async Task UpdateAsync(int id, UserDto entity)
@@ -252,14 +269,35 @@ namespace Service.UserModule
                 throw new EntityNotFoundException(id, "user");
             }
 
-            var checkUsername = await _repositoryManager.UserRepository.GetUserByUsername(entity.UserName, false);
 
-            if (checkUsername != null && user.UserName != checkUsername.UserName)
+            if (!string.IsNullOrWhiteSpace(entity.UserName))
             {
-                throw new EntityBadRequestException("username already exist");
+                user.UserName = entity.UserName;
+
+                var checkUsername = await _repositoryManager.UserRepository.GetUserByUsername(entity.UserName, false);
+
+                if (checkUsername != null && user.UserName != checkUsername.UserName)
+                {
+                    throw new EntityBadRequestException("username already exist");
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(entity.UserFullName))
+            {
+                user.UserFullName = entity.UserFullName;
+            }
+
+            if (!string.IsNullOrWhiteSpace(entity.UserBirthPlace))
+            {
+                user.UserBirthPlace = entity.UserBirthPlace;
+            }
+
+            if (entity.UserBirthDate != null)
+            {
+                user.UserBirthDate = entity.UserBirthDate;
             }
             // save photo
-            if(entity.UserPhoto != null)
+            if (entity.UserPhoto != null)
             {
                 var file = entity.UserPhoto;
                 var folderName = Path.Combine("Resources", "Images", "Users");
@@ -281,26 +319,49 @@ namespace Service.UserModule
                 }
             }
 
+            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+        }
 
-            if (!string.IsNullOrWhiteSpace(entity.UserName))
+        public async Task<IEnumerable<UserDto>> GetUsersPaging(EntityParameter entityParameter, bool trackChanges)
+        {
+            var users = await _repositoryManager.UserRepository.GetAllUsersPaging(entityParameter, trackChanges);
+
+            var mapsterConfig = TypeAdapterConfig.GlobalSettings.Clone();
+            mapsterConfig.Default.Ignore("UserPassword");
+
+            return users.Adapt<IEnumerable<UserDto>>(mapsterConfig);
+        }
+
+        public async Task ForgotPassword(UserForgotPasswordDto body)
+        {
+            var username = await _repositoryManager.UserRepository.GetUserByUsername(body.UserName, true);
+
+            if(username == null)
             {
-                user.UserName = entity.UserName;
+                throw new EntityNotFoundException("Username", "User");
             }
 
-            if (!string.IsNullOrWhiteSpace(entity.UserFullName))
+            if(username.UserBirthPlace != body.UserBirthPlace)
             {
-                user.UserFullName = entity.UserFullName;
+                throw new EntityNotFoundException("Birthplace", "User");
             }
 
-            if (!string.IsNullOrWhiteSpace(entity.UserBirthPlace))
+            if(body.UserNationalId != username.UserNationalId)
             {
-                user.UserBirthPlace = entity.UserBirthPlace;
+                throw new EntityNotFoundException("National ID", "User");
             }
 
-            if (entity.UserBirthDate != null)
+            if (body.UserNpwp != username.UserNpwp)
             {
-                user.UserBirthDate = entity.UserBirthDate;
+                throw new EntityNotFoundException("NPWP", "User");
             }
+
+            if (body.NewPassword != body.ConfirmNewPassword)
+            {
+                throw new EntityBadRequestException("The new password and confirm new password do not match");
+            }
+
+            username.UserPassword = BCrypt.Net.BCrypt.HashPassword(body.NewPassword);
 
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
         }

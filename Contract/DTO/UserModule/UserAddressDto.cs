@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Contract.DTO.Master;
 
 namespace Contract.DTO.UserModule
 {
@@ -23,5 +24,7 @@ namespace Contract.DTO.UserModule
         public DateTime? UsdrModifiedDate { get; set; }
 
         public int UsdrCityId { get; set; }
+
+        public CityResponse? UsdrCity { get; set; }
     }
 }
