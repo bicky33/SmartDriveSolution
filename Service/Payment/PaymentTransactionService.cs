@@ -90,7 +90,7 @@ namespace Service.Payment
 
             var sendFromTrx = entity.Adapt<PaymentTransaction>();
             sendFromTrx.PatrCreatedOn = currentDate;
-            sendFromTrx.PatrUsacAccountNoTo = null;
+            sendFromTrx.PatrUsacAccountNoTo = entity.PatrUsacAccountNoTo;
             sendFromTrx.PatrUsacAccountNoFrom = "-";
             sendFromTrx.PatrCredit = entity.SendAmount;
             sendFromTrx.PatrTrxnoRev = null;
@@ -110,6 +110,8 @@ namespace Service.Payment
             var data = await _repositoryPaymentManager.PaymentTransactionRepository.GetAllEntity(false);
             return data.Adapt<IEnumerable<PaymentTransactionDto>>();
         }
+
+     
 
         public async Task<IEnumerable<PaymentTransactionDto>> GetAllPagingAsync(EntityPaymentTransactionParameter parameter, bool trackChanges)
         {

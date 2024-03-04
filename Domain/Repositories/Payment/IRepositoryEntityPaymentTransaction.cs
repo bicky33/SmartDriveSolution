@@ -10,7 +10,7 @@ namespace Domain.Repositories.Payment
 
         Task<PaymentTransaction> GetEntityById(int id, bool trackChanges);
 
-        Task<PagedList<PaymentTransaction>> GetAllPaging(bool trackChanges, EntityPaymentTransactionParameter parameter);
+        Task<PagedList<PaymentTransaction>> GetAllPaging(bool trackChanges, EntityPaymentTransactionParameter parameter); 
         void CreateEntity(PaymentTransaction entity);
 
         void DeleteEntity(PaymentTransaction entity);

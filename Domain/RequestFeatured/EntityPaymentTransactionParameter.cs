@@ -7,7 +7,6 @@ namespace Domain.RequestFeatured
         [Required]
         public int UserEntityId { get; set; }
         public string? AccountNumber { get; set; }
-        public int? AccountBusEntityId { get; set; }
-        public bool SortByTime { get; set; }
+        public int? AccountBusEntityId { get; set; } 
     }
 }

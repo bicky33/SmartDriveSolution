@@ -11,8 +11,7 @@ using System.Text.Json.Serialization;
 namespace Contract.DTO.Payment
 {
     public class BankDto
-    {
-        [JsonIgnore]
+    { 
         public int BankEntityid { get; set; }
         [StringLength(5)]
         public string? BankName { get; set; }
