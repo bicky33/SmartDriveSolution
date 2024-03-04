@@ -1,6 +1,8 @@
 ﻿using Contract.DTO.UserModule;
 using Domain.Entities.Users;
 using Domain.Enum;
+using Domain.RequestFeatured;
+using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.User;
@@ -31,6 +33,18 @@ namespace WebApi.Controllers.UserModule
             return Ok(users);
         }
 
+        //get all users with pagination
+        [Authorize]
+        [HttpGet("GetAllPaging")]
+        public async Task<ActionResult<IEnumerable<UserDto>>> SearchUsers(
+            [FromQuery] EntityParameter entityParameter
+        )
+        {
+            var users = await _serviceManager.UserService.GetUsersPaging(entityParameter, false);
+
+            return Ok(users);
+        }
+
         // GET api/<UserController>/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
@@ -41,10 +55,10 @@ namespace WebApi.Controllers.UserModule
         }
 
         // POST api/<UserController>
-        [HttpPost]
+        [HttpPost("")]
         public async Task<IActionResult> Post([FromBody] UserDto body)
         {
-            if(body == null)
+            if (body == null)
             {
                 return BadRequest();
             }
@@ -55,15 +69,21 @@ namespace WebApi.Controllers.UserModule
         }
 
         // POST api/<UserController>/CreateUserWithRole
-        [HttpPost("CreateUserWithRole")]
-        public async Task<IActionResult> CreateUserWithRole([FromBody] UserDto body)
+        [HttpPost("Register")]
+        public async Task<IActionResult> CreateUserWithRole([FromBody] UserWithRoleCreateDto body)
         {
             if (body == null)
             {
                 return BadRequest();
             }
 
-            var create = await _serviceManager.UserService.CreateUserWithRole(body, EnumRoleType.EM, EnumRoleActiveStatus.ACTIVE);
+            var userDto = body.Adapt<UserDto>();
+            //role and active from body
+            var create = await _serviceManager.UserService.CreateUserWithRole(
+                userDto,
+                body.RoleName,
+                body.IsRoleActive ? EnumRoleActiveStatus.ACTIVE : EnumRoleActiveStatus.INACTIVE
+                );
 
             return Ok(create);
         }
@@ -74,7 +94,7 @@ namespace WebApi.Controllers.UserModule
         public async Task<IActionResult> Put(int id, [FromBody] UserDto body)
         {
             var me = _serviceManager.LoginService.GetCurrentUser(HttpContext.User);
-            if(me.Sub != id.ToString())
+            if (me.Sub != id.ToString())
             {
                 return Forbid();
             }
@@ -111,7 +131,7 @@ namespace WebApi.Controllers.UserModule
         [HttpPut("UpdatePassword/{id}")]
         public async Task<IActionResult> UpdatePassword(int id, [FromBody] UserUpdatePasswordRequestDto body)
         {
-            if(body == null)
+            if (body == null)
             {
                 return BadRequest();
             }
@@ -121,7 +141,9 @@ namespace WebApi.Controllers.UserModule
 
             await _serviceManager.UserService.UpdatePassword(id, body);
 
-            return Ok(body);
+            return Ok( new {
+                Messsage = "Update password success",
+            });
         }
 
         [Authorize]
@@ -139,6 +161,22 @@ namespace WebApi.Controllers.UserModule
             await _serviceManager.UserService.UpdateEmail(id, body.UserEmail);
 
             return Ok(body);
+        }
+
+        [HttpPut("ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword([FromBody] UserForgotPasswordDto body)
+        {
+            if (body == null)
+            {
+                return BadRequest();
+            }
+
+            await _serviceManager.UserService.ForgotPassword(body);
+
+            return Ok(new
+            {
+                Messsage = "Update password success",
+            });
         }
     }
 }

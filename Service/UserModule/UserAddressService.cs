@@ -50,6 +50,7 @@ namespace Service.UserModule
         public async Task<IEnumerable<UserAddressDto>> GetAllAsync(bool trackChanges)
         {
             var userAddresses = await _repositoryManager.UserAddressRepository.GetAllEntity(false);
+
             var userAddressesDto = userAddresses.Adapt<IEnumerable<UserAddressDto>>();
 
             return userAddressesDto;

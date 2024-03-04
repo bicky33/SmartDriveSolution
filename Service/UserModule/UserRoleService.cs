@@ -34,11 +34,10 @@ namespace Service.UserModule
             var userRole = entity.Adapt<UserRole>();
 
             //check if rolename is valid with enum types
-            bool isRoleValid = typeof(EnumRoleType)
-           .GetFields()
-           .Any(f => f.GetValue(null).ToString() == entity.UsroRoleName);
+            
+            var checkRoleName = await _repositoryManager.RoleRepository.GetRole(entity.UsroRoleName, false);
 
-            if(!isRoleValid) 
+            if (checkRoleName == null)
             {
                 throw new EntityBadRequestException($"Invalid Role Name");
             }
@@ -65,11 +64,10 @@ namespace Service.UserModule
             //var userRole = await _repositoryManager.UserRoleRepository.GetEntityById(id, false);
 
             //check if rolename is valid with enum types
-            bool isRoleValid = typeof(EnumRoleType)
-           .GetFields()
-           .Any(f => f.GetValue(null).ToString() == roleName);
 
-            if (!isRoleValid)
+            var checkRoleName = await _repositoryManager.RoleRepository.GetRole(roleName, false);
+
+            if (checkRoleName == null)
             {
                 throw new EntityBadRequestException($"Invalid Role Name");
             }

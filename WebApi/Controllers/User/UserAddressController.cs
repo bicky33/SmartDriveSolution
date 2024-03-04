@@ -69,7 +69,10 @@ namespace WebApi.Controllers.User
         public async Task<IActionResult> Put(int id, [FromBody] UserAddressDto body)
         {
             var me = _serviceManager.LoginService.GetCurrentUser(HttpContext.User);
-            if (me.Sub != id.ToString()) return Forbid();
+
+            var userAddress = await _serviceManager.UserAddressService.GetByIdAsync(id, false);
+
+            if (me.Sub != userAddress.UsdrEntityid.ToString()) return Forbid();
 
             await _serviceManager.UserAddressService.UpdateAsync(id, body);
 
@@ -82,7 +85,10 @@ namespace WebApi.Controllers.User
         public async Task<IActionResult> Delete(int id)
         {
             var me = _serviceManager.LoginService.GetCurrentUser(HttpContext.User);
-            if (me.Sub != id.ToString()) return Forbid();
+
+            var userAddress = await _serviceManager.UserAddressService.GetByIdAsync(id, false);
+
+            if (me.Sub != userAddress.UsdrEntityid.ToString()) return Forbid();
 
             await _serviceManager.UserAddressService.DeleteAsync(id);
 
