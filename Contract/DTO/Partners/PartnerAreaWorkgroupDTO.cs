@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Domain.Enum;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Entities.Master;
-using Domain.Entities.Partners;
-using Microsoft.EntityFrameworkCore;
-using Domain.Enum;
 
 namespace Contract.DTO.Partners
 {
     public record PartnerAreaWorkgroupDTO(
+        [Range(1, int.MaxValue, ErrorMessage = "Partner entity ID must be greater than zero.")]
         int PawoPatrEntityid,
+
+        [Required(ErrorMessage = "Area Workgroup Code is required.")]
         string PawoArwgCode,
+
+        [Range(1, int.MaxValue, ErrorMessage = "User entity ID must be greater than zero.")]
         int PawoUserEntityid,
-        PartnerStatus PawoStatus, 
-        DateTime? PawoModifiedDate
+
+        [EnumDataType(typeof(PartnerStatus), ErrorMessage = "Invalid partner status.")]
+        PartnerStatus PawoStatus
     );
 }

@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Contract.DTO.Partners;
+using Domain.RequestFeatured;
+using Microsoft.AspNetCore.Mvc;
+using Service.Abstraction.Partners;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,11 +11,25 @@ namespace WebApi.Controllers.Partners
     [ApiController]
     public class PartnerBatchInvoiceController : ControllerBase
     {
+        private readonly IServicePartnerManager _servicePartnerManager;
+
+        public PartnerBatchInvoiceController(IServicePartnerManager servicePartnerManager)
+        {
+            _servicePartnerManager = servicePartnerManager;
+        }
+
         // GET: api/<ValuesController>
         [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
+        }
+
+        [HttpGet("paging")]
+        public async Task<ActionResult<IEnumerable<PartnerBatchInvoiceResponse>>> GetPaging([FromQuery] EntityParameter parameter)
+        {
+            IEnumerable<PartnerBatchInvoiceResponse> invoices = await _servicePartnerManager.ServicePartnerBatchInvoice.GetAllPagingAsync(parameter);
+            return Ok(invoices);
         }
 
         // GET api/<ValuesController>/5
@@ -24,20 +41,10 @@ namespace WebApi.Controllers.Partners
 
         // POST api/<ValuesController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult> Post()
         {
-        }
-
-        // PUT api/<ValuesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ValuesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            await _servicePartnerManager.ServicePartnerBatchInvoice.CreateBatch();
+            return NoContent();
         }
     }
 }

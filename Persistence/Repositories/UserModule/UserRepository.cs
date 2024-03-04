@@ -1,6 +1,8 @@
-﻿using Domain.Entities.Users;
+﻿using Domain.Entities.Master;
+using Domain.Entities.Users;
 using Domain.Repositories.Base;
 using Domain.Repositories.UserModule;
+using Domain.RequestFeatured;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
 using System;
@@ -13,8 +15,10 @@ namespace Persistence.Repositories.UserModule
 {
     public class UserRepository : RepositoryBase<User>, IRepositoryUser
     {
+        private readonly SmartDriveContext _context;
         public UserRepository(SmartDriveContext dbContext) : base(dbContext)
         {
+            _context = dbContext;
         }
 
         public void CreateEntity(User entity)
@@ -57,6 +61,39 @@ namespace Persistence.Repositories.UserModule
         public async Task<User> GetUserByEmail(string email, bool trackChanges)
         {
             return await GetByCondition(v => v.UserEmail == email, trackChanges)
+                .Include(v => v.UserRoles)
+                .Include(v => v.UserPhones)
+                .Include(v => v.UserAddresses)
+                .SingleOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<User>> GetAllUsersPaging(EntityParameter entityParams, bool trackChanges)
+        {
+            var users = GetAll(trackChanges)
+                .Include(v => v.UserRoles)
+                .Include(v => v.UserPhones)
+                .Include(v => v.UserAddresses).AsQueryable();
+
+            if (entityParams != null && !string.IsNullOrWhiteSpace(entityParams.SearchBy))
+            {
+                users = users.Where(u => EF.Functions.Like(u.UserName, $"%{entityParams.SearchBy}%"));
+            }
+
+            return PagedList<User>.ToPagedList(users, entityParams.PageNumber, entityParams.PageSize);
+        }
+
+        public async Task<User> GetUserByNationalId(string nationalId, bool trackChanges)
+        {
+            return await GetByCondition(v => v.UserNationalId == nationalId, trackChanges)
+                .Include(v => v.UserRoles)
+                .Include(v => v.UserPhones)
+                .Include(v => v.UserAddresses)
+                .SingleOrDefaultAsync();
+        }
+
+        public async Task<User> GetUserByNpwp(string npwp, bool trackChanges)
+        {
+            return await GetByCondition(v => v.UserNpwp == npwp, trackChanges)
                 .Include(v => v.UserRoles)
                 .Include(v => v.UserPhones)
                 .Include(v => v.UserAddresses)

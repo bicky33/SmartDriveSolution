@@ -12,6 +12,7 @@ using Domain.Entities.CR;
 using Domain.Entities.SO;
 using Domain.Entities.Master;
 using Contract.DTO.UserModule;
+using Contract.DTO.HR;
 
 namespace Contract.DTO.CR.Response
 {
@@ -24,10 +25,10 @@ namespace Contract.DTO.CR.Response
         public DateTime? CreqModifiedDate { get; set; }
         public int? CreqCustEntityid { get; set; }
         public int? CreqAgenEntityid { get; set; }
-        public EmployeeAreWorkgroup? CreqAgenEntity { get; set; }
+        public EmployeeAreaWorkGroupDto? CreqAgenEntity { get; set; }
         public UserDto? CreqCustEntity { get; set; }
         public CustomerClaimDto? CustomerClaim { get; set; }
         public CustomerInscAssetDto? CustomerInscAsset { get; set; }
-        public ICollection<Service> Services { get; set; } = new List<Service>();
+        //public ICollection<Service> Services { get; set; } = new List<Service>();
     }
 }

@@ -8,6 +8,7 @@ namespace Contract.DTO.UserModule
 {
     public class LoginResponseDto
     {
-        public string accessToken {  get; set; }
+        public string AccessToken {  get; set; }
+        public LoginClaimsDto UserData { get; set; }
     }
 }

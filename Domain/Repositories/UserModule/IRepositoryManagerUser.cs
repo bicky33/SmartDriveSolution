@@ -11,5 +11,6 @@ namespace Domain.Repositories.UserModule
         IRepositoryUserRole UserRoleRepository { get; }
         IRepositoryUserPhone UserPhoneRepository { get; }
         IRepositoryUserAddress UserAddressRepository { get; }
+        IRepositoryRole RoleRepository { get; }
     }
 }

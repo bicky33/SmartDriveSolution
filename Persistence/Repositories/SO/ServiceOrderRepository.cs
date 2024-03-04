@@ -1,4 +1,6 @@
 ﻿using Domain.Entities.SO;
+using Domain.Entities.Users;
+using Domain.Exceptions.SO;
 using Domain.Repositories.SO;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
@@ -36,7 +38,10 @@ namespace Persistence.Repositories.SO
 
         public async Task<ServiceOrder> GetEntityById(string id, bool trackChanges)
         {
-            return await GetByCondition(c => c.SeroId.Equals(id), trackChanges).SingleOrDefaultAsync();
+            return await GetByCondition(c => c.SeroId.Equals(id), trackChanges)
+                .Include(c=>c.ServiceOrderTasks)
+                    .ThenInclude(c=>c.ServiceOrderWorkorders)
+                .SingleOrDefaultAsync();
         }
         
     }

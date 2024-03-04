@@ -34,6 +34,7 @@ namespace Service.UserModule
                 Sub = user.FindFirstValue(JwtRegisteredClaimNames.Sub),
                 Email = user.FindFirstValue(JwtRegisteredClaimNames.Email),
                 Username = user.FindFirstValue(CustomClaims.Username),
+                Image = user.FindFirstValue(CustomClaims.Image),
                 Roles = user.Claims
                         .Where(c => c.Type == ClaimTypes.Role)
                         .Select(c => c.Value)
@@ -61,7 +62,15 @@ namespace Service.UserModule
 
             var result = new LoginResponseDto
             {
-                accessToken = newAccessToken,
+                UserData = new LoginClaimsDto
+                {
+                    Sub = user.UserEntityid.ToString(),
+                    Username = user.UserName,
+                    Email = user.UserEmail,
+                    Image = user.UserPhoto != null ? user.UserPhoto : "",
+                    Roles = user.UserRoles.Select(c => c.UsroRoleName).ToList()
+                },
+                AccessToken = newAccessToken
             };
 
             return result;

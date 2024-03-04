@@ -55,10 +55,10 @@ namespace Service.SO
                 throw new EntityNotFoundException(id, "ServiceOrderTask");
 
             services.SowoId = id;
-            services.SowoName = entity.SowoName;
-            services.SowoModifiedDate = entity.SowoModifiedDate;
-            services.SowoStatus = entity.SowoStatus;
-            services.SowoSeotId = entity.SowoSeotId;
+            services.SowoName = entity.SowoName is not null ? entity.SowoName : services.SowoName;
+            services.SowoModifiedDate= entity.SowoStatus != services.SowoStatus ? DateTime.Now : entity.SowoModifiedDate;
+            services.SowoStatus=entity.SowoStatus is not null ? entity.SowoStatus : services.SowoStatus;
+            services.SowoSeotId=entity.SowoSeotId is not null? entity.SowoSeotId : services.SowoSeotId;
 
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
             return services.Adapt<ServiceOrderWorkorderDtoCreate>();

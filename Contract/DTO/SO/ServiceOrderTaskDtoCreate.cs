@@ -6,7 +6,7 @@ namespace Contract.DTO.SO
     public class ServiceOrderTaskDtoCreate
     {
         public int? SeotId { get; init; }
-
+        [StringLength(256)]
         public string? SeotName { get; init; }
 
         public DateTime? SeotStartdate { get; init; }
@@ -16,11 +16,11 @@ namespace Contract.DTO.SO
         public DateTime? SeotActualStartdate { get; init; }
 
         public DateTime? SeotActualEnddate { get; init; }
-
+        [StringLength(15)]
         public string? SeotStatus { get; init; }
-
+        [StringLength(15)]
         public string? SeotArwgCode { get; init; }
-
+        [StringLength(25)]
         public string? SeotSeroId { get; init; }
     }
 }
