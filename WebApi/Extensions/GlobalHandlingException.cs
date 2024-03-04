@@ -1,5 +1,4 @@
-﻿
-using Domain.Exceptions;
+﻿using Domain.Exceptions;
 using Domain.Model;
 using System.Text.Json;
 

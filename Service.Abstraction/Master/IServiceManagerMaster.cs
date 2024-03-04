@@ -10,10 +10,10 @@ namespace Service.Abstraction.Master
         IServiceEntityBase<CarSeriesResponse> CarSeriesService { get; }
         IServiceEntityBase<CategoryResponse> CategoryService { get; }
         IServiceEntityBase<ZoneResponse> ZoneService { get; }
-        IServiceEntityBase<ProvinsiResponse> ProvinsiService { get; }
+        IServiceWithPaging<ProvinsiResponse> ProvinsiService { get; }
         IServiceEntityBase<CityResponse> CityService { get; }
         IServiceEntityBaseMaster<InsuranceTypeResponse> InsuranceTypeService { get; }
-        IServiceEntityBaseMaster<RegionPLatResponse> RegionPlatService { get; }
+        IServiceEntityBaseMaster<RegionPlatResponse> RegionPlatService { get; }
         IServiceEntityBaseMaster<AreaWorkgroupResponse> AreaWorkgroupService { get; }
         IServiceEntityBase<TemplateTypeResponse> TemplateTypeService { get; }
         IServiceTemplateServiceTask TemplateServiceTaskService { get; }

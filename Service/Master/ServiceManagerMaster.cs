@@ -12,10 +12,10 @@ namespace Service.Master
         private readonly Lazy<IServiceEntityBase<CarSeriesResponse>> _carSeriesService;
         private readonly Lazy<IServiceEntityBase<CategoryResponse>> _categoryService;
         private readonly Lazy<IServiceEntityBase<ZoneResponse>> _zoneService;
-        private readonly Lazy<IServiceEntityBase<ProvinsiResponse>> _provinsiService;
+        private readonly Lazy<IServiceWithPaging<ProvinsiResponse>> _provinsiService;
         private readonly Lazy<IServiceEntityBase<CityResponse>> _cityService;
         private readonly Lazy<IServiceEntityBaseMaster<InsuranceTypeResponse>> _insuranceTypeService;
-        private readonly Lazy<IServiceEntityBaseMaster<RegionPLatResponse>> _regionPlatService;
+        private readonly Lazy<IServiceEntityBaseMaster<RegionPlatResponse>> _regionPlatService;
         private readonly Lazy<IServiceEntityBaseMaster<AreaWorkgroupResponse>> _areaWorkgroupService;
         private readonly Lazy<IServiceEntityBase<TemplateTypeResponse>> _templateTypeService;
         private readonly Lazy<IServiceTemplateServiceTask> _templateServiceTaskService;
@@ -29,10 +29,10 @@ namespace Service.Master
             _carSeriesService = new Lazy<IServiceEntityBase<CarSeriesResponse>>(() => new CarSeriesService(repositoryManager));
             _categoryService = new Lazy<IServiceEntityBase<CategoryResponse>>(() => new CategoryService(repositoryManager));
             _zoneService = new Lazy<IServiceEntityBase<ZoneResponse>>(() => new ZoneService(repositoryManager));
-            _provinsiService = new Lazy<IServiceEntityBase<ProvinsiResponse>>(() => new ProvinsiService(repositoryManager));
+            _provinsiService = new Lazy<IServiceWithPaging<ProvinsiResponse>>(() => new ProvinsiService(repositoryManager));
             _cityService = new Lazy<IServiceEntityBase<CityResponse>>(() => new CityService(repositoryManager));
             _insuranceTypeService = new Lazy<IServiceEntityBaseMaster<InsuranceTypeResponse>>(() => new InsuranceTypeService(repositoryManager));
-            _regionPlatService = new Lazy<IServiceEntityBaseMaster<RegionPLatResponse>>(() => new RegionPlatService(repositoryManager));
+            _regionPlatService = new Lazy<IServiceEntityBaseMaster<RegionPlatResponse>>(() => new RegionPlatService(repositoryManager));
             _areaWorkgroupService = new Lazy<IServiceEntityBaseMaster<AreaWorkgroupResponse>>(() => new AreaWorkgroupService(repositoryManager));
             _templateTypeService = new Lazy<IServiceEntityBase<TemplateTypeResponse>>(() => new TemplateTypeService(repositoryManager));
             _templateServiceTaskService = new Lazy<IServiceTemplateServiceTask>(() => new TemplateServiceTaskService(repositoryManager));
@@ -50,12 +50,12 @@ namespace Service.Master
 
         public IServiceEntityBase<ZoneResponse> ZoneService => _zoneService.Value;
 
-        public IServiceEntityBase<ProvinsiResponse> ProvinsiService => _provinsiService.Value;
+        public IServiceWithPaging<ProvinsiResponse> ProvinsiService => _provinsiService.Value;
 
         public IServiceEntityBase<CityResponse> CityService => _cityService.Value;
         public IServiceEntityBaseMaster<InsuranceTypeResponse> InsuranceTypeService=> _insuranceTypeService.Value;
 
-        public IServiceEntityBaseMaster<RegionPLatResponse> RegionPlatService => _regionPlatService.Value;
+        public IServiceEntityBaseMaster<RegionPlatResponse> RegionPlatService => _regionPlatService.Value;
 
         public IServiceEntityBaseMaster<AreaWorkgroupResponse> AreaWorkgroupService => _areaWorkgroupService.Value;
 

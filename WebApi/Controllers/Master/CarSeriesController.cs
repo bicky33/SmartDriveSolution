@@ -7,7 +7,7 @@ using Service.Abstraction.Master;
 
 namespace WebApi.Controllers.Master
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/master/[controller]")]
     [ApiController]
     public class CarSeriesController : ControllerBase
     {
@@ -18,7 +18,6 @@ namespace WebApi.Controllers.Master
             _serviceManagerMaster = serviceManagerMaster;
         }
 
-        // GET: api/<CarSeriesController>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CarSeries>>> Get()
         {
@@ -26,7 +25,6 @@ namespace WebApi.Controllers.Master
             return Ok(carSeries);
         }
 
-        // GET api/<CarSeriesController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CarSeries>> Get(int id)
         {
@@ -34,7 +32,6 @@ namespace WebApi.Controllers.Master
             return Ok(carSeries);
         }
 
-        // POST api/<CarSeriesController>
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CarSeriesResponse request)
         {
@@ -46,7 +43,6 @@ namespace WebApi.Controllers.Master
             return CreatedAtAction(nameof(Get), new { id = carSeries.CarsId }, carSeries);
         }
 
-        // PUT api/<CarSeriesController>/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] CarSeriesResponse request)
         {
@@ -54,7 +50,6 @@ namespace WebApi.Controllers.Master
             return NoContent();
         }
 
-        // DELETE api/<CarSeriesController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

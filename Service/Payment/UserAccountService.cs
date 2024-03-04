@@ -1,15 +1,17 @@
 ﻿using Contract.DTO.Payment;
 using Domain.Entities.Payment;
+using Domain.Enum;
 using Domain.Exceptions;
 using Domain.Repositories;
 using Domain.Repositories.Payment;
 using Domain.Repositories.UserModule;
 using Mapster;
 using Service.Abstraction.Base;
+using Service.Abstraction.Payment;
 
 namespace Service.Payment
 {
-    public class UserAccountService : IServiceEntityBase<UserAccountDto>
+    public class UserAccountService : IServiceEntityUserAccount
     {
         private readonly IRepositoryPaymentManager _repositoryPaymentManager;
         private readonly IRepositoryManagerUser _repositoryManagerUser;
@@ -20,21 +22,12 @@ namespace Service.Payment
             _repositoryManagerUser = repositoryManagerUser;
         }
 
-        public async Task<UserAccountDto> CreateAsync(UserAccountDto entity)
+        public async Task<UserAccountDto> CreateAsync(AccountTypeEnum accountType, UserAccountCreateDto entity)
         {
-            //var user = _repositoryManagerUser.UserRepository.GetEntityById(entity.UsacUserEntityid, false);
-            //if (user == null)
-            //    throw new EntityNotFoundException(entity.UsacUserEntityid, "User");
-
-            //var bank = _repositoryPaymentManager.BankRepository.GetEntityById(entity.UsacBankEntityid, false);
-            //if (bank == null)
-            //    throw new EntityNotFoundException(entity.UsacUserEntityid, "Bank");
-
-            //var fintech = _repositoryPaymentManager.FintechRepository.GetEntityById(entity.UsacFintEntityid, false);
-            //if (fintech == null)
-            //    throw new EntityNotFoundException(entity.UsacUserEntityid, "Fintech");
-
+            entity.UsacType = accountType;
             var userAccount = entity.Adapt<UserAccount>();
+            userAccount.UsacDebet = 0;
+            userAccount.UsacCredit = 0;
             _repositoryPaymentManager.UserAccountRepository.CreateEntity(userAccount);
             await _repositoryPaymentManager.UnitOfWorks.SaveChangesAsync();
             return userAccount.Adapt<UserAccountDto>();
@@ -59,6 +52,19 @@ namespace Service.Payment
             return userAccountDto;
         }
 
+        public async Task<UserAccountDto> GetByAccountNoAsync(string id, bool trackChanges, ReturnException returnException)
+        {
+            var userAccount = await _repositoryPaymentManager.UserAccountRepository.GetUserAccountByAccountNo(id, trackChanges);
+            if (userAccount == null && returnException == ReturnException.RETURN_WHEN_NULL)
+                throw new EntityNotFoundException(id, "UserAccount");
+
+            if (userAccount != null && returnException == ReturnException.RETURN_WHEN_EXIST)
+                throw new EntityAlreadyExistException(id, "UserAccount");
+
+            var userAccountDto = userAccount.Adapt<UserAccountDto>();
+            return userAccountDto;
+        }
+
         public async Task<UserAccountDto> GetByIdAsync(int id, bool trackChanges)
         {
             var userAccount = await _repositoryPaymentManager.UserAccountRepository.GetEntityById(id, trackChanges);
@@ -67,6 +73,19 @@ namespace Service.Payment
 
             var userAccountDto = userAccount.Adapt<UserAccountDto>();
             return userAccountDto;
+        }
+
+        public async Task<IEnumerable<UserAccountDto>> GetAllUserAccountByUserId(int userId, bool trackChanges)
+        {
+            var user = await _repositoryManagerUser.UserRepository.GetEntityById(userId,trackChanges);
+            if (user == null)
+                throw new EntityNotFoundException(userId, "user");
+
+            var userAccounts = await _repositoryPaymentManager.UserAccountRepository.GetAllUserAccountByUserId(userId, trackChanges);
+            if (userAccounts == null)
+                throw new EntityNotFoundException(userId, "UserAccounts");
+            return userAccounts.Adapt<IEnumerable<UserAccountDto>>();
+
         }
 
         public async Task UpdateAsync(int id, UserAccountDto entity)

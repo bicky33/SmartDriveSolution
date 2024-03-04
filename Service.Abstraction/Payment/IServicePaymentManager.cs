@@ -13,7 +13,7 @@ namespace Service.Abstraction.Payment
     {
         IServiceEntityBase<BankDto> BankService { get; }
         IServiceEntityBase<FintechDto> FintechService { get; }
-        IServiceEntityBase<UserAccountDto> UserAccountService { get; }
+        IServiceEntityUserAccount UserAccountService { get; }
         IServiceEntityPaymentTransaction PaymentTransactionService { get; }
 
     }

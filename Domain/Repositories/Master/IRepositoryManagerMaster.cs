@@ -11,14 +11,14 @@ namespace Domain.Repositories.Master
         IRepositoryEntityBase<Category> CategoryRepository { get; }
         IRepositoryEntityBaseMaster<InsuranceType> InsuranceTypeRepository { get; }
         IRepositoryEntityBase<Zone> ZoneRepository { get; }
-        IRepositoryEntityBase<Provinsi> ProvinsiRepository { get; }
+        IRepositoryWithPaging<Provinsi> ProvinsiRepository { get; }
         IRepositoryEntityBase<City> CityRepository { get; }
         IRepositoryEntityBaseMaster<RegionPlat> RegionPlatRepository { get; }
         IRepositoryEntityBaseMaster<AreaWorkgroup> AreaWorkgroupRepository { get; }
         IRepositoryEntityBase<TemplateType> TemplateTypeRepository { get; }
         IRepositoryTemplateServiceTask TemplateServiceTaskRepository { get; }
         IRepositoryEntityBase<TemplateTaskWorkorder> TemplateTaskWorkorderRepository { get; }
-        IRepositoryEntityBase<TemplateInsurancePremi> TemplateInsurancePremiRepository { get; }
+        IRepositoryTemplateInsurancePremi TemplateInsurancePremiRepository { get; }
         IUnitOfWorks UnitOfWork { get; }
     }
 }

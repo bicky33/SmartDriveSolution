@@ -9,6 +9,6 @@ namespace Domain.Repositories.SO
         public Task<string> GenerateSeroId(EnumModuleServiceOrder.SERVTYPE serviceType);
         public string GenerateInsuranceNo();
         public Task<string> GetAgentAreaWorkgroup(int agentId);
-        public void Debugging();
+        public void DisableTracking();
     }
 }

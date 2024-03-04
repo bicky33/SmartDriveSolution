@@ -56,6 +56,17 @@ namespace WebApi.Controllers.SO
             return NoContent();
         }
 
+        // PUT api/<ServiceControlle>/5
+        [HttpPatch("{sowoId}")]
+        public async Task<IActionResult> patch(int sowoId, [FromBody] ServiceOrderWorkorderDtoCreate serviceOrderDto)
+        {
+            var serviceOrder = await _serviceManager.ServiceOrderWorkorderService.GetByIdAsync(sowoId, true);
+            if (serviceOrder == null)
+                return NotFound();
+            await _serviceManager.ServiceOrderWorkorderService.UpdateAsync(sowoId, serviceOrderDto);
+            return NoContent();
+        }
+
         // DELETE api/<ServiceControlle>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)

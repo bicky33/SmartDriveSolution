@@ -5,14 +5,8 @@ using Domain.Exceptions;
 using Domain.Repositories.UserModule;
 using Domain.RequestFeatured;
 using Mapster;
-using Service.Abstraction.Base;
 using Service.Abstraction.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.UserModule
 {

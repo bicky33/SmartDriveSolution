@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.SO;
+using Domain.Repositories.Partners;
 using Domain.Repositories.SO;
 
 namespace Domain.Repositories.SO
@@ -13,6 +14,8 @@ namespace Domain.Repositories.SO
         IRepositorySOEntityBase<ClaimAssetSparepart,int> ClaimAssetSparepartRepository { get; }
         IRepositorySOEntityBase<ServicePremi, int> ServicePremiRepository { get; }
         IRepositorySOEntityBase<ServicePremiCredit, int> ServicePremiCreditRepository { get; }
+        IRepositoryPartnerClaimAssetEvidenceBatch RepositoryPartnerClaimAssetEvidenceBatch { get; }
+
         IUnitOfWorksSO UnitOfWork { get; }
 
     }

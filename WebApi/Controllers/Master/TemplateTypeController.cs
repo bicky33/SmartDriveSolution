@@ -7,7 +7,7 @@ using Service.Abstraction.Master;
 
 namespace WebApi.Controllers.Master
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/master/[controller]")]
     [ApiController]
     public class TemplateTypeController : ControllerBase
     {
@@ -18,7 +18,6 @@ namespace WebApi.Controllers.Master
             _serviceManagerMaster = serviceManagerMaster;
         }
 
-        // GET: api/<CarSeriesController>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TemplateType>>> Get()
         {
@@ -26,7 +25,6 @@ namespace WebApi.Controllers.Master
             return Ok(templateTypes);
         }
 
-        // GET api/<CarSeriesController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Zone>> Get(int id)
         {
@@ -34,7 +32,6 @@ namespace WebApi.Controllers.Master
             return Ok(templateType);
         }
 
-        // POST api/<CarSeriesController>
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] TemplateTypeResponse request)
         {
@@ -46,15 +43,13 @@ namespace WebApi.Controllers.Master
             return CreatedAtAction(nameof(Get), new { id = templateType.TetyId }, templateType);
         }
 
-        // PUT api/<CarSeriesController>/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] TemplateTypeResponse request)
         {
             await _serviceManagerMaster.TemplateTypeService.UpdateAsync(id, request);
-            return CreatedAtAction(nameof(Get), new { id = request.TetyId }, request);
+            return NoContent();
         }
 
-        // DELETE api/<CarSeriesController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

@@ -32,7 +32,6 @@ namespace WebApi.Controllers.SO
             var serviceOrderDto = await _serviceManager.ServiceOrderService.GetByIdAsync(id, false);
             return Ok(serviceOrderDto);
         }
-
         // POST api/<ServiceControlle>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ServiceOrderDtoCreate serviceOrderDto)

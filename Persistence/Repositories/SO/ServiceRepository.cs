@@ -1,15 +1,11 @@
-﻿using Contract.DTO.SO;
-using Domain.Entities.SO;
+﻿using Domain.Entities.SO;
+using Domain.Entities.Users;
+using Domain.Exceptions.SO;
 using Domain.Repositories.SO;
+using Microsoft.AspNetCore.Routing.Tree;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
-using System;
-using System.Collections.Generic;
-using System.Formats.Tar;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Persistence.Repositories.SO
 {
@@ -27,7 +23,6 @@ namespace Persistence.Repositories.SO
         public void DeleteEntity(Service entity)
         {
             Delete(entity);
-
         }
 
         public async Task<IEnumerable<Service>> GetAllEntity(bool trackChanges)
@@ -38,7 +33,49 @@ namespace Persistence.Repositories.SO
         public async Task<Service> GetEntityById(int id, bool trackChanges)
         {
             var newId = (int)id;
-            return await GetByCondition(c => c.ServId.Equals(newId), trackChanges).SingleOrDefaultAsync();
+            return await GetByCondition(c => c.ServId.Equals(newId), trackChanges)
+                    .Include(c => c.ServCustEntity)
+                    .Include(c => c.ServCreqEntity)
+                        .ThenInclude(c => c.CreqAgenEntity)
+                            .ThenInclude(c => c.EawgEntity)
+                    .Include(c => c.ServCreqEntity)
+                        .ThenInclude(c => c.CustomerInscAsset)
+                    .Include(c => c.ServiceOrders)
+                        .ThenInclude(c => c.ServiceOrderTasks)
+                            .ThenInclude(c => c.ServiceOrderWorkorders)
+                    .Include(c => c.ServicePremi)
+                    .Include(c => c.ServicePremiCredits)
+                    .Select(c => new Service
+                    {
+                        ServId = c.ServId,
+                        ServCreatedOn = c.ServCreatedOn,
+                        ServStatus = c.ServStatus,
+                        ServStartdate = c.ServStartdate,
+                        ServEnddate = c.ServEnddate,
+                        ServCreqEntityid = c.ServCreqEntityid,
+                        ServCustEntityid = c.ServCustEntityid,
+                        ServType = c.ServType,
+                        ServicePremi = c.ServicePremi,
+                        ServicePremiCredits = c.ServicePremiCredits,
+                        ServInsuranceNo = c.ServInsuranceNo,
+                        ServServId = c.ServServId,
+                        ServCustEntity = new User
+                        {
+                            UserFullName = c.ServCustEntity!.UserFullName,
+                        },
+                        ServCreqEntity = new Domain.Entities.CR.CustomerRequest
+                        {
+                            CreqAgenEntity = new Domain.Entities.HR.EmployeeAreWorkgroup
+                            {
+                                EawgEntity = new Domain.Entities.HR.Employee
+                                {
+                                    EmpName = c.ServCreqEntity!.CreqAgenEntity!.EawgEntity.EmpName
+                                }
+                            }
+                        },
+                        ServiceOrders = c.ServiceOrders,
+                    })
+                    .FirstOrDefaultAsync();
         }
         
     }
