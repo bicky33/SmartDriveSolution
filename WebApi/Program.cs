@@ -25,9 +25,7 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
     c.SchemaFilter<ConditionalPropertySchemaFilter>(); // Register the custom schema filter
 });
-builder.Services.ConfigureCors();
 builder.Services.AddCors();
-builder.Services.ConfigureDbContext(builder.Configuration);
 builder.Services.AddTransient<GlobalHandlingException>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -65,9 +63,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<GlobalHandlingException>();
 app.UseHttpsRedirection();
-app.UseCors("CorsPolicy");
-
-app.UseCors("CorsPolicy");
 
 app.UseAuthorization();
 

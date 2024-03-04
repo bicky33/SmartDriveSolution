@@ -29,7 +29,6 @@ namespace WebApi.Controllers.Payment
         }
 
 
-
         // POST api/<PaymentTransactionsController>
         [HttpPost]
         public async Task<IActionResult> Post([FromForm] PaymentTransactionCreateDto paymentDto)
@@ -52,7 +51,7 @@ namespace WebApi.Controllers.Payment
         [HttpPost]
         [Route("AddDeposit")]
         public async Task<IActionResult> Deposit([FromBody] PaymentTransactionDepositDto paymentDto)
-        { 
+        {
             //if (paymentDto.SendAmount)
             //    return BadRequest("Balance is not enough");
 
@@ -72,6 +71,14 @@ namespace WebApi.Controllers.Payment
         {
             var response = await _serviceManager.PaymentTransactionService.GetAllPagingAsync(request, false);
             return Ok(response);
+        }
+
+        [HttpGet("pagingCount")]
+        public async Task<ActionResult<IEnumerable<PartnerDTO>>> GetPagingCount([FromQuery] EntityPaymentTransactionParameter request)
+        {
+            var response = await _serviceManager.PaymentTransactionService.GetAllPagingAsync(request, false);
+            int count = response.Count();
+            return Ok(count);
         }
 
     }
