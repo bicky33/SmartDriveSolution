@@ -12,5 +12,7 @@ namespace Domain.Repositories.Partners
         Task CreateBatch(IEnumerable<ClaimAssetSparepart> data);
         Task DeleteBatch(int CaspPartEntityid, string CaspSeroId);
 
+        Task<IEnumerable<ClaimAssetSparepart>> GetByParameter(int CaspPartEntityid, string CaspSeroId);
+
     }
 }

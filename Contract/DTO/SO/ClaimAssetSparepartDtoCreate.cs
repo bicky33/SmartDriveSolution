@@ -12,8 +12,6 @@ using System.Threading.Tasks;
 namespace Contract.DTO.SO
 {
     public record ClaimAssetSparepartDtoCreate(
-        [Range(1, int.MaxValue, ErrorMessage = "Please provide a valid CaspId.")]
-        int? CaspId,
 
         [Required(ErrorMessage = "CaspItemName is required.")]
         string? CaspItemName,

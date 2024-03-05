@@ -58,5 +58,6 @@ namespace Persistence.Repositories.Partners
                    && x.CaevSeroId != null
                    && x.CaevSeroId.Equals(CaspSeroId)).ToListAsync();
         }
+
     }
 }

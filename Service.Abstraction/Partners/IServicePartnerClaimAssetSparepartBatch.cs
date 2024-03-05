@@ -12,5 +12,7 @@ namespace Service.Abstraction.Partners
     {
         Task CreateBatch(List<ClaimAssetSparepartDtoCreate> request);
         Task DeleteBatch(int caspPartEntityid, string caspSeroId);
+
+        Task<IEnumerable<ClaimAssetSparepartDto>> GetByParameter(int caspPartEntityid, string caspSeroId);
     }
 }

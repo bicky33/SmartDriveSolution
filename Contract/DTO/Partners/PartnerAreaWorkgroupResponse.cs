@@ -12,6 +12,7 @@ namespace Contract.DTO.Partners
         string ArwgDesc,
         string CityName,
         string ProvName,
-        string ZonesName
+        string ZonesName,
+        string UserName
     );
 }
