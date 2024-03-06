@@ -18,6 +18,7 @@ namespace Persistence.Repositories.UserModule
         private readonly Lazy<IRepositoryUserRole> _userRoleRepository;
         private readonly Lazy<IRepositoryUserPhone> _userPhoneRepository;
         private readonly Lazy<IRepositoryUserAddress> _userAddressRepository;
+        private readonly Lazy<IRepositoryRole> _roleRepository;
 
         public RepositoryManagerUser(SmartDriveContext dbContext)
         {
@@ -32,6 +33,8 @@ namespace Persistence.Repositories.UserModule
             new UserPhoneRepository(dbContext));
             _userAddressRepository = new Lazy<IRepositoryUserAddress>(() =>
             new UserAddressRepository(dbContext));
+            _roleRepository = new Lazy<IRepositoryRole>(() =>
+            new RoleRepository(dbContext));
         }
 
         public IRepositoryUser UserRepository => _userRepository.Value;
@@ -45,5 +48,7 @@ namespace Persistence.Repositories.UserModule
         public IRepositoryUserPhone UserPhoneRepository => _userPhoneRepository.Value;
 
         public IRepositoryUserAddress UserAddressRepository => _userAddressRepository.Value;
+
+        public IRepositoryRole RoleRepository => _roleRepository.Value;
     }
 }
