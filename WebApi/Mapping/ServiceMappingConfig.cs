@@ -9,11 +9,14 @@ namespace WebApi.Mapping
         public void Register(TypeAdapterConfig config)
         {
             config.NewConfig<ServiceOrderWorkorder, PartnerWorkOrderResponse>()
+                .Map(dest => dest.SeroId, src => src.SowoSeot != null
+                && src.SowoSeot.SeotSero != null
+                && src.SowoSeot.SeotSero.SeroServ != null ? src.SowoSeot.SeotSero.SeroId : null)
                 .Map(dest => dest.CustomerName, src => src.SowoSeot != null
                 && src.SowoSeot.SeotSero != null
                 && src.SowoSeot.SeotSero.SeroServ != null
                 && src.SowoSeot.SeotSero.SeroServ.ServCustEntity != null ?
-                src.SowoSeot.SeotSero.SeroServ.ServCustEntity : null)
+                src.SowoSeot.SeotSero.SeroServ.ServCustEntity.UserFullName : null)
                 .Map(dest => dest.PoliceNumber, src => src.SowoSeot != null
                 && src.SowoSeot.SeotSero != null
                 && src.SowoSeot.SeotSero.SeroServ != null

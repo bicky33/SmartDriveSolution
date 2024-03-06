@@ -66,5 +66,12 @@ namespace WebApi.Controllers.Partners
             await _servicePartnerManager.ServicePartnerAreaWorkgroup.DeleteAsync(pawoPatrEntityid, pawoArwgCode, pawoUserEntityid);
             return NoContent();
         }
+
+        [HttpGet("{pawoPatrEntityid:int}/{pawoUserEntityid:int}")]
+        public async Task<ActionResult<IEnumerable<PartnerAreaWorkgroupDTO>>> GetByPartnerAndUserId(int pawoPatrEntityid, int pawoUserEntityid)
+        {
+            IEnumerable<PartnerAreaWorkgroupDTO> areas =  await _servicePartnerManager.ServicePartnerAreaWorkgroup.GetByPartnerAndUserId(pawoUserEntityid, pawoPatrEntityid, false);
+            return Ok(areas);
+        }
     }
 }

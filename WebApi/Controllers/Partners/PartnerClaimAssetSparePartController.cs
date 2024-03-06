@@ -59,6 +59,13 @@ namespace WebApi.Controllers.Partners
             return NoContent();
         }
 
+        [HttpGet("{caspPartEntityid:int}/{caspSeroId}")]
+        public async Task<ActionResult<IEnumerable<ClaimAssetSparepartDto>>> GetByParams(int caspPartEntityid, string caspSeroId)
+        {
+            IEnumerable<ClaimAssetSparepartDto> claims = await _servicePartnerManager.ServicePartnerClaimAssetSparepartBatch.GetByParameter(caspPartEntityid, caspSeroId);
+            return Ok(claims);
+        }
+
         [HttpPost("batch")]
         public async Task<ActionResult> PostBatch([FromBody] List<ClaimAssetSparepartDtoCreate> request)
         {
