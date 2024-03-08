@@ -1,5 +1,6 @@
 ﻿using Contract.DTO.Partners;
 using Contract.DTO.UserModule;
+using Contract.Records;
 using Domain.Entities.Partners;
 using Domain.Entities.Users;
 using Domain.Enum;
@@ -40,7 +41,7 @@ namespace Service.Partners
                     UserNpwp = entity.PhoneNumber,
                     UserEmail = entity.PhoneNumber,
                     UserNationalId = entity.PhoneNumber,
-                    UserPassword = entity.PhoneNumber,
+                    UserPassword =  BCrypt.Net.BCrypt.HashPassword(entity.PhoneNumber),
                     UserModifiedDate = DateTime.Now,
                     UserBirthDate = DateTime.Now,
                 };
@@ -66,10 +67,15 @@ namespace Service.Partners
                     PacoUserEntityid = businessEntity.Entityid,
                     PacoStatus = statusRoles,
                 };
+                Partner partner = await _repositoryPartnerManager.RepositoryPartner.GetEntityById(entity.PacoPatrnEntityid, false);
+                PartnerContactDTO response = partnerContact.Adapt<PartnerContactDTO>() with
+                {
+                    PacoPatrnEntityName = partner.PartName,
+                };
                  _repositoryPartnerManager.RepositoryPartnerContact.CreateEntity(partnerContact);
                 await _repositoryPartnerManager.UnitOfWorks.SaveChangesAsync();
                 transaction.Complete();
-                return partnerContact.Adapt<PartnerContactDTO>();
+                return response;
             }
             catch (Exception)
             {
@@ -113,11 +119,12 @@ namespace Service.Partners
             return partnerContactDTO;
         }
 
-        public async Task<IEnumerable<PartnerContactDTO>> GetAllPagingAsync(EntityParameter parameter)
+        public async Task<PaginationDTO<PartnerContactDTO>> GetAllPagingAsync(EntityParameter parameter)
         {
             PagedList<PartnerContact> partnerContact = await _repositoryPartnerManager.RepositoryPartnerContact.GetAllPagingAsync(false, parameter);
             IEnumerable<PartnerContactDTO> partnerContactDTO = partnerContact.Adapt<IEnumerable<PartnerContactDTO>>();
-            return partnerContactDTO;
+            PaginationDTO<PartnerContactDTO> pagination = new(partnerContact.TotalPages, partnerContact.CurrentPage, partnerContactDTO.ToList());
+            return pagination;
         }
         public async Task<PartnerContactDTO> GetByIdAsync(int pacoPatrnEntityid, int pacoUserEntityid, bool trackChanges)
         {
@@ -126,53 +133,65 @@ namespace Service.Partners
             return partnerContactDTO;
         }
 
+        public async Task<IEnumerable<PartnerContactDTO>> GetByUserId(int pacoUserEntityid, bool trackChanges)
+        {
+            IEnumerable<PartnerContact> contacts = await _repositoryPartnerManager.RepositoryPartnerContact.GetByUserId(pacoUserEntityid, trackChanges);
+            return contacts.Adapt<IEnumerable<PartnerContactDTO>>();
+        }
+
         public async Task UpdateAsync(int pacoPatrnEntityid, int pacoUserEntityid, PartnerContactDTO entity)
         {
-            using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
-            try
-            {
-                Dictionary<bool, string> status = new()
-                {
-                    { true, PartnerStatus.ACTIVE.ToString() },
-                    { false, PartnerStatus.INACTIVE.ToString() }
-                };
+            await DeleteAsync(pacoPatrnEntityid, pacoUserEntityid);
+            await CreateAsync(entity);
+            //using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+            //try
+            //{
+            //    Dictionary<bool, string> status = new()
+            //    {
+            //        { true, PartnerStatus.ACTIVE.ToString() },
+            //        { false, PartnerStatus.INACTIVE.ToString() }
+            //    };
 
-                PartnerContact partnerContact = await _repositoryPartnerManager.RepositoryPartnerContact.GetEntityById(pacoPatrnEntityid, pacoUserEntityid, true);
-                User user = await _repositoryPartnerManager.RepositoryUser.GetEntityById(pacoUserEntityid, true);
-                UserRole userRole = await _repositoryPartnerManager.RepositoryUserRole.GetSingleUserRoleByIdAndUserRole(pacoUserEntityid, EnumRoleType.PR.ToString(), true);
-                IEnumerable<UserPhone> userPhones = await _repositoryPartnerManager.RepositoryUserPhone.GetAllEntityById(pacoUserEntityid, true);
-                UserPhone userPhone = userPhones.First(c => c.UsphPhoneType.Equals(UserPhoneType.HP.ToString()));
+            //    PartnerContact partnerContact = await _repositoryPartnerManager.RepositoryPartnerContact.GetEntityById(pacoPatrnEntityid, pacoUserEntityid, true);
+            //    User user = await _repositoryPartnerManager.RepositoryUser.GetEntityById(pacoUserEntityid, true);
+            //    UserRole userRole = await _repositoryPartnerManager.RepositoryUserRole.GetSingleUserRoleByIdAndUserRole(pacoUserEntityid, EnumRoleType.PR.ToString(), true);
+            //    IEnumerable<UserPhone> userPhones = await _repositoryPartnerManager.RepositoryUserPhone.GetAllEntityById(pacoUserEntityid, true);
+            //    UserPhone userPhone = userPhones.First(c => c.UsphPhoneType.Equals(UserPhoneType.HP.ToString()));
 
-                if (status[entity.IsGranted] != partnerContact.PacoStatus)
-                {
-                    partnerContact.PacoStatus = status[entity.IsGranted];
-                    userRole.UsroStatus = status[entity.IsGranted];
-                }
+            //    if (status[entity.IsGranted] != partnerContact.PacoStatus)
+            //    {
+            //        partnerContact.PacoStatus = status[entity.IsGranted];
+            //        userRole.UsroStatus = status[entity.IsGranted];
+            //    }
 
-                if (entity.PhoneNumber != userPhone.UsphPhoneNumber)
-                {
-                    var oldPhone = userPhone.UsphPhoneNumber;
-                    _repositoryPartnerManager.RepositoryUserPhone.DeleteEntity(userPhone);
-                    await _repositoryPartnerManager.UnitOfWorks.SaveChangesAsync();
-                    userPhone.UsphPhoneNumber = entity.PhoneNumber;
-                    _repositoryPartnerManager.RepositoryUserPhone.CreateEntity(userPhone);
-                    await _repositoryPartnerManager.UnitOfWorks.SaveChangesAsync();
-                }
+            //    if(pacoPatrnEntityid != entity.PacoPatrnEntityid)
+            //    {
+            //        partnerContact.PacoPatrnEntityid = entity.PacoPatrnEntityid;
+            //    }
 
-                if (entity.FullName != user.UserFullName)
-                {
-                    user.UserFullName = entity.FullName;
-                    user.UserName = entity.FullName;
-                    user.UserNpwp = entity.PhoneNumber;
-                    user.UserPassword = BCrypt.Net.BCrypt.HashPassword(entity.PhoneNumber);
-                }
-                await _repositoryPartnerManager.UnitOfWorks.SaveChangesAsync();
-                transaction.Complete();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            //    if (entity.PhoneNumber != userPhone.UsphPhoneNumber)
+            //    {
+            //        _repositoryPartnerManager.RepositoryUserPhone.DeleteEntity(userPhone);
+            //        await _repositoryPartnerManager.UnitOfWorks.SaveChangesAsync();
+            //        userPhone.UsphPhoneNumber = entity.PhoneNumber;
+            //        _repositoryPartnerManager.RepositoryUserPhone.CreateEntity(userPhone);
+            //        await _repositoryPartnerManager.UnitOfWorks.SaveChangesAsync();
+            //    }
+
+            //    if (entity.FullName != user.UserFullName)
+            //    {
+            //        user.UserFullName = entity.FullName;
+            //        user.UserName = entity.FullName;
+            //        user.UserNpwp = entity.PhoneNumber;
+            //        user.UserPassword = BCrypt.Net.BCrypt.HashPassword(entity.PhoneNumber);
+            //    }
+            //    await _repositoryPartnerManager.UnitOfWorks.SaveChangesAsync();
+            //    transaction.Complete();
+            //}
+            //catch (Exception)
+            //{
+            //    throw;
+            //}
 
 
 

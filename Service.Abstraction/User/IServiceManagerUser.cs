@@ -16,5 +16,6 @@ namespace Service.Abstraction.User
         IServiceUserPhone UserPhoneService {  get; }
         IServiceUserAddress UserAddressService {  get; }
         IServiceLogin LoginService { get; }
+        IServiceRole RoleService { get; }
     }
 }

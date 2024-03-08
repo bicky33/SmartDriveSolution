@@ -1,4 +1,5 @@
 ﻿using Contract.DTO.Partners;
+using Contract.Records;
 using Domain.Entities.Partners;
 using Domain.Repositories.Partners;
 using Domain.RequestFeatured;
@@ -37,11 +38,12 @@ namespace Service.Partners
             return partnerAreaWorkgroupsDTO;
         }
 
-        public async Task<IEnumerable<PartnerAreaWorkgroupResponse>> GetAllPagingAsync(EntityParameter parameter, bool trackChanges)
+        public async Task<PaginationDTO<PartnerAreaWorkgroupResponse>> GetAllPagingAsync(EntityParameter parameter, bool trackChanges)
         {
             PagedList<PartnerAreaWorkgroup> partnerAreaWorkgroups = await _repositoryPartnerManager.RepositoryPartnerAreaWorkgroup.GetAllPaging(trackChanges, parameter);
             IEnumerable<PartnerAreaWorkgroupResponse> partnerAreaWorkgroupsDTO = partnerAreaWorkgroups.Adapt<IEnumerable<PartnerAreaWorkgroupResponse>>();
-            return partnerAreaWorkgroupsDTO;
+            PaginationDTO<PartnerAreaWorkgroupResponse> response = new(partnerAreaWorkgroups.TotalPages, partnerAreaWorkgroups.CurrentPage, partnerAreaWorkgroupsDTO.ToList());
+            return response;
         }
 
         public async Task<PartnerAreaWorkgroupDTO> GetByIdAsync(
@@ -79,6 +81,13 @@ namespace Service.Partners
             {
                 throw;
             }
+        }
+
+        public async Task<IEnumerable<PartnerAreaWorkgroupDTO>> GetByPartnerAndUserId(int pawoUserId, int pawoPatrId, bool trackChanges)
+        {
+            IEnumerable<PartnerAreaWorkgroup> areas = await _repositoryPartnerManager.RepositoryPartnerAreaWorkgroup.GetByPartnerAndUserId(pawoUserId, pawoPatrId, trackChanges);
+            IEnumerable<PartnerAreaWorkgroupDTO> areasDTO = areas.Adapt<IEnumerable<PartnerAreaWorkgroupDTO>>();
+            return areasDTO;
         }
     }
 }

@@ -1,27 +1,59 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
+
     <TargetFramework>net7.0</TargetFramework>
+
     <ImplicitUsings>enable</ImplicitUsings>
+
     <Nullable>enable</Nullable>
+
     <AssemblyName>Service.Abstraction</AssemblyName>
+
     <RootNamespace>Service.Abstraction</RootNamespace>
+
   </PropertyGroup>
+
   <ItemGroup>
+
     <Compile Remove="Partner\**" />
+
     <EmbeddedResource Remove="Partner\**" />
+
     <None Remove="Partner\**" />
+
   </ItemGroup>
+
   <ItemGroup>
+
     <Folder Include="HR\" />
     <Folder Include="Master\" />
     <Folder Include="CR\" />
     <Folder Include="SO\" />
+
+    <Folder Include="Payment\" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Contract\Contract.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+
+
+    <Folder Include="User\" />
+
+
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contract\Contract.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
-    <Folder Include="User\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Contract\Contract.csproj" />
   </ItemGroup>
 
 
+
+
 </Project>
+

@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\Partner\**" />
+    <Content Remove="Controllers\Partner\**" />
+    <EmbeddedResource Remove="Controllers\Partner\**" />
+    <None Remove="Controllers\Partner\**" />
+  </ItemGroup>
+
+  <ItemGroup>
 	  <PackageReference Include="Mapster" Version="7.4.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.15" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.15">
@@ -22,6 +29,7 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
+	  <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.12" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,7 +45,11 @@
     <Folder Include="Controllers\Users\" />
     <Folder Include="Controllers\SO\" />
     <Folder Include="Controllers\User\" />
-    <Folder Include="Controllers\SO\" /> 
+    <Folder Include="Controllers\SO\" />
+    <Folder Include="Resources\Image\" />
+    <Folder Include="Resources\Images\" />
+    <Folder Include="Resources\Images\Users\" />
+    <Folder Include="Resources\ClaimEvidences\" />
   </ItemGroup>
 
   <ItemGroup>

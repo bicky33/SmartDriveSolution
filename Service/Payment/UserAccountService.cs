@@ -75,6 +75,19 @@ namespace Service.Payment
             return userAccountDto;
         }
 
+        public async Task<IEnumerable<UserAccountDto>> GetAllUserAccountByUserId(int userId, bool trackChanges)
+        {
+            var user = await _repositoryManagerUser.UserRepository.GetEntityById(userId,trackChanges);
+            if (user == null)
+                throw new EntityNotFoundException(userId, "user");
+
+            var userAccounts = await _repositoryPaymentManager.UserAccountRepository.GetAllUserAccountByUserId(userId, trackChanges);
+            if (userAccounts == null)
+                throw new EntityNotFoundException(userId, "UserAccounts");
+            return userAccounts.Adapt<IEnumerable<UserAccountDto>>();
+
+        }
+
         public async Task UpdateAsync(int id, UserAccountDto entity)
         {
             var userAccount = await _repositoryPaymentManager.UserAccountRepository.GetEntityById(id, true);

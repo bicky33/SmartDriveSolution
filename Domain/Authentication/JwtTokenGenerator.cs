@@ -36,10 +36,13 @@ namespace Domain.Authentication
 
             claims.Add(new(CustomClaims.Username, user.UserName));
 
+            claims.Add(new(CustomClaims.Image, user.UserPhoto != null ? user.UserPhoto : ""));
+
             //claim roles
             foreach (var item in user.UserRoles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, item.UsroRoleName));
+                if(item.UsroStatus == EnumRoleActiveStatus.ACTIVE)
+                    claims.Add(new Claim(ClaimTypes.Role, item.UsroRoleName));
             }
 
             var securityToken = new JwtSecurityToken(

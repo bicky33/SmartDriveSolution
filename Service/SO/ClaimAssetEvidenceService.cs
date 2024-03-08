@@ -1,135 +1,113 @@
-﻿using Contract.DTO.SO;
-using Domain.Exceptions.SO;
+﻿using Contract.DTO.Partners;
+using Contract.DTO.SO;
+using Contract.Extensions;
+using Domain.Entities.SO;
 using Domain.Repositories.SO;
 using Mapster;
-using Service.Abstraction.SO;
-using System.Net.Http.Headers;
+using Service.Abstraction.Helpers;
+using Service.Abstraction.Partners;
+using System.Security.Claims;
 
 namespace Service.SO
 {
-    public class ClaimAssetEvidenceService : IServiceSOEntityBase<ClaimAssetEvidenceDto,ClaimAssetEvidenceDtoCreate, int>
+    public class ClaimAssetEvidenceService : IServicePartnerClaimAssetEvidence
     {
         private readonly IRepositorySOManager _repositoryManager;
+        private readonly IFileServer _fileServer;
+        private readonly string _basePath = @".\Resources\ClaimEvidences";
+        private readonly string _baseFolder = @"Resources/ClaimEvidences";
 
-        public ClaimAssetEvidenceService(IRepositorySOManager repositoryManager)
+        public ClaimAssetEvidenceService(IRepositorySOManager repositoryManager, IFileServer fileServer)
         {
             _repositoryManager = repositoryManager;
+            _fileServer = fileServer;
         }
 
-       public async Task<ClaimAssetEvidenceDtoCreate> CreateAsync(ClaimAssetEvidenceDtoCreate entityDto)
+        public async Task<ClaimAssetEvidenceDtoCreate> CreateAsync(ClaimAssetEvidenceDtoCreate entityDto)
         {
-            ClaimAssetEvidenceDtoCreate claimAssetDto = new();
-            // save photo
+            throw new NotImplementedException();
+        }
+
+        public async Task CreateAsyncWithLink(ClaimAssetEvidenceDtoCreate entityDto, string baseUrl)
+        {
             try
             {
-                var file = entityDto.Photo;
-                var folderName = Path.Combine("Resources", "Images");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-                if (file.Length > 0)
-                {
-                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    var fullPath = Path.Combine(pathToSave, fileName);
-                    var dbPath = Path.Combine(folderName, fileName);
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                    }
-                    // manually convert dtocreate to dto 
-                    claimAssetDto = new ClaimAssetEvidenceDtoCreate()
-                    {
-                        CaevCreatedDate = entityDto.CaevCreatedDate,
-                        CaevFilename = entityDto.CaevFilename,
-                        CaevFiletype = file.ContentType,
-                        // original value using bytes but converted to kb
-                        CaevFilesize = (int)file.Length / 2048,
-                        CaevUrl = fileName,
-                        CaevNote = entityDto.CaevNote,
-                        CaevSeroId = entityDto.CaevSeroId,
-                        CaevPartEntityid = entityDto.CaevPartEntityid,
-                        CaevServiceFee = entityDto.CaevServiceFee,
-                    };
-                }
+                ClaimAssetEvidence claim = entityDto.Adapt<ClaimAssetEvidence>();
+                claim.CaevUrl = $"{baseUrl}/{_baseFolder}/{entityDto.CaevFilename}";
+                _repositoryManager.ClaimAssetEvidenceRepository.CreateEntity(claim);
+                await _repositoryManager.UnitOfWork.SaveChangesAsync();
+                string path = Path.Combine(_basePath, entityDto.CaevFilename);
+                await _fileServer.Save(entityDto.Photo, path);
             }
             catch (Exception)
             {
                 throw;
             }
-            var claimAssetEvidence = claimAssetDto.Adapt<Domain.Entities.SO.ClaimAssetEvidence>();
-            // create to table 
-            _repositoryManager.ClaimAssetEvidenceRepository.CreateEntity(claimAssetEvidence);
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
-            
-            return claimAssetDto;
+
+        }
+
+        public async Task CreateBatch(PartnerClaimAssetEvidenceBatchRequest request, string baseUrl)
+        {
+            try
+            {
+                var (claims, files) = request.AsEvidenceEntity();
+                int length = files.Count;
+                for (var i = 0; i< length; i++)
+                {
+                    claims[i].CaevUrl = $"{baseUrl}/{_baseFolder}/{claims[i].CaevFilename}";
+                    string path = Path.Combine(_basePath, claims[i].CaevFilename);
+                    await _fileServer.Save(files[i], path);
+                }
+                await _repositoryManager.RepositoryPartnerClaimAssetEvidenceBatch.CreateBatch(claims);
+                await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task DeleteAsync(int id)
         {
-            var claimAssetEvidence = await _repositoryManager.ClaimAssetEvidenceRepository.GetEntityById(id,false);
-            if (claimAssetEvidence == null)
-                throw new EntityNotFoundExceptionSO(id,"Claim Asset Evidence");
-            _repositoryManager.ClaimAssetEvidenceRepository.DeleteEntity(claimAssetEvidence);
+            ClaimAssetEvidence claim = await _repositoryManager.ClaimAssetEvidenceRepository.GetEntityById(id, true);
+            _repositoryManager.ClaimAssetEvidenceRepository.DeleteEntity(claim);
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            string path = Path.Combine(_baseFolder, claim.CaevFilename);
+            await _fileServer.Delete(path);
+        }
+
+        public async Task DeleteBatch(int caspPartEntityid, string caspSeroId)
+        {
+            IEnumerable<ClaimAssetEvidence> claims = await _repositoryManager.RepositoryPartnerClaimAssetEvidenceBatch
+                .GetData(caspPartEntityid, caspSeroId);
+            await _repositoryManager.RepositoryPartnerClaimAssetEvidenceBatch.DeleteBatch(caspPartEntityid, caspSeroId);
+            foreach (var item in claims)
+            {
+                string path = Path.Combine(_baseFolder, item.CaevFilename);
+                await _fileServer.Delete(path);
+            }
         }
 
         public async Task<IEnumerable<ClaimAssetEvidenceDto>> GetAllAsync(bool trackChanges)
         {
-            var claimAssetEvidence = await _repositoryManager.ClaimAssetEvidenceRepository.GetAllEntity(trackChanges);
-            var claimAssetEvidenceDtos = claimAssetEvidence.Adapt<IEnumerable<ClaimAssetEvidenceDto>>();
-            return claimAssetEvidenceDtos;
+            IEnumerable<ClaimAssetEvidence> data = await _repositoryManager.ClaimAssetEvidenceRepository.GetAllEntity(trackChanges);
+            return data.Adapt<IEnumerable<ClaimAssetEvidenceDto>>();
         }
 
         public async Task<ClaimAssetEvidenceDto> GetByIdAsync(int id, bool trackChanges)
         {
-            var claimAssetEvidence = await _repositoryManager.ClaimAssetEvidenceRepository.GetEntityById(id, trackChanges); 
-            if (claimAssetEvidence == null)
-                throw new EntityNotFoundExceptionSO(id,"Claim Asset Evidence entity is not found");
-
-            var ClaimAssetEvidenceDtos = claimAssetEvidence.Adapt<ClaimAssetEvidenceDto>();
-            return ClaimAssetEvidenceDtos;
+            throw new NotImplementedException();
         }
 
         public async Task<ClaimAssetEvidenceDtoCreate> UpdateAsync(int id, ClaimAssetEvidenceDtoCreate entityDto)
         {
-            ClaimAssetEvidenceDtoCreate claimAssetDto = new();
-            var claimAssetEvidence = await _repositoryManager.ClaimAssetEvidenceRepository.GetEntityById(id, true);
-            if (claimAssetEvidence == null)
-                throw new EntityNotFoundExceptionSO(id, "Claim Asset Evidence entity is not found");
-            // save photo
-            try
-            {
-                var file = entityDto.Photo;
-                var folderName = Path.Combine("Resources", "Images");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-                if (file.Length > 0)
-                {
-                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    var fullPath = Path.Combine(pathToSave, fileName);
-                    var dbPath = Path.Combine(folderName, fileName);
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                    }
+            throw new NotImplementedException();
+        }
 
-                    claimAssetEvidence.CaevFilename = entityDto.CaevFilename;
-                    claimAssetEvidence.CaevFilesize = (int)file.Length / 2048;
-                    claimAssetEvidence.CaevUrl = fileName;
-
-
-                    claimAssetEvidence.CaevId = id;
-                    claimAssetEvidence.CaevNote = entityDto.CaevNote;
-                    claimAssetEvidence.CaevPartEntityid = entityDto.CaevPartEntityid;
-                    claimAssetEvidence.CaevSeroId = entityDto.CaevSeroId;
-                    claimAssetEvidence.CaevServiceFee = entityDto.CaevServiceFee;
-                    claimAssetEvidence.CaevCreatedDate = entityDto.CaevCreatedDate;
-
-                    await _repositoryManager.UnitOfWork.SaveChangesAsync();
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return claimAssetEvidence.Adapt<ClaimAssetEvidenceDtoCreate>();
+        public async Task<IEnumerable<ClaimAssetEvidenceDto>> GetByParameter(int caspPartEntityid, string caspSeroId)
+        {
+            IEnumerable<ClaimAssetEvidence> claims = await _repositoryManager.RepositoryPartnerClaimAssetEvidenceBatch.GetData(caspPartEntityid, caspSeroId);
+            return claims.Adapt<IEnumerable<ClaimAssetEvidenceDto>>();
         }
     }
 }

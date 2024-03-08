@@ -28,17 +28,23 @@ namespace Persistence.Repositories.UserModule
 
         public async Task<IEnumerable<UserAddress>> GetAllEntity(bool trackChanges)
         {
-            return await GetAll(trackChanges).OrderBy(v => v.UsdrId).ToListAsync();
+            return await GetAll(trackChanges)
+                .Include(v => v.UsdrCity)
+                .OrderBy(v => v.UsdrId).ToListAsync();
         }
 
         public async Task<IEnumerable<UserAddress>> GetAllEntityById(int id, bool trackChanges)
         {
-            return await GetByCondition(v => v.UsdrEntityid == id, trackChanges).ToListAsync();
+            return await GetByCondition(v => v.UsdrEntityid == id, trackChanges)
+                .Include(v => v.UsdrCity)
+                .ToListAsync();
         }
 
         public async Task<UserAddress> GetEntityById(int id, bool trackChanges)
         {
-            return await GetByCondition(v => v.UsdrId == id, trackChanges).SingleOrDefaultAsync();
+            return await GetByCondition(v => v.UsdrId == id, trackChanges)
+                .Include(v => v.UsdrCity)
+                .SingleOrDefaultAsync();
         }
     }
 }

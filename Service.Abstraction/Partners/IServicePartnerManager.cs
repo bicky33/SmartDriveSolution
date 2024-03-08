@@ -1,11 +1,5 @@
-﻿using Contract.DTO.UserModule;
-using Domain.Repositories.Base;
-using Service.Abstraction.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Contract.DTO.SO;
+using Service.Abstraction.SO;
 
 namespace Service.Abstraction.Partners
 {
@@ -14,5 +8,11 @@ namespace Service.Abstraction.Partners
         public IServicePartner ServicePartner { get; }
         public IServicePartnerAreaWorkgroup ServicePartnerAreaWorkgroup { get; }
         public IServicePartnerContact ServicePartnerContact { get; }
+        public IServicePartnerClaimAssetSparepartBatch ServicePartnerClaimAssetSparepartBatch { get; }
+        public IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartDtoCreate, int> ServicePartnerClaimAssetSparepart { get; }
+        public IServicePartnerWorkOrder ServicePartnerWorkOrder { get; }
+        public IServicePartnerClaimAssetEvidence ServicePartnerClaimAssetEvidence { get; }
+
+        public IServicePartnerBatchInvoice ServicePartnerBatchInvoice { get; }
     }
 }

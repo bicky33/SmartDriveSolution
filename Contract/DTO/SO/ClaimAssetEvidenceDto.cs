@@ -11,32 +11,16 @@ using System.Threading.Tasks;
 
 namespace Contract.DTO.SO
 {
-    public class ClaimAssetEvidenceDto
-    {
-        [Required]
-        public int CaevId { get; init; }
-
-        public string? CaevFilename { get; init; }
-
-        public int? CaevFilesize { get; init; }
-
-        public string? CaevFiletype { get; init; }
-
-        public string? CaevUrl { get; init; }
-
-        public string? CaevNote { get; init; }
-
-        public int? CaevPartEntityid { get; init; }
-
-        public string? CaevSeroId { get; init; }
-
-        public decimal? CaevServiceFee { get; init; }
-
-        public DateTime? CaevCreatedDate { get; init; }
-
-        //public Partner? CaevPartEntity { get; set; }
-
-        //public ServiceOrderDto? CaevSero { get; set; }
-
-    }
+    public record ClaimAssetEvidenceDto(
+       int CaevId,
+       string? CaevFilename,
+       int? CaevFilesize,
+       string? CaevFiletype,
+       string? CaevUrl,
+       string? CaevNote,
+       int? CaevPartEntityid,
+       string? CaevSeroId,
+       decimal? CaevServiceFee,
+       DateTime? CaevCreatedDate
+    );
 }
