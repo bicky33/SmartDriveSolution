@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Domain.Entities.CR;
 using Domain.Entities.Users;
 using Domain.Entities.SO;
+using Contract.DTO.UserModule;
+using Contract.DTO.CR.Response;
 
 namespace Contract.DTO.SO
 {
@@ -18,36 +20,40 @@ namespace Contract.DTO.SO
 
         public DateTime? ServCreatedOn { get; init; }
 
+        [StringLength(15)]
         public string? ServType { get; set; }
 
+        [StringLength(12)]
         public string? ServInsuranceNo { get; init; }
 
+        [StringLength(12)]
         public string? ServVehicleNo { get; init; }
 
         public DateTime? ServStartdate { get; init; }
 
         public DateTime? ServEnddate { get; init; }
 
+        [StringLength(15)]
         public string? ServStatus { get; set; }
 
         public int? ServServId { get; init; }
-
+        [Required]
         public int? ServCustEntityid { get; init; }
-
+        [Required]
         public int? ServCreqEntityid { get; init; }
 
-        public ICollection<ServiceDto> InverseServServ { get; set; } = new List<ServiceDto>();
+        public ICollection<ServiceDto>? InverseServServ { get; set; } = new List<ServiceDto>();
 
-        //public CustomerRequest? ServCreqEntity { get; set; }
+        public CustomerRequestDto? ServCreqEntity { get; set; }
 
-        //public User? ServCustEntity { get; set; }
+        public UserDto? ServCustEntity { get; set; }
 
         public ServiceDto? ServServ { get; set; }
 
-        public ICollection<ServiceOrderDto> ServiceOrders { get; set; } = new List<ServiceOrderDto>();
+        public List<ServiceOrderDto>? Seros { get; set; } = new List<ServiceOrderDto>();
 
         public ServicePremiDto? ServicePremi { get; set; }
 
-        public ICollection<ServicePremiCreditDto> ServicePremiCredits { get; set; } = new List<ServicePremiCreditDto>();
+        public ICollection<ServicePremiCreditDto>? Secrs { get; set; } = new List<ServicePremiCreditDto>();
     }
 }

@@ -36,9 +36,5 @@ namespace Persistence.Repositories.Master
             return await GetByCondition(testa => testa.TestaId.Equals(id), trackChanges).SingleOrDefaultAsync();
         }
 
-        public async Task<TemplateServiceTask> GetTestaByTestaTetyID(int id, bool trackChanges)
-        {
-            return await GetByCondition(testa => testa.TestaTetyId.Equals(id), trackChanges).SingleOrDefaultAsync();
-        }
     }
 }

@@ -19,9 +19,8 @@ namespace Contract.DTO.CR.Request
         public decimal? CiasTotalPremi { get; set; }
         public string CiasPaidType { get; set; }
         public string? CiasIsNewChar { get; set; }
-        public int CiasCarsId { get; set; }
-        public string CiasIntyName { get; set; }
-        public int CiasCityId { get; set; }
-        //public virtual ICollection<CustomerInscExtend> CustomerInscExtends { get; set; } = new List<CustomerInscExtend>();
+        public int? CiasCarsId { get; set; }
+        public string? CiasIntyName { get; set; }
+        public int? CiasCityId { get; set; }
     }
 }

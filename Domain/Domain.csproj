@@ -17,10 +17,14 @@
   <ItemGroup>
     <Folder Include="Exceptions\UserModule\" />
     <Folder Include="Interface\" />
-    <Folder Include="Repositories\HR\" />
+    <Folder Include="Repositories\CR\" />
     <Folder Include="Repositories\Master\" />
+    <Folder Include="Repositories\Partner\" />
+    <Folder Include="Repositories\HR\" />
     <Folder Include="Repositories\Payment\" />
+    <Folder Include="Repositories\Master\" />
     <Folder Include="Repositories\SO\" />
+    <Folder Include="Repositories\Partner\" />
     <Folder Include="Repositories\User\" />
 
   </ItemGroup>
@@ -32,4 +36,4 @@
   </ItemGroup>
  
 
-</Project>
+</Project> 

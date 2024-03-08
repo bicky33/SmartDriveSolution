@@ -97,16 +97,26 @@ namespace Persistence.Repositories.SO
             var agentEntity=await _dbContext.EmployeeAreWorkgroups.Where(c => c.EawgId.Equals(agentId)).FirstAsync();
             if (agentEntity.EawgArwgCode.IsNullOrEmpty())
                 return "";
-            return agentEntity.EawgArwgCode.ToString();
+            return agentEntity.EawgArwgCode!.ToString();
         }
-        public void Debugging()
+        public void DisableTracking()
         {
-            throw new NotImplementedException();
+            _dbContext.ChangeTracker.Clear();
+            _dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
+            var entryentity = _dbContext.ChangeTracker.Entries();
+
         }
 
-        public string GenerateInsuranceNo()
+        public async Task<string> GenerateInsuranceNo()
         {
-            return "300-172764";
+            return "512-" + DateTime.Today.ToString("ddMMyy") + "01";
+            // get all existing service polis with today datetime
+            // if null counter set to 1
+            //var service = await _dbContext.Services.Where(c => c.ServType == EnumModuleServiceOrder.SERVTYPE.POLIS.ToString() && (c.ServInsuranceNo != null) && c.ServInsuranceNo.Contains("512-" + DateTime.Today.ToString("ddMMyy"))).OrderBy(c => c.ServInsuranceNo).Select(c => c.ServInsuranceNo).ToListAsync();
+            //if (service.Count == 0) 
+            //var strCounter = service.Last()!.Substring(service.Last()!.Length - 2);
+            //var counter = Int32.Parse(strCounter);
+            //return "512-" + DateTime.Today.ToString("ddMMyy") + counter + 1;
         }
     }
 }

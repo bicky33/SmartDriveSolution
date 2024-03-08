@@ -8,7 +8,7 @@
 
         Task<T> CreateAsyncMaster(T entity);
 
-        Task<T> UpdateAsyncMaster(string name, T entity);
+        Task UpdateAsyncMaster(string name, T entity);
 
         Task DeleteAsyncMaster(string name);
     }

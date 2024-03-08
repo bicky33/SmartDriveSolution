@@ -14,8 +14,9 @@ namespace Service.Abstraction.CR
     {
         Task<IEnumerable<CustomerRequestDto>> GetAllByCustomer(int userId, bool trackChanges);
         Task<IEnumerable<CustomerRequestDto>> GetAllByEmployee(string eawgCode, bool trackChanges);
-        Task<CustomerRequestDto> CreateRequest(CreateCustomerRequestDto entity);
-        Task<CustomerRequestResponseDto> CreateByEmployee(CreateCustomerRequestByAgenDto entity);
+        Task<CustomerRequestDto> CreateRequestByAgen(CreateRequestByAgenDto entity);
+        Task<CustomerRequestDto> CreateRequestByCustomer(CreateRequestByCustomerDto entity);
+        Task<CustomerRequestDto> CreatePolis(CustomerPolisRequestDto entity);
         Task<IEnumerable<CustomerRequestDto>> GetAllPagingAsync(EntityParameter entityParameters, bool trackChanges);
     }
 }

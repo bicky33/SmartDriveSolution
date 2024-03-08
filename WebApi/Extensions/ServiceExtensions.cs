@@ -26,6 +26,12 @@ using Service.UserModule;
 using System.Text;
 using Persistence.Repositories.SO;
 using Persistence.Repositories.CR;
+using Service.Abstraction.Payment;
+using Service.Base;
+using Service.HR;
+using Service.Abstraction.HR;
+using Domain.Repositories.HR;
+using Persistence.Repositories.HR;
 using Service.Abstraction.CR;
 using Service.CR;
 using Service.Abstraction.Payment;
@@ -64,6 +70,7 @@ namespace WebApi.Extensions
             services.AddScoped<IRepositorySOManager, RepositorySOManager>();
             services.AddScoped<IRepositoryCustomerManager, RepositoryCustomerManager>();
             services.AddScoped<IRepositoryPartnerManager, RepositoryPartnerManager>();
+            services.AddScoped<IRepositoryHRManager, RepositoryHRManager>();
         }
         public static void ConfigureService(this IServiceCollection services)
         {
@@ -71,18 +78,20 @@ namespace WebApi.Extensions
             services.AddScoped<IServicePaymentManager, ServicePaymentManager>();
             services.AddScoped<IServiceManagerUser, ServiceManagerUser>();
             services.AddScoped<IServiceSOManager, ServiceSOManager>();
-            services.AddScoped<IServiceRequestSOManager, ServiceRequestSOManager>();
-            services.AddScoped<IServiceCustomerManager, ServiceCustomerManager>();
             services.AddScoped<IServicePartnerManager, ServicePartnerManager>();
+            services.AddScoped<IServiceCustomerManager, ServiceCustomerManager>();
+            services.AddScoped<IServiceHRManager, ServiceHRManager>();
         }
         public static void ConfigureMapster(this IServiceCollection services)
         {
             var config = TypeAdapterConfig.GlobalSettings;
             config.Scan(Assembly.GetExecutingAssembly());
             services.AddSingleton(config);
+            
         }
 
-        public static void ConfigureJwtGenerator(this IServiceCollection services, IConfiguration configuration) {
+        public static void ConfigureJwtGenerator(this IServiceCollection services, IConfiguration configuration)
+        {
             services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
             services.AddScoped<JwtTokenGenerator>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

@@ -1,5 +1,6 @@
 ﻿using Contract.DTO.CR.Request;
 using Contract.DTO.CR.Response;
+using Contract.DTO.SO;
 using Domain.Entities.CR;
 using Domain.Entities.Users;
 using Domain.Enum;
@@ -51,7 +52,7 @@ namespace Service.CR
             return customerRequest.Adapt<CustomerRequestDto>();
         }
 
-        public async Task<CustomerRequestDto> CreateRequest(CreateCustomerRequestDto entity)
+        public async Task<CustomerRequestDto> CreateRequestByAgen(CreateRequestByAgenDto entity)
         {
             if (entity.IsGranted)
             {
@@ -98,7 +99,7 @@ namespace Service.CR
                         CreqEntityid = newRequestBusinessEntity.Entityid,
                         CreqCreateDate = entity.CreqCreateDate,
                         CreqStatus = EnumCustomerRequest.CREQSTATUS.OPEN.ToString(),
-                        CreqType = EnumCustomerRequest.CREQTYPE.POLIS.ToString(),
+                        CreqType = EnumCustomerRequest.CREQTYPE.FEASIBILITY.ToString(),
                         CreqCustEntityid = newUserBusinessEntity.Entityid,
                         CreqAgenEntityid = 81
                     };
@@ -177,7 +178,7 @@ namespace Service.CR
                         CreqEntityid = newRequestBusinessEntity.Entityid,
                         CreqCreateDate = entity.CreqCreateDate,
                         CreqStatus = EnumCustomerRequest.CREQSTATUS.OPEN.ToString(),
-                        CreqType = EnumCustomerRequest.CREQTYPE.POLIS.ToString(),
+                        CreqType = EnumCustomerRequest.CREQTYPE.FEASIBILITY.ToString(),
                         CreqCustEntityid = newUserBusinessEntity.Entityid,
                         CreqAgenEntityid = 81
                     };
@@ -214,91 +215,73 @@ namespace Service.CR
             }
         }
 
-        public async Task<CustomerRequestResponseDto> CreateByEmployee(CreateCustomerRequestByAgenDto entity)
+        public async Task<CustomerRequestDto> CreateRequestByCustomer(CreateRequestByCustomerDto entity)
         {
-            string role = entity.IsGranted ? EnumRoleType.PC.ToString() : EnumRoleType.CU.ToString();
-            string statusRoles = entity.IsGranted ? EnumRoleActiveStatus.ACTIVE.ToString() : EnumRoleActiveStatus.INACTIVE.ToString();
+            using var transaction = new TransactionScope(TransactionScopeOption.Required, TransactionScopeAsyncFlowOption.Enabled);
+            try
+            {
+                var newBusinessEntity = _repositoryManagerUser.BusinessEntityRepository.CreateEntity();
+                await _repositoryManagerUser.UnitOfWork.SaveChangesAsync();
 
-            var businessEntity = _repositoryManagerUser.BusinessEntityRepository.CreateEntity();
+                var customerRequest = new CustomerRequest()
+                {
+                    CreqEntityid = newBusinessEntity.Entityid,
+                    CreqCreateDate = entity.CreqCreateDate,
+                    CreqStatus = EnumCustomerRequest.CREQSTATUS.OPEN.ToString(),
+                    CreqType = EnumCustomerRequest.CREQTYPE.FEASIBILITY.ToString(),
+                    CreqCustEntityid = 1134,
+                    CreqAgenEntityid = 81
+                };
+                _repositoryCustomerManager.CustomerRequestRepository.CreateEntity(customerRequest);
+                await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
+
+                var customerInscAsset = new CustomerInscAsset()
+                {
+                    CiasCreqEntityid = newBusinessEntity.Entityid,
+                    CiasPoliceNumber = entity.CustomerInscAsset.CiasPoliceNumber,
+                    CiasYear = entity.CustomerInscAsset.CiasYear,
+                    CiasStartdate = entity.CustomerInscAsset.CiasStartdate,
+                    CiasEnddate = entity.CustomerInscAsset.CiasStartdate.AddYears(1),
+                    CiasCurrentPrice = entity.CustomerInscAsset.CiasCurrentPrice,
+                    CiasInsurancePrice = entity.CustomerInscAsset.CiasCurrentPrice,
+                    CiasTotalPremi = entity.CustomerInscAsset.CiasTotalPremi,
+                    CiasPaidType = entity.CustomerInscAsset.CiasPaidType,
+                    CiasIsNewChar = entity.CustomerInscAsset.CiasIsNewChar,
+                    CiasCarsId = entity.CustomerInscAsset.CiasCarsId,
+                    CiasIntyName = entity.CustomerInscAsset.CiasIntyName,
+                    CiasCityId = entity.CustomerInscAsset.CiasCityId
+                };
+                _repositoryCustomerManager.CustomerInscAssetRepository.CreateEntity(customerInscAsset);
+                await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
+                transaction.Complete();
+
+                var response = customerRequest.Adapt<CustomerRequestDto>();
+                return response;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<CustomerRequestDto> CreatePolis(CustomerPolisRequestDto entity)
+        {
+            var existRequest = await _repositoryCustomerManager.CustomerRequestRepository.GetById(entity.CreqEntityid, true);
+            if(existRequest == null)
+            {
+                throw new EntityNotFoundException(entity.CreqEntityid, "CustomerRequest");
+            }
+
+            if (existRequest.CreqType != "FEASIBILITY")
+                throw new Exception("This Request is already Created.");
+
+            existRequest.CreqType = EnumCustomerRequest.CREQTYPE.POLIS.ToString();
+            existRequest.CreqModifiedDate = DateTime.Now;
+
             await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
-
-            var carSeries = await _repositoryManagerMaster.CarSeriesRepository.GetEntityById(entity.CarSeriesId, false);
-
-            var cities = await _repositoryManagerMaster.CityRepository.GetEntityById(entity.CityId, false);
-
-            var insuranceType = await _repositoryManagerMaster.InsuranceTypeRepository.GetEntityByNameMaster(entity.InsuranceType, false);
-
-            // 
-            var user = new User()
-            {
-                UserEntityid = businessEntity.Entityid,
-                UserName = entity.PhoneNumber,
-                UserPassword = BCrypt.Net.BCrypt.HashPassword(entity.PhoneNumber),
-                UserFullName = entity.CustomerName,
-                UserNpwp = entity.CustomerName,
-                UserEmail = entity.CustomerName,
-                UserNationalId = entity.PhoneNumber,
-                UserModifiedDate = DateTime.Now,
-                UserBirthDate = DateTime.Now,
-            };
-            _repositoryManagerUser.UserRepository.CreateEntity(user);
-            await _repositoryManagerUser.UnitOfWork.SaveChangesAsync();
-
-            var userRoles = new UserRole()
-            {
-                UsroEntityid = businessEntity.Entityid,
-                UsroRoleName = role,
-                UsroStatus = statusRoles
-            };
-            _repositoryManagerUser.UserRoleRepository.CreateEntity(userRoles);
-            await _repositoryManagerUser.UnitOfWork.SaveChangesAsync();
-
-            var userPhone = new UserPhone()
-            {
-                UsphEntityid = businessEntity.Entityid,
-                UsphPhoneNumber = entity.PhoneNumber
-            };
-            _repositoryManagerUser.UserPhoneRepository.CreateEntity(userPhone);
-            await _repositoryManagerUser.UnitOfWork.SaveChangesAsync();
-
-            var customerInscAsset = new CustomerInscAsset()
-            {
-                CiasCreqEntityid = businessEntity.Entityid,
-                CiasPoliceNumber = entity.PoliceNumber,
-                CiasYear = entity.CarYear,
-                CiasStartdate = DateTime.Now,
-                CiasEnddate = DateTime.Now.AddYears(1),
-                CiasCurrentPrice = entity.CurrentPrice,
-                CiasPaidType = entity.PaidType.ToString(),
-                CiasIsNewChar = entity.IsNewChar,
-                CiasCarsId = carSeries.CarsId,
-                CiasCityId = cities.CityId,
-                CiasIntyName = insuranceType.IntyName
-            };
-            _repositoryCustomerManager.CustomerInscAssetRepository.CreateEntity(customerInscAsset);
-
-            // customr claim tidak di create
-            var customerClaim = new CustomerClaim()
-            {
-                CuclCreqEntityid = businessEntity.Entityid
-            };
-            _repositoryCustomerManager.CustomerClaimRepository.CreateEntity(customerClaim);
-
-            var newCustomerRequest = new CustomerRequest()
-            {
-                CreqEntityid = businessEntity.Entityid,
-                CreqCreateDate = DateTime.Now,
-                CreqStatus = EnumCustomerRequest.CREQSTATUS.OPEN.ToString(),
-                CreqType = EnumCustomerRequest.CREQTYPE.POLIS.ToString(),
-                CreqCustEntityid = user.UserEntityid,
-                CreqAgenEntityid = entity.CreqAgenEntityid,
-                CustomerInscAsset = customerInscAsset,
-                CustomerClaim = customerClaim
-            };
-
-            _repositoryCustomerManager.CustomerRequestRepository.CreateEntity(newCustomerRequest);
-            await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
-            return newCustomerRequest.Adapt<CustomerRequestResponseDto>();
+            var customerRequestDto = existRequest.Adapt<CustomerRequestDto>();
+            customerRequestDto.Servs = existRequest.Services.Adapt<List<ServiceDto>>();
+            return customerRequestDto;
         }
 
         public async Task DeleteAsync(int id)
@@ -343,6 +326,7 @@ namespace Service.CR
                 throw new EntityNotFoundException(id, "CustomerRequest");
             }
             var customerRequestDto = customerRequest.Adapt<CustomerRequestDto>();
+            customerRequestDto.Servs = customerRequest.Services.Adapt<List<ServiceDto>>();
             return customerRequestDto;
         }
 

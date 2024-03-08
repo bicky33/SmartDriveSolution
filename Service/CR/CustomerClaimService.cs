@@ -32,6 +32,9 @@ namespace Service.CR
             if (existRequest.CreqType == "CLAIM")
                 throw new Exception("This POLIS is already claimed.");
 
+            if (existRequest.CreqType == "CLOSE")
+                throw new Exception("This POLIS is already claimed.");
+
             var newCustomerClaim = new CustomerClaim()
             {
                 CuclCreqEntityid = customerClaimDto.CreqEntityid
@@ -41,7 +44,7 @@ namespace Service.CR
             await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
 
             existRequest.CreqType = EnumCustomerRequest.CREQTYPE.CLAIM.ToString();
-            existRequest.CreqModifiedDate = DateTime.Now;
+            existRequest.CreqModifiedDate = customerClaimDto.CreqModifiedDate;
 
             await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
             var customerResponseDto = existRequest.Adapt<CustomerRequestDto>();
@@ -52,17 +55,19 @@ namespace Service.CR
         {
             var existRequest = await _repositoryCustomerManager.CustomerRequestRepository.GetById(customerCloseDto.CreqEntityid, true);
             if (existRequest == null)
-                throw new EntityNotFoundException(customerCloseDto.CreqEntityid, "CustomerClaim");
+                throw new EntityNotFoundException(customerCloseDto.CreqEntityid, "CustomerClaim");         
 
             if (existRequest.CreqType == "CLOSE")
                 throw new Exception("This POLIS is already close.");
 
+            if (existRequest.CreqType == "POLIS")
+                throw new Exception("This POLIS is not claimed yet.");
+
             existRequest.CreqType = EnumCustomerRequest.CREQTYPE.CLOSE.ToString();
-            existRequest.CreqModifiedDate = DateTime.Now;
 
             var customerClaim = await _repositoryCustomerManager.CustomerClaimRepository.GetEntityById(customerCloseDto.CreqEntityid, true);
             customerClaim.CuclReason = customerCloseDto.CuclReason;
-            customerClaim.CuclCreateDate = DateTime.Now;
+            customerClaim.CuclCreateDate = customerCloseDto.CuclCreateDate;
 
             await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
             var customerResponseDto = existRequest.Adapt<CustomerRequestDto>();

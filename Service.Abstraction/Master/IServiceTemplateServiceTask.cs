@@ -7,6 +7,5 @@ namespace Service.Abstraction.Master
     {
 
         Task<IEnumerable<TemplateServiceTaskResponse>> GetAllTestaAsync(int id, bool trackChanges);
-        Task<TemplateServiceTaskResponse> GetTestaByTestaTetyIdAsync(int id, bool trackChanges);
     }
 }

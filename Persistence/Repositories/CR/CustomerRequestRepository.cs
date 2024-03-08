@@ -176,7 +176,8 @@ namespace Persistence.Repositories.CR
                 .Include(x => x.CreqCustEntity)
                     .ThenInclude(x => x.UserRoles)
                 .Include(x => x.CustomerInscAsset)
-                .Include(x => x.Services)
+                .Include(x => x.CustomerClaim)
+                .Include(x => x.Services)   
                 .SingleOrDefaultAsync();
         }
 

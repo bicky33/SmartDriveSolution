@@ -9,5 +9,6 @@ namespace Contract.DTO.CR.Request
     public class CustomerClaimRequestDto
     {
         public int CreqEntityid { get; set; }
+        public DateTime? CreqModifiedDate { get; set; }
     }
 }
