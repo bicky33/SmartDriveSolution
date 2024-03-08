@@ -16,3 +16,10 @@
 /WebApi/bin/Debug/net7.0
 /WebApi/obj
 /WebApi/Resources
+
+/Contract/bin/Release/net7.0
+/Domain/bin/Release/net7.0
+/Persistence/bin/Release/net7.0
+/Service/bin/Release/net7.0
+/Service/Properties/PublishProfiles
+/Service.Abstraction/bin/Release/net7.0

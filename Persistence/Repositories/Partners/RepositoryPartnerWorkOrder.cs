@@ -40,6 +40,7 @@ namespace Persistence.Repositories.Partners
                 {
                     SowoId = x.SowoId,
                     SowoName = x.SowoName,
+                    SowoStatus = x.SowoStatus,
                     SowoSeot = x.SowoSeot != null ? new ServiceOrderTask
                     {
                         SeotId = x.SowoSeot.SeotId,
@@ -77,7 +78,9 @@ namespace Persistence.Repositories.Partners
         public async Task<PagedList<ServiceOrderWorkorder>> GetAllAsyncPaging(int seroPartId, string seotArwgCode, EntityParameter parameter)
         {
             IQueryable<ServiceOrderWorkorder> result = _context.ServiceOrderWorkorders
+                .AsNoTracking()
                 .Where(x =>
+                    x.SowoStatus.Equals(EnumModuleServiceOrder.SEOTSTATUS.INPROGRESS) &&
                      x.SowoName != null &&
                      x.SowoSeot != null && x.SowoSeot.SeotSero != null && x.SowoSeot.SeotSero.SeroSero != null &&
                      // Service Order Work Order
@@ -97,6 +100,7 @@ namespace Persistence.Repositories.Partners
                 {
                     SowoId = x.SowoId,
                     SowoName = x.SowoName,
+                    SowoStatus = x.SowoStatus,
                     SowoSeot = x.SowoSeot != null ? new ServiceOrderTask
                     {
                         SeotId = x.SowoSeot.SeotId,

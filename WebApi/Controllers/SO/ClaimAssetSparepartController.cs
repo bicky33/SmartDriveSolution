@@ -35,7 +35,7 @@ namespace WebApi.Controllers.SO
 
         // POST api/<ClaimAssetSparepartController>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] ClaimAssetSparepartDtoCreate caspDto)
+        public async Task<IActionResult> Post([FromBody] ClaimAssetSparepartCreateDto caspDto)
         {
             if (caspDto == null)
                 return BadRequest("Service object is not valid");
@@ -47,7 +47,7 @@ namespace WebApi.Controllers.SO
 
         // PUT api/<ClaimAssetSparepartController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] ClaimAssetSparepartDtoCreate caspDto)
+        public async Task<IActionResult> Put(int id, [FromBody] ClaimAssetSparepartCreateDto caspDto)
         {
             var casp = await _serviceManager.ClaimAssetSparepartService.GetByIdAsync(id, true);
             if (casp == null)

@@ -1,10 +1,14 @@
 ﻿using Domain.Entities.Master;
 using Domain.Entities.Partners;
+using Domain.Entities.SO;
 using Domain.Entities.Users;
 using Domain.Repositories.Base;
 using Domain.Repositories.Partners;
+using Domain.Repositories.SO;
 using Domain.Repositories.UserModule;
+using Microsoft.EntityFrameworkCore;
 using Persistence.Repositories.Master;
+using Persistence.Repositories.SO;
 using Persistence.Repositories.UserModule;
 using System;
 using System.Collections.Generic;
@@ -19,7 +23,8 @@ namespace Persistence.Repositories.Partners
         private readonly Lazy<IRepositoryUserPhone> _repositoryUserPhone;
         private readonly Lazy<IRepositoryUser> _repositoryUser;
         private readonly Lazy<IRepositoryUserRole> _repositoryUserRole;
-        
+
+
         private readonly Lazy<IRepositoryPartner> _repositoryPartner;
         private readonly Lazy<IRepositoryPartnerAreaWorkgroup> _repositoryPartnerAreaWorkgroup;
         private readonly Lazy<IRepositoryPartnerContact> _repositoryPartnerContact;
@@ -63,5 +68,7 @@ namespace Persistence.Repositories.Partners
         public IRepositoryPartnerWorkOrder RepositoryPartnerWorkOrder => _repositoryPartnerWorkOrder.Value;
 
         public IRepositoryEntityBase<City> RepositoryCity => _repositoryCity.Value;
+
+        public IRepositorySOEntityBase<ClaimAssetSparepart, int> RepositoryClaimAssetSparespart => throw new NotImplementedException();
     }
 }

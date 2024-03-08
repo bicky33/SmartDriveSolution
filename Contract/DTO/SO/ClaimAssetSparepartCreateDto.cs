@@ -11,8 +11,7 @@ using System.Threading.Tasks;
 
 namespace Contract.DTO.SO
 {
-    public record ClaimAssetSparepartDtoCreate(
-
+    public record ClaimAssetSparepartCreateDto(
         [Required(ErrorMessage = "CaspItemName is required.")]
         string? CaspItemName,
 
@@ -32,5 +31,13 @@ namespace Contract.DTO.SO
 
         DateTime? CaspCreatedDate
      );
-        
+
+    public record ClaimAssetSparepartRecords(
+
+        [Required(ErrorMessage = "SowoId is required.")]
+        int SowoId,
+        [Required(ErrorMessage = "Data Claim Asset Spareparts is required.")]
+        List<ClaimAssetSparepartCreateDto> Data
+    );
+
 }

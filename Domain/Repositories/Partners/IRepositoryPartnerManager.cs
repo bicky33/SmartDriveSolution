@@ -1,7 +1,9 @@
 ﻿using Domain.Entities.Master;
 using Domain.Entities.Partners;
+using Domain.Entities.SO;
 using Domain.Entities.Users;
 using Domain.Repositories.Base;
+using Domain.Repositories.SO;
 using Domain.Repositories.UserModule;
 using System;
 using System.Collections.Generic;
@@ -16,6 +18,7 @@ namespace Domain.Repositories.Partners
         public IRepositoryUser RepositoryUser { get; }
         public IRepositoryUserPhone RepositoryUserPhone { get; }
         public IRepositoryUserRole RepositoryUserRole { get; }
+        public IRepositorySOEntityBase<ClaimAssetSparepart, int> RepositoryClaimAssetSparespart { get; }
 
 
         public IRepositoryPartnerWorkOrder RepositoryPartnerWorkOrder { get; }

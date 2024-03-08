@@ -13,7 +13,7 @@ namespace Service.SO
         private readonly Lazy<IServiceSOEntityBase<ServiceOrderTaskDto, ServiceOrderTaskDtoCreate, int>> _serviceOrderTaskService;
         private readonly Lazy<IServiceSOEntityBase<ServiceOrderWorkorderDto, ServiceOrderWorkorderDtoCreate, int>> _serviceOrderWorkorderService;
         private readonly Lazy<IServiceSOEntityBase<ClaimAssetEvidenceDto, ClaimAssetEvidenceDtoCreate, int>> _claimAssetEvidenceService;
-        private readonly Lazy<IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartDtoCreate, int>> _claimAssetSparepartService;
+        private readonly Lazy<IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartCreateDto, int>> _claimAssetSparepartService;
         private readonly Lazy<IServiceSOEntityBase<ServicePremiDto, ServicePremiDtoCreate, int>> _servicePremiService;
         private readonly Lazy<IServiceSOEntityBase<ServicePremiCreditDto, ServicePremiCreditDtoCreate, int>> _servicePremiCreditService;
 
@@ -24,7 +24,7 @@ namespace Service.SO
             _serviceOrderTaskService = new Lazy<IServiceSOEntityBase<ServiceOrderTaskDto, ServiceOrderTaskDtoCreate, int>>(()=> new ServiceOrderTaskService(repositoryManager));
             _serviceOrderWorkorderService = new Lazy<IServiceSOEntityBase<ServiceOrderWorkorderDto, ServiceOrderWorkorderDtoCreate, int>>(()=> new ServiceOrderWorkorderService(repositoryManager));
             //_claimAssetEvidenceService = new Lazy<IServiceSOEntityBase<ClaimAssetEvidenceDto, ClaimAssetEvidenceDtoCreate, int>>(()=> new ClaimAssetEvidenceService(repositoryManager));
-            _claimAssetSparepartService = new Lazy<IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartDtoCreate, int>>(()=> new ClaimAssetSparepartService(repositoryManager));
+            _claimAssetSparepartService = new Lazy<IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartCreateDto, int>>(()=> new ClaimAssetSparepartService(repositoryManager));
             _servicePremiService = new Lazy<IServiceSOEntityBase<ServicePremiDto, ServicePremiDtoCreate, int>>(() => new ServicePremiService(repositoryManager));
             _servicePremiCreditService = new Lazy<IServiceSOEntityBase<ServicePremiCreditDto, ServicePremiCreditDtoCreate, int>>(() => new ServicePremiCreditService(repositoryManager));
         }
@@ -36,7 +36,7 @@ namespace Service.SO
 
         public IServiceSOEntityBase<ClaimAssetEvidenceDto, ClaimAssetEvidenceDtoCreate, int> ClaimAssetEvidenceService => _claimAssetEvidenceService.Value;
 
-        public IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartDtoCreate, int> ClaimAssetSparepartService => _claimAssetSparepartService.Value;
+        public IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartCreateDto, int> ClaimAssetSparepartService => _claimAssetSparepartService.Value;
 
         public IServiceSOEntityBase<ServicePremiDto, ServicePremiDtoCreate, int> ServicePremiService => _servicePremiService.Value;
 

@@ -2,6 +2,7 @@
 using Contract.DTO.SO;
 using Contract.Extensions;
 using Domain.Entities.SO;
+using Domain.Enum;
 using Domain.Repositories.SO;
 using Mapster;
 using Service.Abstraction.Helpers;
@@ -46,7 +47,7 @@ namespace Service.SO
 
         }
 
-        public async Task CreateBatch(PartnerClaimAssetEvidenceBatchRequest request, string baseUrl)
+        public async Task CreateBatch(PartnerClaimAssetEvidenceBatchRequest request, string baseUrl, int sowoId)
         {
             try
             {
@@ -59,6 +60,9 @@ namespace Service.SO
                     await _fileServer.Save(files[i], path);
                 }
                 await _repositoryManager.RepositoryPartnerClaimAssetEvidenceBatch.CreateBatch(claims);
+                await _repositoryManager.UnitOfWork.SaveChangesAsync();
+                ServiceOrderWorkorder sowo = await _repositoryManager.ServiceOrderWorkorderRepository.GetEntityById(sowoId, true);
+                sowo.SowoStatus = nameof(EnumModuleServiceOrder.SEOTSTATUS.COMPLETED);
                 await _repositoryManager.UnitOfWork.SaveChangesAsync();
             }
             catch (Exception)

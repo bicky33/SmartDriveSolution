@@ -58,11 +58,11 @@ namespace WebApi.Controllers.Partners
             return NoContent();
         }
 
-        [HttpPost("batch")]
-        public async Task<ActionResult> PostBatch([FromForm] PartnerClaimAssetEvidenceBatchRequest request)
+        [HttpPost("batch/{sowoId:int}")]
+        public async Task<ActionResult> PostBatch([FromForm] PartnerClaimAssetEvidenceBatchRequest request, int sowoId)
         {
             string baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
-            await _servicePartnerManager.ServicePartnerClaimAssetEvidence.CreateBatch(request, baseUrl);
+            await _servicePartnerManager.ServicePartnerClaimAssetEvidence.CreateBatch(request, baseUrl, sowoId);
             return NoContent();
         }
 

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 namespace Contract.DTO.Partners
 {
     public record PartnerWorkOrderResponse(
+        int SowoId,
+        string SowoStatus,
         string CustomerName,
         string PoliceNumber,
         string ServInsuranceNo,

@@ -20,7 +20,7 @@ namespace Service.Partners
         private readonly Lazy<IServicePartnerWorkOrder> _servicePartnerWorkOrder;
         private readonly Lazy<IServicePartnerBatchInvoice> _servicePartnerBatchInvoice;
 
-        private readonly Lazy<IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartDtoCreate, int>> _servicePartnerClaimAssetSparepart;
+        private readonly Lazy<IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartCreateDto, int>> _servicePartnerClaimAssetSparepart;
         private readonly Lazy<IServicePartnerClaimAssetEvidence> _servicePartnerClaimAssetEvidence;
         public ServicePartnerManager(IRepositoryPartnerManager _repositoryPartnerManager, IRepositorySOManager _repositorySOManager)
         {
@@ -29,11 +29,11 @@ namespace Service.Partners
             _servicePartner = new Lazy<IServicePartner>(() => new ServicePartner(_repositoryPartnerManager));
             _servicePartnerAreaWorkgroup = new Lazy<IServicePartnerAreaWorkgroup>(() => new ServicePartnerAreaWorkgroup(_repositoryPartnerManager));
             _servicePartnerContact = new Lazy<IServicePartnerContact>(() => new ServicePartnerContact(_repositoryPartnerManager));
-            _servicePartnerClaimAssetSparepartBatch = new Lazy<IServicePartnerClaimAssetSparepartBatch>(() => new ServicePartnerClaimAssetSparepartBatch(_repositoryPartnerManager));
+            _servicePartnerClaimAssetSparepartBatch = new Lazy<IServicePartnerClaimAssetSparepartBatch>(() => new ServicePartnerClaimAssetSparepartBatch(_repositoryPartnerManager, _repositorySOManager));
             _servicePartnerWorkOrder = new Lazy<IServicePartnerWorkOrder>(() => new ServicePartnerWorkOrder(_repositoryPartnerManager));
             _servicePartnerBatchInvoice = new Lazy<IServicePartnerBatchInvoice>(() => new ServicePartnerBatchInvoice(_repositoryPartnerManager));
 
-            _servicePartnerClaimAssetSparepart = new Lazy<IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartDtoCreate, int>>(() => new ClaimAssetSparepartService(_repositorySOManager));
+            _servicePartnerClaimAssetSparepart = new Lazy<IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartCreateDto, int>>(() => new ClaimAssetSparepartService(_repositorySOManager));
             _servicePartnerClaimAssetEvidence = new Lazy<IServicePartnerClaimAssetEvidence>(() => new ClaimAssetEvidenceService(_repositorySOManager, _fileServer.Value));
         }
 
@@ -42,7 +42,7 @@ namespace Service.Partners
         public IServicePartnerContact ServicePartnerContact => _servicePartnerContact.Value;
         public IServicePartnerClaimAssetSparepartBatch ServicePartnerClaimAssetSparepartBatch => _servicePartnerClaimAssetSparepartBatch.Value;
 
-        public IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartDtoCreate, int> ServicePartnerClaimAssetSparepart => _servicePartnerClaimAssetSparepart.Value;
+        public IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartCreateDto, int> ServicePartnerClaimAssetSparepart => _servicePartnerClaimAssetSparepart.Value;
         public IServicePartnerClaimAssetEvidence ServicePartnerClaimAssetEvidence => _servicePartnerClaimAssetEvidence.Value;
 
         public IServicePartnerWorkOrder ServicePartnerWorkOrder => _servicePartnerWorkOrder.Value;

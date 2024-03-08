@@ -6,7 +6,7 @@ using Service.Abstraction.SO;
 
 namespace Service.SO
 {
-    public class ClaimAssetSparepartService : IServiceSOEntityBase<ClaimAssetSparepartDto,ClaimAssetSparepartDtoCreate, int>
+    public class ClaimAssetSparepartService : IServiceSOEntityBase<ClaimAssetSparepartDto,ClaimAssetSparepartCreateDto, int>
     {
         private readonly IRepositorySOManager _repositoryManager;
 
@@ -15,12 +15,12 @@ namespace Service.SO
             _repositoryManager = repositoryManager;
         }
 
-       public  async Task<ClaimAssetSparepartDtoCreate> CreateAsync(ClaimAssetSparepartDtoCreate entity)
+       public  async Task<ClaimAssetSparepartCreateDto> CreateAsync(ClaimAssetSparepartCreateDto entity)
         {
             var claimAssetSparepart = entity.Adapt<Domain.Entities.SO.ClaimAssetSparepart>();
             _repositoryManager.ClaimAssetSparepartRepository.CreateEntity(claimAssetSparepart);
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
-            return claimAssetSparepart.Adapt<ClaimAssetSparepartDtoCreate>();
+            return claimAssetSparepart.Adapt<ClaimAssetSparepartCreateDto>();
         }
 
         public async Task DeleteAsync(int id)
@@ -49,7 +49,7 @@ namespace Service.SO
             return ClaimAssetSparepartDtos;
         }
 
-        public async Task<ClaimAssetSparepartDtoCreate> UpdateAsync(int id, ClaimAssetSparepartDtoCreate entity)
+        public async Task<ClaimAssetSparepartCreateDto> UpdateAsync(int id, ClaimAssetSparepartCreateDto entity)
         {
             var claimAssetSparepart = await _repositoryManager.ClaimAssetSparepartRepository.GetEntityById(id, true);
             if (claimAssetSparepart == null)
@@ -65,7 +65,7 @@ namespace Service.SO
             claimAssetSparepart.CaspCreatedDate = entity.CaspCreatedDate;
 
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
-            return claimAssetSparepart.Adapt<ClaimAssetSparepartDtoCreate>();
+            return claimAssetSparepart.Adapt<ClaimAssetSparepartCreateDto>();
         }
     }
 }

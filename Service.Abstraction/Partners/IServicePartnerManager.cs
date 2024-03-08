@@ -9,7 +9,7 @@ namespace Service.Abstraction.Partners
         public IServicePartnerAreaWorkgroup ServicePartnerAreaWorkgroup { get; }
         public IServicePartnerContact ServicePartnerContact { get; }
         public IServicePartnerClaimAssetSparepartBatch ServicePartnerClaimAssetSparepartBatch { get; }
-        public IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartDtoCreate, int> ServicePartnerClaimAssetSparepart { get; }
+        public IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartCreateDto, int> ServicePartnerClaimAssetSparepart { get; }
         public IServicePartnerWorkOrder ServicePartnerWorkOrder { get; }
         public IServicePartnerClaimAssetEvidence ServicePartnerClaimAssetEvidence { get; }
 

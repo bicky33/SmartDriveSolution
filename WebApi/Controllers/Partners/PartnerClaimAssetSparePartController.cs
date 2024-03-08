@@ -37,7 +37,7 @@ namespace WebApi.Controllers.Partners
 
         // POST api/<PartnerClaimAssetSparePartController>
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] ClaimAssetSparepartDtoCreate request)
+        public async Task<ActionResult> Post([FromBody] ClaimAssetSparepartCreateDto request)
         {
            await _servicePartnerManager.ServicePartnerClaimAssetSparepart.CreateAsync(request);
            return NoContent();
@@ -45,7 +45,7 @@ namespace WebApi.Controllers.Partners
 
         // PUT api/<PartnerClaimAssetSparePartController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] ClaimAssetSparepartDtoCreate caspDto)
+        public async Task<ActionResult> Put(int id, [FromBody] ClaimAssetSparepartCreateDto caspDto)
         {
             await _servicePartnerManager.ServicePartnerClaimAssetSparepart.UpdateAsync(id, caspDto);
             return NoContent();
@@ -67,7 +67,7 @@ namespace WebApi.Controllers.Partners
         }
 
         [HttpPost("batch")]
-        public async Task<ActionResult> PostBatch([FromBody] List<ClaimAssetSparepartDtoCreate> request)
+        public async Task<ActionResult> PostBatch([FromBody] ClaimAssetSparepartRecords request)
         {
             await _servicePartnerManager.ServicePartnerClaimAssetSparepartBatch.CreateBatch(request);
             return NoContent();
