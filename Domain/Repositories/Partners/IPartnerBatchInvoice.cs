@@ -11,5 +11,6 @@ namespace Domain.Repositories.Partners
         Task<int> GetSequence();
         Task CreateBatch(IEnumerable<BatchPartnerInvoice> data);
         Task<PagedList<BatchPartnerInvoice>> GetAllPagingAsync(EntityParameter parameter);
+        Task<BatchPartnerInvoice?> GetByid(string id);
     }
 }

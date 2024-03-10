@@ -3,9 +3,11 @@ using Contract.DTO.Payment;
 using Domain.Entities.Partners;
 using Domain.Entities.Payment;
 using Domain.Enum;
+using Domain.Repositories.Partners;
 using Domain.Repositories.Payment;
 using Domain.RequestFeatured;
 using Mapster;
+using Persistence.Repositories;
 using Service.Abstraction.Base;
 using Service.Abstraction.Payment;
 using System.Globalization;
@@ -15,10 +17,13 @@ namespace Service.Payment
     public class PaymentTransactionService : IServiceEntityPaymentTransaction
     {
         private readonly IRepositoryPaymentManager _repositoryPaymentManager;
+        private readonly IRepositoryPartnerManager _repositoryPartnerManager;
 
-        public PaymentTransactionService(IRepositoryPaymentManager repositoryPaymentManager)
+
+        public PaymentTransactionService(IRepositoryPaymentManager repositoryPaymentManager, IRepositoryPartnerManager repositoryPartnerManager)
         {
             _repositoryPaymentManager = repositoryPaymentManager;
+            _repositoryPartnerManager = repositoryPartnerManager;
         }
 
         public async Task<PaymentTransactionDto> CreateAsync(PaymentTransactionCreateDto entity)
@@ -105,13 +110,41 @@ namespace Service.Payment
             return sendFromTrx.Adapt<PaymentTransactionDto>();
         }
 
+        public async Task GenerateTransferEmployeeAsync()
+        {
+
+
+        }
+
+        public async Task GenerateTransferPartnerAsync()
+        {
+            var invoices = await _repositoryPartnerManager.RepositoryPartnerBatchInvoice.GetAllData();
+
+            foreach (var item in invoices)
+            {
+                var invoice = await _repositoryPartnerManager.RepositoryPartnerBatchInvoice.GetByid(item.BpinInvoiceNo); 
+                PaymentTransactionCreateDto entity = new()
+                {
+                    SendAmount = item.BpinSubtotal + item.BpinTax,
+                    PatrUsacAccountNoFrom = "AXA",
+                    PatrUsacAccountNoTo = item.BpinAccountNo,
+                    PatrType = PaymentTypeEnum.PAIDPARTNER
+                };
+                var tr = await CreateAsync(entity);
+                invoice.BpinPatrTrxno = tr.PatrTrxno;
+                invoice.BpinStatus = BpinStatus.PAID.ToString();
+                invoice.BpinPaidDate = DateTime.Now;
+                await _repositoryPartnerManager.UnitOfWorks.SaveChangesAsync();
+            }
+            await _repositoryPartnerManager.UnitOfWorks.SaveChangesAsync();
+
+        }
+
         public async Task<IEnumerable<PaymentTransactionDto>> GetAllAsync(bool trackChanges)
         {
             var data = await _repositoryPaymentManager.PaymentTransactionRepository.GetAllEntity(false);
             return data.Adapt<IEnumerable<PaymentTransactionDto>>();
         }
-
-     
 
         public async Task<IEnumerable<PaymentTransactionDto>> GetAllPagingAsync(EntityPaymentTransactionParameter parameter, bool trackChanges)
         {

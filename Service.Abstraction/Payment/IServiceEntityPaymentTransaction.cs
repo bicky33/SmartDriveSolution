@@ -10,7 +10,10 @@ namespace Service.Abstraction.Payment
         Task<IEnumerable<PaymentTransactionDto>> GetAllAsync(bool trackChanges);
         Task<PaymentTransactionDto> CreateAsync(PaymentTransactionCreateDto entity);
         Task<PaymentTransactionDto> CreateDepositAsync(PaymentTransactionDepositDto entity);
-        Task<IEnumerable<PaymentTransactionDto>> GetAllPagingAsync(EntityPaymentTransactionParameter parameter, bool trackChanges); 
+        Task<IEnumerable<PaymentTransactionDto>> GetAllPagingAsync(EntityPaymentTransactionParameter parameter, bool trackChanges);
+        Task GenerateTransferPartnerAsync();
+        Task  GenerateTransferEmployeeAsync( );
+
 
     }
 }

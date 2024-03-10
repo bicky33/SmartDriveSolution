@@ -47,6 +47,14 @@ namespace WebApi.Controllers.Payment
             return Ok(a);
         }
 
+        [HttpPost]
+        [Route("GeneratePartnerTransfer")]
+        public async Task<IActionResult> GeneratePartnerTransfer()
+        {
+            await _serviceManager.PaymentTransactionService.GenerateTransferPartnerAsync();
+            return Ok();
+        }
+
         // POST api/<PaymentTransactionsController>
         [HttpPost]
         [Route("AddDeposit")]

@@ -76,7 +76,7 @@ namespace Persistence.Repositories.Partners
 
         public async Task<IEnumerable<BatchPartnerInvoice>> GetAllData()
         {
-            return await _context.BatchPartnerInvoices.AsNoTracking()
+            return await _context.BatchPartnerInvoices.AsNoTracking()  
                 .Where(x => x.BpinStatus != null && x.BpinStatus.Equals(BpinStatus.NOT_PAID.ToString()))
                 .Select(xx => new BatchPartnerInvoice
                 {
@@ -133,6 +133,11 @@ namespace Persistence.Repositories.Partners
                     }
                 });
             return PagedList<BatchPartnerInvoice>.ToPagedList(invoices, parameter.PageNumber, parameter.PageSize);
+        }
+
+        public async  Task<BatchPartnerInvoice?> GetByid(string id)
+        {
+           return await _context.BatchPartnerInvoices.Where(x => x.BpinInvoiceNo == id).FirstOrDefaultAsync();
         }
     }
 }
