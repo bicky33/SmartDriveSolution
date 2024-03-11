@@ -1,6 +1,7 @@
 ﻿
 using Contract.DTO.Partners;
 using Contract.DTO.Payment;
+using Contract.Records;
 using Domain.RequestFeatured;
 
 namespace Service.Abstraction.Payment
@@ -10,9 +11,9 @@ namespace Service.Abstraction.Payment
         Task<IEnumerable<PaymentTransactionDto>> GetAllAsync(bool trackChanges);
         Task<PaymentTransactionDto> CreateAsync(PaymentTransactionCreateDto entity);
         Task<PaymentTransactionDto> CreateDepositAsync(PaymentTransactionDepositDto entity);
-        Task<IEnumerable<PaymentTransactionDto>> GetAllPagingAsync(EntityPaymentTransactionParameter parameter, bool trackChanges);
+        Task<PaginationPaymentDTO<PaymentTransactionDto>> GetAllPagingAsync(EntityPaymentTransactionParameter parameter, bool trackChanges);
         Task GenerateTransferPartnerAsync();
-        Task  GenerateTransferEmployeeAsync( );
+        Task GenerateTransferEmployeeAsync();
 
 
     }

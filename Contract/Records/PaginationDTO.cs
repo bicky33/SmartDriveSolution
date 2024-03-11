@@ -11,4 +11,10 @@ namespace Contract.Records
         int CurrentPages,
         List<T> Data
     ) where T: class;
+
+    public record PaginationPaymentDTO<T>(
+       int TotalData,
+       int CurrentPages,
+       List<T> Data
+   ) where T : class;
 }

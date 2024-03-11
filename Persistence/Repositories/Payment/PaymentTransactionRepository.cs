@@ -59,7 +59,7 @@ namespace Persistence.Repositories.Payment
                       pt.PatrNotes,
                       pt.PatrTrxnoRev,
                   })
-              .Where(x => x.UsacUserEntityid == parameter.UserEntityId)
+              .Where(x => x.UsacUserEntityid == parameter.UserEntityId && x.PatrTrxnoRev == null)
               .Select(x => new PaymentTransaction
               {
                   PatrTrxno = x.PatrTrxno,
@@ -97,7 +97,7 @@ namespace Persistence.Repositories.Payment
                       pt.PatrNotes,
                       pt.PatrTrxnoRev,
                   })
-              .Where(x => x.UsacUserEntityid == parameter.UserEntityId)
+              .Where(x => x.UsacUserEntityid == parameter.UserEntityId && x.PatrTrxnoRev != null)
               .Select(x => new PaymentTransaction
               {
                   PatrTrxno = x.PatrTrxno,
@@ -115,7 +115,8 @@ namespace Persistence.Repositories.Payment
 
             transactions.AddRange(resultOLD);
             transactions.AddRange(resultNEW);
-            return PagedList<PaymentTransaction>.ToPagedList(transactions.AsQueryable().OrderBy(x => x.PatrCreatedOn), parameter.PageNumber, parameter.PageSize);
+
+            return PagedList<PaymentTransaction>.ToPagedList(transactions.AsQueryable().OrderByDescending(x => x.PatrTrxno), parameter.PageNumber, parameter.PageSize);
         }
 
         public async Task<PaymentTransaction> GetEntityById(int id, bool trackChanges)

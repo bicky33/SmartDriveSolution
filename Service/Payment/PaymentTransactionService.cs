@@ -1,8 +1,10 @@
 ﻿using Contract.DTO.Partners;
 using Contract.DTO.Payment;
+using Contract.Records;
 using Domain.Entities.Partners;
 using Domain.Entities.Payment;
 using Domain.Enum;
+using Domain.Exceptions;
 using Domain.Repositories.Partners;
 using Domain.Repositories.Payment;
 using Domain.RequestFeatured;
@@ -60,8 +62,8 @@ namespace Service.Payment
             string newFormattedCount = lastTrxNoToIntNext.ToString("0000");
             sendFromTrx.PatrCreatedOn = currentDate;
             sendFromTrx.PatrUsacAccountNoTo = sendToTrx.PatrUsacAccountNoTo;
-            sendToTrx.PatrUsacAccountNoTo = "-";
-            sendFromTrx.PatrUsacAccountNoFrom = "-";
+            sendToTrx.PatrUsacAccountNoTo = entity.PatrUsacAccountNoTo;
+            sendFromTrx.PatrUsacAccountNoFrom = entity.PatrUsacAccountNoFrom;
             sendFromTrx.PatrCredit = entity.SendAmount;
             sendFromTrx.PatrTrxnoRev = trxNoResult;
             sendFromTrx.PatrInvoiceNo = sendToTrx.PatrInvoiceNo;
@@ -122,7 +124,9 @@ namespace Service.Payment
 
             foreach (var item in invoices)
             {
-                var invoice = await _repositoryPartnerManager.RepositoryPartnerBatchInvoice.GetByid(item.BpinInvoiceNo); 
+                var invoice = await _repositoryPartnerManager.RepositoryPartnerBatchInvoice.GetByid(item.BpinInvoiceNo);
+                var accountNo = await _repositoryPaymentManager.UserAccountRepository.GetUserAccountByAccountNo(item.BpinAccountNo, false)
+                    ?? throw new EntityNotFoundException(item.BpinAccountNo, "Account Number");
                 PaymentTransactionCreateDto entity = new()
                 {
                     SendAmount = item.BpinSubtotal + item.BpinTax,
@@ -146,11 +150,12 @@ namespace Service.Payment
             return data.Adapt<IEnumerable<PaymentTransactionDto>>();
         }
 
-        public async Task<IEnumerable<PaymentTransactionDto>> GetAllPagingAsync(EntityPaymentTransactionParameter parameter, bool trackChanges)
+        public async Task<PaginationPaymentDTO<PaymentTransactionDto>> GetAllPagingAsync(EntityPaymentTransactionParameter parameter, bool trackChanges)
         {
             PagedList<PaymentTransaction> partners = await _repositoryPaymentManager.PaymentTransactionRepository.GetAllPaging(trackChanges, parameter);
             IEnumerable<PaymentTransactionDto> partnersDTO = partners.Adapt<IEnumerable<PaymentTransactionDto>>();
-            return partnersDTO;
+            PaginationPaymentDTO<PaymentTransactionDto> pagination = new(partners.TotalCount, partners.CurrentPage, partnersDTO.ToList());
+            return pagination;
         }
 
 

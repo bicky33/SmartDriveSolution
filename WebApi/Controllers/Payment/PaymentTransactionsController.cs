@@ -75,17 +75,17 @@ namespace WebApi.Controllers.Payment
         //TODO Paging with parameter userid
         // GET: api/<PartnerController/paging>
         [HttpGet("paging")]
-        public async Task<ActionResult<IEnumerable<PartnerDTO>>> GetPaging([FromQuery] EntityPaymentTransactionParameter request)
+        public async Task<ActionResult<IEnumerable<PaymentTransactionDto>>> GetPaging([FromQuery] EntityPaymentTransactionParameter request)
         {
             var response = await _serviceManager.PaymentTransactionService.GetAllPagingAsync(request, false);
-            return Ok(response);
+            return Ok(response.Data);
         }
 
         [HttpGet("pagingCount")]
-        public async Task<ActionResult<IEnumerable<PartnerDTO>>> GetPagingCount([FromQuery] EntityPaymentTransactionParameter request)
+        public async Task<ActionResult<IEnumerable<PaymentTransactionDto>>> GetPagingCount([FromQuery] EntityPaymentTransactionParameter request)
         {
             var response = await _serviceManager.PaymentTransactionService.GetAllPagingAsync(request, false);
-            int count = response.Count();
+            int count = response.TotalData;
             return Ok(count);
         }
 
