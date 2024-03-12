@@ -1,12 +1,11 @@
 ﻿using Domain.Entities.SO;
 using Domain.Repositories.SO;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Base;
 
 
 namespace Persistence.Repositories.SO
 {
-    public class ServiceOrderWorkorderRepository : RepositoryBase<ServiceOrderWorkorder>, IRepositorySOEntityBase<ServiceOrderWorkorder,int>
+    public class ServiceOrderWorkorderRepository : RepositoryBase<ServiceOrderWorkorder>, IRepositorySOEntityBase<ServiceOrderWorkorder, int>
     {
         public ServiceOrderWorkorderRepository(SmartDriveContext dbContext) : base(dbContext)
         {
@@ -25,7 +24,7 @@ namespace Persistence.Repositories.SO
 
         public async Task<IEnumerable<ServiceOrderWorkorder>> GetAllEntity(bool trackChanges)
         {
-            return await GetAll(trackChanges).OrderBy(x=>x.SowoId).ToListAsync();
+            return await GetAll(trackChanges).OrderBy(x => x.SowoId).ToListAsync();
         }
 
         public async Task<ServiceOrderWorkorder> GetEntityById(int id, bool trackChanges)
@@ -33,6 +32,6 @@ namespace Persistence.Repositories.SO
             var newId = (int)id;
             return await GetByCondition(c => c.SowoId.Equals(newId), trackChanges).SingleOrDefaultAsync();
         }
-        
+
     }
 }

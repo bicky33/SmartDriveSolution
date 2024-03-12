@@ -1,15 +1,12 @@
 ﻿using Domain.Entities.SO;
 using Domain.Entities.Users;
-using Domain.Exceptions.SO;
 using Domain.Repositories.SO;
-using Microsoft.AspNetCore.Routing.Tree;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Base;
 
 
 namespace Persistence.Repositories.SO
 {
-    public class ServiceRepository : RepositoryBase<Service>, IRepositorySOEntityBase<Service,int>
+    public class ServiceRepository : RepositoryBase<Service>, IRepositorySOEntityBase<Service, int>
     {
         public ServiceRepository(SmartDriveContext dbContext) : base(dbContext)
         {
@@ -27,7 +24,7 @@ namespace Persistence.Repositories.SO
 
         public async Task<IEnumerable<Service>> GetAllEntity(bool trackChanges)
         {
-            return await GetAll(trackChanges).OrderBy(x=>x.ServId).ToListAsync();
+            return await GetAll(trackChanges).OrderBy(x => x.ServId).ToListAsync();
         }
 
         public async Task<Service> GetEntityById(int id, bool trackChanges)
@@ -71,12 +68,14 @@ namespace Persistence.Repositories.SO
                                 {
                                     EmpName = c.ServCreqEntity!.CreqAgenEntity!.EawgEntity.EmpName
                                 }
-                            }
+                            },
+                            CustomerInscAsset = c.ServCreqEntity.CustomerInscAsset,
                         },
                         ServiceOrders = c.ServiceOrders,
+
                     })
                     .FirstOrDefaultAsync();
         }
-        
+
     }
 }

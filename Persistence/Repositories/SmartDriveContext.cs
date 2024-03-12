@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Domain.Entities.CR;
+﻿using Domain.Entities.CR;
 using Domain.Entities.HR;
 using Domain.Entities.Master;
 using Domain.Entities.Partners;
@@ -454,7 +452,7 @@ public partial class SmartDriveContext : DbContext
         {
             entity.HasKey(e => new { e.SecrId, e.SecrServId }).HasName("pk_secr");
 
-            entity.Property(e=>e.SecrId).HasColumnName("secr_id").ValueGeneratedOnAdd();
+            entity.Property(e => e.SecrId).HasColumnName("secr_id").ValueGeneratedOnAdd();
 
             entity.HasOne(d => d.SecrPatrTrxnoNavigation).WithMany(p => p.ServicePremiCredits).HasConstraintName("fk_secr_patr_trxno");
 

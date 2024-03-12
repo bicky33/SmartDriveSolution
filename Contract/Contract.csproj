@@ -26,7 +26,6 @@
     <Folder Include="DTO\Partner\" />
     <Folder Include="DTO\Master\" />
     <Folder Include="DTO\Payment\" />
-    <Folder Include="DTO\SO\" />
   </ItemGroup>
 
 	<ItemGroup>

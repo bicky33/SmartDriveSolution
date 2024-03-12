@@ -6,7 +6,6 @@ using Domain.Repositories.SO;
 using Mapster;
 using Service.Abstraction.Helpers;
 using Service.Abstraction.Partners;
-using System.Security.Claims;
 
 namespace Service.SO
 {
@@ -52,7 +51,7 @@ namespace Service.SO
             {
                 var (claims, files) = request.AsEvidenceEntity();
                 int length = files.Count;
-                for (var i = 0; i< length; i++)
+                for (var i = 0; i < length; i++)
                 {
                     claims[i].CaevUrl = $"{baseUrl}/{_baseFolder}/{claims[i].CaevFilename}";
                     string path = Path.Combine(_basePath, claims[i].CaevFilename);

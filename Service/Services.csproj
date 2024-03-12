@@ -21,13 +21,13 @@
     <Folder Include="CR\" />
     <Folder Include="HR\" />
     <Folder Include="Payment\" />
-    <Folder Include="SO\" />
   </ItemGroup>
 
 
 	<ItemGroup>
 		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
 		<PackageReference Include="Mapster" Version="7.4.0" />
+		<PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.8.1" />
 	</ItemGroup>
 
   <ItemGroup>

@@ -1,5 +1,4 @@
 ﻿using Contract.DTO.SO;
-using Domain.Enum;
 using Domain.Exceptions;
 using Domain.Repositories.SO;
 using Mapster;
@@ -7,7 +6,7 @@ using Service.Abstraction.SO;
 
 namespace Service.SO
 {
-    public class ServicePremiService : IServiceSOEntityBase<ServicePremiDto,ServicePremiDtoCreate,int>
+    public class ServicePremiService : IServiceSOEntityBase<ServicePremiDto, ServicePremiDtoCreate, int>
     {
         private readonly IRepositorySOManager _repositoryManager;
 
@@ -26,9 +25,9 @@ namespace Service.SO
 
         public async Task DeleteAsync(int id)
         {
-            var service = await _repositoryManager.ServicePremiRepository.GetEntityById(id,false);
+            var service = await _repositoryManager.ServicePremiRepository.GetEntityById(id, false);
             if (service == null)
-                throw new EntityNotFoundException(id,"Service Premi");
+                throw new EntityNotFoundException(id, "Service Premi");
             _repositoryManager.ServicePremiRepository.DeleteEntity(service);
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
         }
@@ -40,7 +39,7 @@ namespace Service.SO
                 return new List<ServicePremiDto>();
             else
             {
-                var serviceDto=services.Adapt<IEnumerable<ServicePremiDto>>();
+                var serviceDto = services.Adapt<IEnumerable<ServicePremiDto>>();
                 return serviceDto;
             }
         }
@@ -49,7 +48,7 @@ namespace Service.SO
         {
             var service = await _repositoryManager.ServicePremiRepository.GetEntityById(id, trackChanges);
             if (service == null)
-                throw new EntityNotFoundException(id,"Service Premi");
+                throw new EntityNotFoundException(id, "Service Premi");
             var serviceDtos = service.Adapt<ServicePremiDto>();
             return serviceDtos;
         }
@@ -58,7 +57,7 @@ namespace Service.SO
         {
             var services = await _repositoryManager.ServicePremiRepository.GetEntityById(id, true);
             if (services == null)
-                throw new EntityNotFoundException(id,"Service Premi");
+                throw new EntityNotFoundException(id, "Service Premi");
 
             services.SemiServId = id;
             services.SemiPremiDebet = entity.SemiPremiDebet;

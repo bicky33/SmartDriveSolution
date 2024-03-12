@@ -1,10 +1,4 @@
 ﻿using Contract.DTO.SO;
-using Service.Abstraction.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.Abstraction.SO
 {
@@ -16,5 +10,6 @@ namespace Service.Abstraction.SO
         Task<TEntityDto> ClosePolis(int servId, string reason);
         Task<TEntityDto> SearchBySeroId(string seroId);
         Task<bool> AvailableServicePolis(int servId);
+        Task<string> Debugging();
     }
 }
