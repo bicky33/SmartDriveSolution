@@ -1,12 +1,13 @@
 ﻿using Domain.Entities.SO;
 using Domain.Repositories.Partners;
+using static Domain.Repositories.SO.IRepositoryWithPagingSO;
 
 namespace Domain.Repositories.SO
 {
     public interface IRepositorySOManager
     {
         IRepositorySOEntityBase<Service, int> ServiceRepository { get; }
-        IRepositorySOEntityBase<ServiceOrder, string> ServiceOrderRepository { get; }
+        IRepositoryWithPagingSO<ServiceOrder, string> ServiceOrderRepository { get; }
         IRepositorySOEntityBase<ServiceOrderTask, int> ServiceOrderTaskRepository { get; }
         IRepositorySOEntityBase<ServiceOrderWorkorder, int> ServiceOrderWorkorderRepository { get; }
         IRepositorySOEntityBase<ClaimAssetEvidence, int> ClaimAssetEvidenceRepository { get; }

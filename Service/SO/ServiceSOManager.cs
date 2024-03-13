@@ -12,7 +12,7 @@ namespace Service.SO
     public class ServiceSOManager : IServiceSOManager
     {
         private readonly Lazy<IServiceSORelationBase<ServiceDto, ServiceDtoCreate, int>> _serviceService;
-        private readonly Lazy<IServiceSOEntityBase<ServiceOrderDto, ServiceOrderDtoCreate, string>> _serviceOrderService;
+        private readonly Lazy<IServiceWithPagingSO<ServiceOrderDto, ServiceOrderDtoCreate, string>> _serviceOrderService;
         private readonly Lazy<IServiceSOEntityBase<ServiceOrderTaskDto, ServiceOrderTaskDtoCreate, int>> _serviceOrderTaskService;
         private readonly Lazy<IServiceSOEntityBase<ServiceOrderWorkorderDto, ServiceOrderWorkorderDtoCreate, int>> _serviceOrderWorkorderService;
         private readonly Lazy<IServiceSOEntityBase<ClaimAssetEvidenceDto, ClaimAssetEvidenceDtoCreate, int>> _claimAssetEvidenceService;
@@ -23,7 +23,7 @@ namespace Service.SO
         public ServiceSOManager(IRepositorySOManager repositoryManager, IServiceManagerMaster serviceManagerMaster, IServicePaymentManager servicePaymentManager, IMailService mailService, IServiceManagerUser serviceUserManager, IServiceHRManager serviceHRManager, ILogger<ServiceService> logger)
         {
             _serviceService = new Lazy<IServiceSORelationBase<ServiceDto, ServiceDtoCreate, int>>(() => new ServiceService(repositoryManager, serviceManagerMaster, mailService, serviceUserManager, serviceHRManager));
-            _serviceOrderService = new Lazy<IServiceSOEntityBase<ServiceOrderDto, ServiceOrderDtoCreate, string>>(() => new ServiceOrderService(repositoryManager));
+            _serviceOrderService = new Lazy<IServiceWithPagingSO<ServiceOrderDto, ServiceOrderDtoCreate, string>>(() => new ServiceOrderService(repositoryManager));
             _serviceOrderTaskService = new Lazy<IServiceSOEntityBase<ServiceOrderTaskDto, ServiceOrderTaskDtoCreate, int>>(() => new ServiceOrderTaskService(repositoryManager, serviceManagerMaster, serviceUserManager, mailService, serviceHRManager));
             _serviceOrderWorkorderService = new Lazy<IServiceSOEntityBase<ServiceOrderWorkorderDto, ServiceOrderWorkorderDtoCreate, int>>(() => new ServiceOrderWorkorderService(repositoryManager));
             //_claimAssetEvidenceService = new Lazy<IServiceSOEntityBase<ClaimAssetEvidenceDto, ClaimAssetEvidenceDtoCreate, int>>(()=> new ClaimAssetEvidenceService(repositoryManager));
@@ -33,7 +33,7 @@ namespace Service.SO
         }
 
         public IServiceSORelationBase<ServiceDto, ServiceDtoCreate, int> ServiceService => _serviceService.Value;
-        public IServiceSOEntityBase<ServiceOrderDto, ServiceOrderDtoCreate, string> ServiceOrderService => _serviceOrderService.Value;
+        public IServiceWithPagingSO<ServiceOrderDto, ServiceOrderDtoCreate, string> ServiceOrderService => _serviceOrderService.Value;
         public IServiceSOEntityBase<ServiceOrderTaskDto, ServiceOrderTaskDtoCreate, int> ServiceOrderTaskService => _serviceOrderTaskService.Value;
         public IServiceSOEntityBase<ServiceOrderWorkorderDto, ServiceOrderWorkorderDtoCreate, int> ServiceOrderWorkorderService => _serviceOrderWorkorderService.Value;
 

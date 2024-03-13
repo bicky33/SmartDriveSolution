@@ -102,5 +102,11 @@ namespace Service.SO
         {
             throw new NotImplementedException();
         }
+
+        public async Task<IEnumerable<ClaimAssetEvidenceDto>> GetByParameter(int caspPartEntityid, string caspSeroId)
+        {
+            IEnumerable<ClaimAssetEvidence> claims = await _repositoryManager.RepositoryPartnerClaimAssetEvidenceBatch.GetData(caspPartEntityid, caspSeroId);
+            return claims.Adapt<IEnumerable<ClaimAssetEvidenceDto>>();
+        }
     }
 }

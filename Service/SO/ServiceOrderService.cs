@@ -1,12 +1,18 @@
-﻿using Contract.DTO.SO;
+﻿using Azure;
+using Contract.DTO.Master;
+using Contract.DTO.SO;
+using Domain.Entities.SO;
 using Domain.Exceptions.SO;
 using Domain.Repositories.SO;
+using Domain.RequestFeatured;
+using Domain.RequestFeatured.SO;
 using Mapster;
 using Service.Abstraction.SO;
+using System.Drawing.Printing;
 
 namespace Service.SO
 {
-    public class ServiceOrderService : IServiceSOEntityBase<ServiceOrderDto, ServiceOrderDtoCreate, string>
+    public class ServiceOrderService : IServiceWithPagingSO<ServiceOrderDto, ServiceOrderDtoCreate, string>
     {
         private readonly IRepositorySOManager _repositoryManager;
 
@@ -37,6 +43,19 @@ namespace Service.SO
             var serviceOrder = await _repositoryManager.ServiceOrderRepository.GetAllEntity(trackChanges);
             var serviceOrderDtos = serviceOrder.Adapt<IEnumerable<ServiceOrderDto>>();
             return serviceOrderDtos;
+        }
+
+        public async Task<PagedListSO<ServiceOrderDto>> GetAllWithPagingAsync(EntityParameterSO entityParams, bool trackChanges)
+        {
+            var services = await _repositoryManager.ServiceOrderRepository.GetWithPaging(entityParams, trackChanges);
+            var serviceDtos = services.Adapt<List<ServiceOrderDto>>();
+            return PagedListSO<ServiceOrderDto>.ToPagedList(serviceDtos, entityParams.PageNumber, entityParams.PageSize);
+        }
+
+        public async Task<IEnumerable<ServiceOrderDto>> GetAllByAgentId(int agentId, bool trackChanges)
+        {
+            var serviceOrder = await _repositoryManager.ServiceOrderRepository.GetAllByAgentId(agentId, trackChanges);
+            return serviceOrder.Adapt<IEnumerable<ServiceOrderDto>>();
         }
 
         public async Task<ServiceOrderDto> GetByIdAsync(string id, bool trackChanges)

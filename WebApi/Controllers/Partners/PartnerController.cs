@@ -70,7 +70,13 @@ namespace WebApi.Controllers.Partners
         {
             IEnumerable<PartnerWorkOrderResponse> data = await _servicePartnerManager.ServicePartnerWorkOrder.GetAll(seroPartId, seotArwgCode);
             return Ok(data);
+        }
 
+        [HttpGet("workorder/paging")]
+        public async Task<ActionResult> GetWorkorderPaging([FromQuery] int seroPartId, [FromQuery] string seotArwgCode, [FromQuery] EntityParameter parameter)
+        {
+            PaginationDTO<PartnerWorkOrderResponse> data = await _servicePartnerManager.ServicePartnerWorkOrder.GetAllPaging(seroPartId, seotArwgCode, parameter);
+            return Ok(data);
         }
     }
 }
