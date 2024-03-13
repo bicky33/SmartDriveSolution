@@ -55,7 +55,7 @@ namespace Persistence.Repositories.Partners
                             ServClaimEnddate = x.SowoSeot.SeotSero.ServClaimEnddate,
                             SeroOrdtType = x.SowoSeot.SeotSero.SeroOrdtType,
                             SeroStatus = x.SowoSeot.SeotSero.SeroStatus,
-                            SeroServ = x.SowoSeot.SeotSero.SeroServ != null ? new Service
+                            SeroServ = x.SowoSeot.SeotSero.SeroServ != null ? new Domain.Entities.SO.Service
                             {
                                 ServServId = x.SowoSeot.SeotSero.SeroServ.ServServId,
                                 ServVehicleNo = x.SowoSeot.SeotSero.SeroServ.ServVehicleNo,
@@ -112,7 +112,7 @@ namespace Persistence.Repositories.Partners
                             ServClaimEnddate = x.SowoSeot.SeotSero.ServClaimEnddate,
                             SeroOrdtType = x.SowoSeot.SeotSero.SeroOrdtType,
                             SeroStatus = x.SowoSeot.SeotSero.SeroStatus,
-                            SeroServ = x.SowoSeot.SeotSero.SeroServ != null ? new Service
+                            SeroServ = x.SowoSeot.SeotSero.SeroServ != null ? new Domain.Entities.SO.Service
                             {
                                 ServServId = x.SowoSeot.SeotSero.SeroServ.ServServId,
                                 ServVehicleNo = x.SowoSeot.SeotSero.SeroServ.ServVehicleNo,

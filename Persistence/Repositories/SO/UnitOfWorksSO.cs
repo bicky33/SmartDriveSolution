@@ -1,8 +1,4 @@
-﻿using Domain.Entities.HR;
-using Domain.Entities.SO;
-using Domain.Enum;
-using Domain.Exceptions;
-using Domain.Exceptions.SO;
+﻿using Domain.Enum;
 using Domain.Repositories.SO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -36,7 +32,7 @@ namespace Persistence.Repositories.SO
                     break;
             }
             // ambil seroId terakhir berdasarkan service type
-            var seroEntity = await _dbContext.ServiceOrders.Include(so => so.SeroServ).Where(c=>c.SeroId.StartsWith(key)).OrderBy(o=>o.SeroId).LastOrDefaultAsync();
+            var seroEntity = await _dbContext.ServiceOrders.Include(so => so.SeroServ).Where(c => c.SeroId.StartsWith(key)).OrderBy(o => o.SeroId).LastOrDefaultAsync();
 
             // check if not found
             if (seroEntity == null)
@@ -47,10 +43,10 @@ namespace Persistence.Repositories.SO
             else
             {
                 // ambil counter terakhir dari seroEntityId
-                var substring = seroEntity.SeroId.Substring(2,4).SkipWhile(item => item == '0');
+                var substring = seroEntity.SeroId.Substring(2, 4).SkipWhile(item => item == '0');
                 // looping through substring 
-                var newSubstring = "" ;
-                foreach(var item in substring)
+                var newSubstring = "";
+                foreach (var item in substring)
                 {
                     newSubstring += item;
                 }
@@ -61,7 +57,7 @@ namespace Persistence.Repositories.SO
                 counter++;
 
                 // construct seroId
-                string seroId="";
+                string seroId = "";
 
                 // add service type
                 seroId += key;
@@ -76,14 +72,14 @@ namespace Persistence.Repositories.SO
                 seroId += DateTime.Today.ToString("yyyyMMdd");
                 return seroId;
             }
-            
+
         }
 
         public async Task<int> SaveChangesAsync()
         {
             try
             {
-                var res= await _dbContext.SaveChangesAsync();
+                var res = await _dbContext.SaveChangesAsync();
                 return res;
             }
             catch (Exception)
@@ -94,7 +90,7 @@ namespace Persistence.Repositories.SO
 
         public async Task<string> GetAgentAreaWorkgroup(int agentId)
         {
-            var agentEntity=await _dbContext.EmployeeAreWorkgroups.Where(c => c.EawgId.Equals(agentId)).FirstAsync();
+            var agentEntity = await _dbContext.EmployeeAreWorkgroups.Where(c => c.EawgId.Equals(agentId)).FirstAsync();
             if (agentEntity.EawgArwgCode.IsNullOrEmpty())
                 return "";
             return agentEntity.EawgArwgCode!.ToString();
@@ -107,9 +103,23 @@ namespace Persistence.Repositories.SO
 
         }
 
-        public string GenerateInsuranceNo()
+        public async Task<string> GenerateInsuranceNo()
         {
-            return "300-172764";
+            // get all existing service polis with today datetime
+            // if null counter set to 1
+            var service = await _dbContext.Services.Where(c => c.ServType == EnumModuleServiceOrder.SERVTYPE.POLIS.ToString() && (c.ServInsuranceNo != null)).OrderBy(c => c.ServInsuranceNo).Select(c => c.ServInsuranceNo).ToListAsync();
+            var filteredService = service.Where(c => c.Contains("512-" + DateTime.Now.ToString("ddMMyy")));
+            if (filteredService.Count() == 0) return "512-" + DateTime.Now.ToString("ddMMyy") + "01";
+            var strCounter = service.Last()!.Substring(service.Last()!.Length - 2).SkipWhile(item => item == '0');
+            // looping through substring 
+            var newSubstring = "";
+            foreach (var item in strCounter)
+            {
+                newSubstring += item;
+            }
+            var counter = Int32.Parse(newSubstring);
+            counter++;
+            return "512-" + DateTime.Now.ToString("ddMMyy") + counter.ToString().PadLeft(2, '0'); ;
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Contract.DTO.SO;
-using Domain.Enum;
 using Domain.Exceptions;
 using Domain.Repositories.SO;
 using Mapster;
@@ -7,7 +6,7 @@ using Service.Abstraction.SO;
 
 namespace Service.SO
 {
-    public class ServicePremiCreditService : IServiceSOEntityBase<ServicePremiCreditDto,ServicePremiCreditDtoCreate,int>
+    public class ServicePremiCreditService : IServiceSOEntityBase<ServicePremiCreditDto, ServicePremiCreditDtoCreate, int>
     {
         private readonly IRepositorySOManager _repositoryManager;
 
@@ -26,9 +25,9 @@ namespace Service.SO
 
         public async Task DeleteAsync(int id)
         {
-            var service = await _repositoryManager.ServicePremiCreditRepository.GetEntityById(id,false);
+            var service = await _repositoryManager.ServicePremiCreditRepository.GetEntityById(id, false);
             if (service == null)
-                throw new EntityNotFoundException(id,"Service Premi Credit");
+                throw new EntityNotFoundException(id, "Service Premi Credit");
             _repositoryManager.ServicePremiCreditRepository.DeleteEntity(service);
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
         }
@@ -44,7 +43,7 @@ namespace Service.SO
         {
             var service = await _repositoryManager.ServicePremiCreditRepository.GetEntityById(id, trackChanges);
             if (service == null)
-                throw new EntityNotFoundException(id,"Service Premi Credit");
+                throw new EntityNotFoundException(id, "Service Premi Credit");
             var serviceDtos = service.Adapt<ServicePremiCreditDto>();
             return serviceDtos;
         }
@@ -53,7 +52,7 @@ namespace Service.SO
         {
             var services = await _repositoryManager.ServicePremiCreditRepository.GetEntityById(id, true);
             if (services == null)
-                throw new EntityNotFoundException(id,"Service Premi Credit");
+                throw new EntityNotFoundException(id, "Service Premi Credit");
 
             services.SecrId = id;
             services.SecrServId = entity.SecrServId;

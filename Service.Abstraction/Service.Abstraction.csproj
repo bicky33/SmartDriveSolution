@@ -29,7 +29,6 @@
     <Folder Include="HR\" />
     <Folder Include="Master\" />
     <Folder Include="CR\" />
-    <Folder Include="SO\" />
 
     <Folder Include="Payment\" />
 

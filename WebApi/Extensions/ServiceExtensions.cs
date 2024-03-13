@@ -1,37 +1,39 @@
-﻿using Domain.Repositories.Partners;
-using Domain.Repositories.Master;
-using Domain.Repositories.Payment;
-using Domain.Authentication;
+﻿using Domain.Authentication;
 using Domain.Repositories.CR;
+using Domain.Repositories.HR;
+using Domain.Repositories.Master;
+using Domain.Repositories.Partners;
+using Domain.Repositories.Payment;
+using Domain.Repositories.SO;
 using Domain.Repositories.UserModule;
 using Mapster;
-using Domain.Repositories.SO;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Base;
 using Microsoft.IdentityModel.Tokens;
+using Persistence.Base;
 using Persistence.Repositories;
-using Persistence.Repositories.Partners;
-using Persistence.Repositories.UserModule;
-using Service.Abstraction.Partners;
+using Persistence.Repositories.CR;
+using Persistence.Repositories.HR;
 using Persistence.Repositories.Master;
+using Persistence.Repositories.Partners;
+using Persistence.Repositories.SO;
+using Persistence.Repositories.UserModule;
+using Quartz;
+using Service.Abstraction.HR;
 using Service.Abstraction.Master;
+using Service.Abstraction.Partners;
+using Service.Abstraction.Payment;
 using Service.Abstraction.SO;
 using Service.Abstraction.User;
-using Service.Partners;
-using System.Reflection;
-using Service.Master;
-using Service.SO;
-using Service.UserModule;
-using System.Text;
-using Persistence.Repositories.SO;
-using Persistence.Repositories.CR;
-using Service.Abstraction.Payment;
 using Service.Base;
 using Service.HR;
-using Domain.Repositories.HR;
-using Persistence.Repositories.HR;
-using Service.Abstraction.HR;
+using Service.Master;
+using Service.Partners;
+using Service.SO;
+using Service.SO.BackgroundService;
+using Service.UserModule;
+using System.Reflection;
+using System.Text;
 
 namespace WebApi.Extensions
 {
@@ -43,7 +45,8 @@ namespace WebApi.Extensions
                options.AddPolicy("CorsPolicy", builder =>
                    builder.AllowAnyOrigin()
                    .AllowAnyMethod()
-                   .AllowAnyHeader());
+                   .AllowAnyHeader()
+                   .WithExposedHeaders("X-Total-Pages", "X-Current-Pages", "X-HasNext", "X-HasPrevious", "X-Total-Count"));
            });
 
         // add IIS configure options deploy to IIS
@@ -76,13 +79,14 @@ namespace WebApi.Extensions
             services.AddScoped<IServicePartnerManager, ServicePartnerManager>();
             services.AddScoped<IServicePaymentManager, ServicePaymentManager>();
             services.AddScoped<IServiceHRManager, ServiceHRManager>();
+            services.AddScoped<IMailService, MailService>();
         }
         public static void ConfigureMapster(this IServiceCollection services)
         {
             var config = TypeAdapterConfig.GlobalSettings;
             config.Scan(Assembly.GetExecutingAssembly());
             services.AddSingleton(config);
-            
+
         }
 
         public static void ConfigureJwtGenerator(this IServiceCollection services, IConfiguration configuration)
@@ -102,6 +106,24 @@ namespace WebApi.Extensions
                     ClockSkew = TimeSpan.Zero,
                 };
             });
+        }
+        public static void ConfigureSchedulingJobs(this IServiceCollection services, IConfiguration configuration)
+        {
+            // base configuration from appsettings.json
+            //services.Configure<QuartzOptions>(configuration.GetSection("Quartz"));
+
+            //// if you are using persistent job store, you might want to alter some options
+            //services.Configure<QuartzOptions>(options =>
+            //{
+            //    options.Scheduling.IgnoreDuplicates = true; // default: false
+            //    options.Scheduling.OverWriteExistingData = true; // default: true
+            //});
+            services.AddQuartz();
+            services.AddQuartzHostedService(options =>
+            {
+                options.WaitForJobsToComplete = true;
+            });
+            services.ConfigureOptions<BackgroundServiceSOJobSetup>();
         }
     }
 }
