@@ -78,18 +78,18 @@ namespace WebApi.Controllers.CR
 
             var customerRequest = await _serviceCustomerManager.CustomerRequestService.CreateRequestByAgen(request);
 
-            var createServicePolisFeasibilityDto = new CreateServicePolisFeasibilityDto()
-            {
-                CreqId = customerRequest.CreqEntityid,
-                CustId = (int)customerRequest.CreqCustEntityid,
-                AgentId = (int)customerRequest.CreqAgenEntityid,
-                ServVehicleNo = customerRequest.CustomerInscAsset.CiasPoliceNumber,
-                CreatePolisDate = (DateTime)customerRequest.CreqCreateDate,
-                PolisStartDate = customerRequest.CustomerInscAsset.CiasStartdate,
-                PolisEndDate = customerRequest.CustomerInscAsset.CiasEnddate
-            };
+            //var createServicePolisFeasibilityDto = new CreateServicePolisFeasibilityDto()
+            //{
+            //    CreqId = customerRequest.CreqEntityid,
+            //    CustId = (int)customerRequest.CreqCustEntityid,
+            //    AgentId = (int)customerRequest.CreqAgenEntityid,
+            //    ServVehicleNo = customerRequest.CustomerInscAsset.CiasPoliceNumber,
+            //    CreatePolisDate = (DateTime)customerRequest.CreqCreateDate,
+            //    PolisStartDate = customerRequest.CustomerInscAsset.CiasStartdate,
+            //    PolisEndDate = customerRequest.CustomerInscAsset.CiasEnddate
+            //};
 
-            await _serviceSOManager.ServiceService.CreateServiceFeasibility(createServicePolisFeasibilityDto);
+            //await _serviceSOManager.ServiceService.CreateServiceFeasibility(createServicePolisFeasibilityDto);
 
             return CreatedAtAction(nameof(GetById), new { id = customerRequest.CreqEntityid }, customerRequest);
         }
@@ -104,18 +104,18 @@ namespace WebApi.Controllers.CR
 
             var customerRequest = await _serviceCustomerManager.CustomerRequestService.CreateRequestByCustomer(request);
 
-            var createServicePolisFeasibilityDto = new CreateServicePolisFeasibilityDto()
-            {
-                CreqId = customerRequest.CreqEntityid,
-                CustId = (int)customerRequest.CreqCustEntityid,
-                AgentId = (int)customerRequest.CreqAgenEntityid,
-                ServVehicleNo = customerRequest.CustomerInscAsset.CiasPoliceNumber,
-                CreatePolisDate = (DateTime)customerRequest.CreqCreateDate,
-                PolisStartDate = customerRequest.CustomerInscAsset.CiasStartdate,
-                PolisEndDate = customerRequest.CustomerInscAsset.CiasEnddate
-            };
+            //var createServicePolisFeasibilityDto = new CreateServicePolisFeasibilityDto()
+            //{
+            //    CreqId = customerRequest.CreqEntityid,
+            //    CustId = (int)customerRequest.CreqCustEntityid,
+            //    AgentId = (int)customerRequest.CreqAgenEntityid,
+            //    ServVehicleNo = customerRequest.CustomerInscAsset.CiasPoliceNumber,
+            //    CreatePolisDate = (DateTime)customerRequest.CreqCreateDate,
+            //    PolisStartDate = customerRequest.CustomerInscAsset.CiasStartdate,
+            //    PolisEndDate = customerRequest.CustomerInscAsset.CiasEnddate
+            //};
 
-            await _serviceSOManager.ServiceService.CreateServiceFeasibility(createServicePolisFeasibilityDto);
+            //await _serviceSOManager.ServiceService.CreateServiceFeasibility(createServicePolisFeasibilityDto);
 
             return CreatedAtAction(nameof(GetById), new { id = customerRequest.CreqEntityid }, customerRequest);
         }
@@ -126,14 +126,15 @@ namespace WebApi.Controllers.CR
             try
             {
                 var newPolis = await _serviceCustomerManager.CustomerRequestService.CreatePolis(request);
+                var service = newPolis.Servs.Where(x => x.ServType == "FEASIBILITY").SingleOrDefault();
 
                 var createServicePolisDto = new CreateServicePolisDto()
                 {
-                    ServId = newPolis.Servs[0].ServId,
+                    ServId = service.ServId,
                     AgentId = (int)newPolis.CreqAgenEntityid,
                     CreatePolisDate = (DateTime)newPolis.CreqModifiedDate,
                     PolisStartDate = newPolis.CustomerInscAsset.CiasStartdate,
-                    PolisEndDate = newPolis.CustomerInscAsset.CiasEnddate                    
+                    PolisEndDate = newPolis.CustomerInscAsset.CiasEnddate
                 };
 
                 await _serviceSOManager.ServiceService.CreateServicePolis(createServicePolisDto);

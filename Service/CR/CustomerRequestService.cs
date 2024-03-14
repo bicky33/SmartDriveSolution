@@ -59,11 +59,11 @@ namespace Service.CR
                 using var transaction = new TransactionScope(TransactionScopeOption.Required, TransactionScopeAsyncFlowOption.Enabled);
                 try
                 {
-                    var newUserBusinessEntity = _repositoryManagerUser.BusinessEntityRepository.CreateEntity();
+                    var newBusinessEntity = _repositoryManagerUser.BusinessEntityRepository.CreateEntity();
                     await _repositoryManagerUser.UnitOfWork.SaveChangesAsync();
                     var user = new User()
                     {
-                        UserEntityid = newUserBusinessEntity.Entityid,
+                        UserEntityid = newBusinessEntity.Entityid,
                         UserName = entity.CustomerDto.PhoneNumber,
                         UserFullName = entity.CustomerDto.CustomerName,
                         UserPassword = BCrypt.Net.BCrypt.HashPassword(entity.CustomerDto.PhoneNumber),
@@ -76,7 +76,7 @@ namespace Service.CR
 
                     var newUserRole = new UserRole()
                     {
-                        UsroEntityid = newUserBusinessEntity.Entityid,
+                        UsroEntityid = newBusinessEntity.Entityid,
                         UsroRoleName = EnumRoleType.CU.ToString(),
                         UsroStatus = EnumRoleActiveStatus.ACTIVE.ToString()
                     };
@@ -85,22 +85,22 @@ namespace Service.CR
 
                     var newUserPhone = new UserPhone()
                     {
-                        UsphEntityid = newUserBusinessEntity.Entityid,
+                        UsphEntityid = newBusinessEntity.Entityid,
                         UsphPhoneNumber = entity.CustomerDto.PhoneNumber
                     };
                     _repositoryManagerUser.UserPhoneRepository.CreateEntity(newUserPhone);
                     await _repositoryManagerUser.UnitOfWork.SaveChangesAsync();
 
-                    var newRequestBusinessEntity = _repositoryManagerUser.BusinessEntityRepository.CreateEntity();
-                    await _repositoryManagerUser.UnitOfWork.SaveChangesAsync();
+                    //var newRequestBusinessEntity = _repositoryManagerUser.BusinessEntityRepository.CreateEntity();
+                    //await _repositoryManagerUser.UnitOfWork.SaveChangesAsync();
 
                     var customerRequest = new CustomerRequest()
                     {
-                        CreqEntityid = newRequestBusinessEntity.Entityid,
+                        CreqEntityid = newBusinessEntity.Entityid,
                         CreqCreateDate = entity.CreqCreateDate,
                         CreqStatus = EnumCustomerRequest.CREQSTATUS.OPEN.ToString(),
                         CreqType = EnumCustomerRequest.CREQTYPE.FEASIBILITY.ToString(),
-                        CreqCustEntityid = newUserBusinessEntity.Entityid,
+                        CreqCustEntityid = newBusinessEntity.Entityid,
                         CreqAgenEntityid = 81
                     };
                     _repositoryCustomerManager.CustomerRequestRepository.CreateEntity(customerRequest);
@@ -108,7 +108,7 @@ namespace Service.CR
 
                     var customerInscAsset = new CustomerInscAsset()
                     {
-                        CiasCreqEntityid = newRequestBusinessEntity.Entityid,
+                        CiasCreqEntityid = newBusinessEntity.Entityid,
                         CiasPoliceNumber = entity.CustomerInscAsset.CiasPoliceNumber,
                         CiasYear = entity.CustomerInscAsset.CiasYear,
                         CiasStartdate = entity.CustomerInscAsset.CiasStartdate,
@@ -139,11 +139,11 @@ namespace Service.CR
                 using var transaction = new TransactionScope(TransactionScopeOption.Required, TransactionScopeAsyncFlowOption.Enabled);
                 try
                 {
-                    var newUserBusinessEntity = _repositoryManagerUser.BusinessEntityRepository.CreateEntity();
+                    var newBusinessEntity = _repositoryManagerUser.BusinessEntityRepository.CreateEntity();
                     await _repositoryManagerUser.UnitOfWork.SaveChangesAsync();
                     var user = new User()
                     {
-                        UserEntityid = newUserBusinessEntity.Entityid,
+                        UserEntityid = newBusinessEntity.Entityid,
                         UserName = entity.CustomerDto.PhoneNumber,
                         UserFullName = entity.CustomerDto.CustomerName,
                         UserEmail = entity.CustomerDto.PhoneNumber,
@@ -155,7 +155,7 @@ namespace Service.CR
 
                     var newUserRole = new UserRole()
                     {
-                        UsroEntityid = newUserBusinessEntity.Entityid,
+                        UsroEntityid = newBusinessEntity.Entityid,
                         UsroRoleName = EnumRoleType.PC.ToString(),
                         UsroStatus = EnumRoleActiveStatus.ACTIVE.ToString()
                     };
@@ -164,22 +164,22 @@ namespace Service.CR
 
                     var newUserPhone = new UserPhone()
                     {
-                        UsphEntityid = newUserBusinessEntity.Entityid,
+                        UsphEntityid = newBusinessEntity.Entityid,
                         UsphPhoneNumber = entity.CustomerDto.PhoneNumber
                     };
                     _repositoryManagerUser.UserPhoneRepository.CreateEntity(newUserPhone);
                     await _repositoryManagerUser.UnitOfWork.SaveChangesAsync();
 
-                    var newRequestBusinessEntity = _repositoryManagerUser.BusinessEntityRepository.CreateEntity();
-                    await _repositoryManagerUser.UnitOfWork.SaveChangesAsync();
+                    //var newRequestBusinessEntity = _repositoryManagerUser.BusinessEntityRepository.CreateEntity();
+                    //await _repositoryManagerUser.UnitOfWork.SaveChangesAsync();
 
                     var customerRequest = new CustomerRequest()
                     {
-                        CreqEntityid = newRequestBusinessEntity.Entityid,
+                        CreqEntityid = newBusinessEntity.Entityid,
                         CreqCreateDate = entity.CreqCreateDate,
                         CreqStatus = EnumCustomerRequest.CREQSTATUS.OPEN.ToString(),
                         CreqType = EnumCustomerRequest.CREQTYPE.FEASIBILITY.ToString(),
-                        CreqCustEntityid = newUserBusinessEntity.Entityid,
+                        CreqCustEntityid = newBusinessEntity.Entityid,
                         CreqAgenEntityid = 81
                     };
                     _repositoryCustomerManager.CustomerRequestRepository.CreateEntity(customerRequest);
@@ -187,7 +187,7 @@ namespace Service.CR
 
                     var customerInscAsset = new CustomerInscAsset()
                     {
-                        CiasCreqEntityid = newRequestBusinessEntity.Entityid,
+                        CiasCreqEntityid = newBusinessEntity.Entityid,
                         CiasPoliceNumber = entity.CustomerInscAsset.CiasPoliceNumber,
                         CiasYear = entity.CustomerInscAsset.CiasYear,
                         CiasStartdate = entity.CustomerInscAsset.CiasStartdate,
@@ -281,6 +281,7 @@ namespace Service.CR
             await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
             var customerRequestDto = existRequest.Adapt<CustomerRequestDto>();
             customerRequestDto.Servs = existRequest.Services.Adapt<List<ServiceDto>>();
+
             return customerRequestDto;
         }
 

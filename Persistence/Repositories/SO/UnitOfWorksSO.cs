@@ -109,14 +109,22 @@ namespace Persistence.Repositories.SO
 
         public async Task<string> GenerateInsuranceNo()
         {
-            return "512-" + DateTime.Today.ToString("ddMMyy") + "01";
+            //return "512-" + DateTime.Today.ToString("ddMMyy") + "01";
             // get all existing service polis with today datetime
             // if null counter set to 1
-            //var service = await _dbContext.Services.Where(c => c.ServType == EnumModuleServiceOrder.SERVTYPE.POLIS.ToString() && (c.ServInsuranceNo != null) && c.ServInsuranceNo.Contains("512-" + DateTime.Today.ToString("ddMMyy"))).OrderBy(c => c.ServInsuranceNo).Select(c => c.ServInsuranceNo).ToListAsync();
-            //if (service.Count == 0) 
-            //var strCounter = service.Last()!.Substring(service.Last()!.Length - 2);
-            //var counter = Int32.Parse(strCounter);
-            //return "512-" + DateTime.Today.ToString("ddMMyy") + counter + 1;
+            var service = await _dbContext.Services.Where(c => c.ServType == EnumModuleServiceOrder.SERVTYPE.POLIS.ToString() && (c.ServInsuranceNo != null)).OrderBy(c => c.ServInsuranceNo).Select(c => c.ServInsuranceNo).ToListAsync();
+            var filteredService = service.Where(c => c.Contains("512-" + DateTime.Now.ToString("ddMMyy")));
+            if (filteredService.Count() == 0) return "512-" + DateTime.Now.ToString("ddMMyy") + "01";
+            var strCounter = service.Last()!.Substring(service.Last()!.Length - 2).SkipWhile(item => item == '0');
+            // looping through substring 
+            var newSubstring = "";
+            foreach (var item in strCounter)
+            {
+                newSubstring += item;
+            }
+            var counter = Int32.Parse(newSubstring);
+            counter++;
+            return "512-" + DateTime.Now.ToString("ddMMyy") + counter.ToString().PadLeft(2, '0'); ;
         }
     }
 }

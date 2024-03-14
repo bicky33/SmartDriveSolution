@@ -120,46 +120,46 @@ namespace Persistence.Repositories.CR
 
         public async Task<IEnumerable<CustomerRequest>> GetAllEntity(bool trackChanges)
         {
-            return await GetAll(trackChanges).OrderBy(x => x.CreqEntityid)
-                .Include(x => x.CreqCustEntity)
-                .ThenInclude(c => c.UserPhones)
-                .Include(x => x.CreqCustEntity)
-                .ThenInclude(c => c.UserRoles)
-                .Include(x => x.CustomerInscAsset)
-                .Include(x => x.Services)
-                .ToListAsync();
-
-            //IQueryable<CustomerRequest> result = _dbContext.CustomerRequests.AsNoTracking()
+            //return await GetAll(trackChanges).OrderBy(x => x.CreqEntityid)
             //    .Include(x => x.CreqCustEntity)
-            //        .ThenInclude(x => x.UserPhones)
+            //    .ThenInclude(c => c.UserPhones)
             //    .Include(x => x.CreqCustEntity)
-            //        .ThenInclude(x => x.UserRoles)
+            //    .ThenInclude(c => c.UserRoles)
             //    .Include(x => x.CustomerInscAsset)
-            //.Select(x => new CustomerRequest
-            //{
-            //    CreqEntityid = x.CreqEntityid,
-            //    CreqCreateDate = x.CreqCreateDate,
-            //    CreqStatus = x.CreqStatus,
-            //    CreqType = x.CreqType,
-            //    CreqCustEntity = new User
-            //    {
-            //        UserFullName = x.CreqCustEntity.UserFullName,
-            //        UserPhones = x.CreqCustEntity.UserPhones.Select(y => new UserPhone
-            //        {
-            //            UsphPhoneNumber = y.UsphPhoneNumber
-            //        }).ToList(),
-            //        UserRoles = x.CreqCustEntity.UserRoles.Select(z => new UserRole
-            //        {
-            //            UsroRoleName = z.UsroRoleName
-            //        }).ToList()
-            //    },
-            //    CustomerInscAsset = new CustomerInscAsset
-            //    {
-            //        CiasIntyName = x.CustomerInscAsset.CiasIntyName
-            //    }
-            //});
+            //    .Include(x => x.Services)
+            //    .ToListAsync();
 
-            //return result;
+            IQueryable<CustomerRequest> result = _dbContext.CustomerRequests.AsNoTracking()
+                .Include(x => x.CreqCustEntity)
+                    .ThenInclude(x => x.UserPhones)
+                .Include(x => x.CreqCustEntity)
+                    .ThenInclude(x => x.UserRoles)
+                .Include(x => x.CustomerInscAsset)
+            .Select(x => new CustomerRequest
+            {
+                CreqEntityid = x.CreqEntityid,
+                CreqCreateDate = x.CreqCreateDate,
+                CreqStatus = x.CreqStatus,
+                CreqType = x.CreqType,
+                CreqCustEntity = new User
+                {
+                    UserFullName = x.CreqCustEntity.UserFullName,
+                    UserPhones = x.CreqCustEntity.UserPhones.Select(y => new UserPhone
+                    {
+                        UsphPhoneNumber = y.UsphPhoneNumber
+                    }).ToList(),
+                    UserRoles = x.CreqCustEntity.UserRoles.Select(z => new UserRole
+                    {
+                        UsroRoleName = z.UsroRoleName
+                    }).ToList()
+                },
+                CustomerInscAsset = new CustomerInscAsset
+                {
+                    CiasIntyName = x.CustomerInscAsset.CiasIntyName
+                }
+            });
+
+            return result;
         }
 
         public async Task<CustomerRequest> GetEntityById(int id, bool trackChanges)
