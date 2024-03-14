@@ -45,7 +45,7 @@ namespace Persistence.Repositories.Partners
                         PartAccountNo = xxx.SeroPart.PartAccountNo,
                         PartName = xxx.SeroPart.PartName,
                     } : null,
-                    SeroServ = xxx.SeroServ != null ? new Service
+                    SeroServ = xxx.SeroServ != null ? new Domain.Entities.SO.Service
                     {
                         ServInsuranceNo = xxx.SeroServ.ServInsuranceNo,
                         ServVehicleNo = xxx.SeroServ.ServVehicleNo
@@ -95,7 +95,7 @@ namespace Persistence.Repositories.Partners
                     BpinSero =  new ServiceOrder
                     {
                         SeroId = xx.BpinSero.SeroId,
-                        SeroServ = xx.BpinSero.SeroServ != null ? new Service
+                        SeroServ = xx.BpinSero.SeroServ != null ? new Domain.Entities.SO.Service
                         {
                             ServInsuranceNo = xx.BpinSero.SeroServ.ServInsuranceNo,
                             ServVehicleNo = xx.BpinSero.SeroServ.ServVehicleNo
@@ -125,7 +125,7 @@ namespace Persistence.Repositories.Partners
                     BpinSero = new ServiceOrder
                     {
                         SeroId = xx.BpinSero.SeroId,
-                        SeroServ = xx.BpinSero.SeroServ != null ? new Service
+                        SeroServ = xx.BpinSero.SeroServ != null ? new Domain.Entities.SO.Service
                         {
                             ServInsuranceNo = xx.BpinSero.SeroServ.ServInsuranceNo,
                             ServVehicleNo = xx.BpinSero.SeroServ.ServVehicleNo

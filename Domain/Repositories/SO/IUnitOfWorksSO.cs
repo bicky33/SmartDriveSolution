@@ -1,5 +1,4 @@
-﻿using Domain.Entities.HR;
-using Domain.Enum;
+﻿using Domain.Enum;
 
 namespace Domain.Repositories.SO
 {

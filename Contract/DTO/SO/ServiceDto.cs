@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Entities.CR;
-using Domain.Entities.Users;
-using Domain.Entities.SO;
+﻿using Contract.DTO.CR.Response;
 using Contract.DTO.UserModule;
-using Contract.DTO.CR.Response;
+using System.ComponentModel.DataAnnotations;
 
 namespace Contract.DTO.SO
 {

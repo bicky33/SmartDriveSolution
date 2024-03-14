@@ -1,17 +1,10 @@
-﻿using Domain.Entities.Partners;
-using Domain.Entities.SO;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Contract.DTO.SO
 {
     public record ClaimAssetSparepartDtoCreate(
+        [Range(1, int.MaxValue, ErrorMessage = "Please provide a valid CaspId.")]
+        int? CaspId,
 
         [Required(ErrorMessage = "CaspItemName is required.")]
         string? CaspItemName,
@@ -32,5 +25,5 @@ namespace Contract.DTO.SO
 
         DateTime? CaspCreatedDate
      );
-        
+
 }

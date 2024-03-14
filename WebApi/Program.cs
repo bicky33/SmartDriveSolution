@@ -1,15 +1,8 @@
-using Contract;
 using Contract.Attributes;
-using Contract.DTO.Partners;
-using Domain.Entities.Partners;
-using Domain.Entities.SO;
-using Domain.Enum;
-using Mapster;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
-using System.Text.Json.Serialization;
 using Swashbuckle.AspNetCore.Filters;
+using System.Text.Json.Serialization;
 using WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -50,6 +43,7 @@ builder.Services.ConfigureRepository();
 builder.Services.ConfigureService();
 builder.Services.ConfigureMapster();
 builder.Services.ConfigureJwtGenerator(builder.Configuration);
+builder.Services.ConfigureSchedulingJobs(builder.Configuration);
 
 
 var app = builder.Build();

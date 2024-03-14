@@ -2,13 +2,9 @@
 using Domain.Enum;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Authentication
 {
@@ -41,7 +37,7 @@ namespace Domain.Authentication
             //claim roles
             foreach (var item in user.UserRoles)
             {
-                if(item.UsroStatus == EnumRoleActiveStatus.ACTIVE)
+                if (item.UsroStatus == EnumRoleActiveStatus.ACTIVE)
                     claims.Add(new Claim(ClaimTypes.Role, item.UsroRoleName));
             }
 
