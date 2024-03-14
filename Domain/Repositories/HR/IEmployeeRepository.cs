@@ -9,7 +9,7 @@ namespace Domain.Repositories.HR
     {
         Task<PagedList<Employee>> GetAllPaging(EntityParameter entityParams, bool trackChanges); 
         void CreateEmployee(BusinessEntity be, User user, UserAddress userAddress, UserPhone userPhone, UserRole userRole, Employee employee);
-        Task<IEnumerable<Employee>> FindEmployeeById(int id);
+        Task<Employee> FindEmployeeById(int id);
         //Task<Employee> GetData();
     }
 }

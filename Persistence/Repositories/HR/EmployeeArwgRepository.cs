@@ -149,7 +149,23 @@ namespace Persistence.Repositories.HR
              });
 
 
+
             return result;
+        }
+
+        public async Task<EmployeeAreWorkgroup> FindArwgById(int id)
+        {
+          return await _dbContext.EmployeeAreWorkgroups.AsNoTracking().Where(c => c.SoftDelete == "ACTIVE" && c.EawgId == id)
+                 .Include(c => c.EawgArwgCodeNavigation)
+             .Select(c => new EmployeeAreWorkgroup
+             {
+                 EawgArwgCode = c.EawgArwgCode,
+                 EawgArwgCodeNavigation = new AreaWorkgroup
+                 {
+                     ArwgCityId = c.EawgArwgCodeNavigation.ArwgCityId
+                 },
+             }).FirstOrDefaultAsync();
+
         }
     }
 }

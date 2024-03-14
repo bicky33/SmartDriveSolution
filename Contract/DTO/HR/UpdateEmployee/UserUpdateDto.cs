@@ -14,7 +14,7 @@ namespace Contract.DTO.HR.UpdateEmployee
         public string UserNationalId { get; set; } = null!;
         public string? UserNpwp { get; set; }
 
-        public DateTime? UserModifiedDate { get; set; }
+       // public DateTime? UserModifiedDate { get; set; }
 
         public virtual UserAddressCompositeDto UserAddressCompositeDto { get; set; }
 

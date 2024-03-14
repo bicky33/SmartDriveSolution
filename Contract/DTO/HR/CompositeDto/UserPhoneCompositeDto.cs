@@ -17,7 +17,7 @@ namespace Contract.DTO.HR.CompositeDto
 
 
         public string? UsphPhoneType { get; set; }
-        public DateTime? UsphModifiedDate { get; set; }
+      //  public DateTime? UsphModifiedDate { get; set; }
 
 
 

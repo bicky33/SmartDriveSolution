@@ -5,6 +5,7 @@ using Domain.Entities.Partners;
 using Domain.Entities.SO;
 using Domain.Enum;
 using Mapster;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
@@ -26,7 +27,7 @@ builder.Services.AddSwaggerGen(c =>
     c.SchemaFilter<ConditionalPropertySchemaFilter>(); // Register the custom schema filter
 });
 builder.Services.ConfigureCors();
-builder.Services.AddCors();
+//builder.Services.AddCors();
 builder.Services.ConfigureDbContext(builder.Configuration);
 builder.Services.AddTransient<GlobalHandlingException>();
 
@@ -51,7 +52,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<GlobalHandlingException>();
 app.UseHttpsRedirection();
-
+app.UseCors("CorsPolicy");
 app.UseAuthorization();
 
 app.UseStaticFiles();

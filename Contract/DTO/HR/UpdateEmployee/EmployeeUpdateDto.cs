@@ -30,7 +30,7 @@ namespace Contract.DTO.HR.UpdateEmployee
         public string? EmpAccountNumber { get; set; }
 
 
-        public DateTime? EmpModifiedDate { get; set; }
+       // public DateTime? EmpModifiedDate { get; set; }
 
         [StringLength(5)]
         public string? EmpJobCode { get; set; }

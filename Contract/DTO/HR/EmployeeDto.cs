@@ -32,9 +32,9 @@ namespace Contract.DTO.HR
 
         [StringLength(10)]
         public string? EmpJobCode { get; set; }
-        public virtual ICollection<EmployeeAreaWorkGroupDto> EmployeeAreWorkgroups { get; set; } = new List<EmployeeAreaWorkGroupDto>();
+/*        public virtual ICollection<EmployeeAreaWorkGroupDto> EmployeeAreWorkgroups { get; set; } = new List<EmployeeAreaWorkGroupDto>();
 
         [InverseProperty("EmsaEmpEntity")]
-        public virtual ICollection<EmployeeSalaryDetailDto> EmployeeSalaryDetails { get; set; } = new List<EmployeeSalaryDetailDto>();
+        public virtual ICollection<EmployeeSalaryDetailDto> EmployeeSalaryDetails { get; set; } = new List<EmployeeSalaryDetailDto>();*/
     }
 }

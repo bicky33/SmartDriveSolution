@@ -49,7 +49,7 @@ namespace WebApi.Controllers.HR
         }*/
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Employee>> FindEmployeeById(int id)
+        public async Task<ActionResult<EmployeeCreateDto>> FindEmployeeById(int id)
         {
             var category = await _serviceManager.EmployeeService.FindEmployeeById(id);
             return Ok(category);

@@ -23,16 +23,16 @@ namespace Contract.DTO.HR.CompositeDto
 
         public string UserNationalId { get; set; } = null!;
         public string? UserNpwp { get; set; }
-        public DateTime? UserModifiedDate { get; set; }
+       // public DateTime? UserModifiedDate { get; set; }
 
 
         //public virtual EmployeeDto? EmployeeDto { get; set; }    
 
         //public virtual BusinessEntityCompositeDto? BusinessEntityCompositeDto { get; set; }
-        public virtual UserAddressCompositeDto UserAddressCompositeDto { get; set; } 
+        public ICollection <UserAddressCompositeDto>? UserAddresses { get; set; } 
 
-        public virtual UserPhoneCompositeDto UserPhoneCompositeDto { get; set; }
+        public ICollection<UserPhoneCompositeDto> UserPhones { get; set; }
 
-        public virtual UserRoleCompositeDto UserRoleCompositeDto { get; set; } 
+       // public virtual UserRoleCompositeDto? UserRoleCompositeDto { get; set; } 
     }
 }

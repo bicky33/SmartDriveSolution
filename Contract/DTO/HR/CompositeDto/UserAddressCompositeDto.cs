@@ -20,7 +20,7 @@ namespace Contract.DTO.HR.CompositeDto
 
         public string? UsdrAddress2 { get; set; }
 
-        public DateTime? UsdrModifiedDate { get; set; }
+       // public DateTime? UsdrModifiedDate { get; set; }
 
         public int? UsdrCityId { get; set; }
 

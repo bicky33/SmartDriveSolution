@@ -40,12 +40,13 @@ namespace Contract.DTO.HR
         public string? EmpAccountNumber { get; set; }
 
 
-        public DateTime? EmpModifiedDate { get; set; }
+      //  public DateTime? EmpModifiedDate { get; set; }
 
-        [StringLength(5)]
+        [StringLength(3)]
         public string? EmpJobCode { get; set; }
+       // public JobTypeShowDto? EmpJobCodeNavigation { get; set; }
 
-        public virtual UserCompositeDto UserComposite { get; set; } = null!;
+        public virtual UserCompositeDto EmpEntity { get; set; } = null!;
         public bool grantUser {  get; set; }
 
        // [Column("soft_delete")]

@@ -1,4 +1,5 @@
 ﻿using Contract.DTO.HR;
+using Contract.DTO.HR.CreateEawg;
 using Domain.Entities.HR;
 using Domain.Exceptions;
 using Domain.Repositories.HR;
@@ -23,6 +24,16 @@ namespace Service.HR
             _repositoryManager = repositoryHRManager;
         }
 
+        public async Task<ArwgEmployee> CreateArwg(ArwgEmployee entity)
+        {
+            var data = entity.EmployeeAreWorkgroups.FirstOrDefault().Adapt<EmployeeAreWorkgroup>();
+            data.SoftDelete = "ACTIVE";
+            _repositoryManager.EmployeeArwgRepository.CreateEntity(data);
+            await _repositoryManager.UnitOfWorks.SaveChangesAsync();
+
+            return data.Adapt<ArwgEmployee>();
+        }
+
         public async Task<EmployeeAreaWorkGroupDto> CreateAsync(EmployeeAreaWorkGroupDto entity)
         {
 
@@ -44,6 +55,13 @@ namespace Service.HR
             arwg.SoftDelete = "INACTIVE";
             await _repositoryManager.UnitOfWorks.SaveChangesAsync();
 
+        }
+
+        public async Task<EawgShowDto> FindEawgById(int id)
+        {
+            var employee = await _repositoryManager.EmployeeArwgRepository.FindArwgById(id);
+            var employeeDto = employee.Adapt<EawgShowDto>();
+            return employeeDto;
         }
 
         public async Task<IEnumerable<EmployeeAreaWorkGroupShowDto>> FindEmployeeById(int id)
@@ -85,6 +103,23 @@ namespace Service.HR
             var data = arwg.Adapt<EmployeeAreaWorkGroupDto>();
 
             return data;
+        }
+
+        public async Task UpdateArwg(int id, ArwgEmployeeUpdateDto entity)
+        {
+            var arwg = await _repositoryManager.EmployeeArwgRepository.GetEntityById(id, true);
+            if (arwg == null)
+            {
+                throw new EntityNotFoundException(id, nameof(EmployeeAreWorkgroup));
+            }
+
+            var updateData = entity.EmployeeAreWorkgroups.FirstOrDefault().Adapt<EmployeeAreWorkgroup>();
+
+
+            arwg.EawgArwgCode = updateData.EawgArwgCode;
+            arwg.EawgModifiedDate = DateTime.Now;
+
+            await _repositoryManager.UnitOfWorks.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(int id, EmployeeAreaWorkGroupDto entity)

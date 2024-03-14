@@ -13,6 +13,6 @@ namespace Service.Abstraction.HR
         Task<IEnumerable<EmployeeShowDto>> GetData(bool trackChanges);
         Task UpdateData(int id, EmployeeUpdateDto entity);
 
-        Task<IEnumerable<EmployeeShowDto>> FindEmployeeById(int id);
+        Task<EmployeeCreateDto> FindEmployeeById(int id);
     }
 }

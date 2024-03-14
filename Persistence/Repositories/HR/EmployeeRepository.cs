@@ -5,6 +5,7 @@ using Domain.Repositories.HR;
 using Domain.RequestFeatured;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
+using System.Xml.Linq;
 
 namespace Persistence.Repositories.HR
 {
@@ -34,10 +35,43 @@ namespace Persistence.Repositories.HR
             Delete(entity);
         }
 
-        public async Task<IEnumerable<Employee>> FindEmployeeById(int id)
+        public async Task<Employee> FindEmployeeById(int id)
         {
 
-            return await _dbContext.Employees.Where(x => x.SoftDelete == "ACTIVE" && x.EmpEntityid == id).Include(x => x.EmpJobCodeNavigation).Select(x => new Employee
+            return await _dbContext.Employees.Where(x => x.SoftDelete == "ACTIVE" && x.EmpEntityid == id).Include(y => y.EmpJobCodeNavigation).
+                Include(z => z.EmpEntity).
+                ThenInclude(a => a.UserAddresses).
+                Include(z => z.EmpEntity).
+                ThenInclude(a => a.UserPhones).
+                Select(x => new Employee
+                {
+                    EmpName = x.EmpName,
+                    EmpJoinDate = x.EmpJoinDate,
+                    EmpGraduate = x.EmpGraduate,
+                    EmpJobCodeNavigation = new JobType
+                    {
+                        JobDesc = x.EmpJobCodeNavigation.JobDesc
+                    },
+                    EmpNetSalary = x.EmpNetSalary,
+                    EmpJobCode = x.EmpJobCode,
+                    EmpStatus = x.EmpStatus,
+                    EmpType = x.EmpType,
+                    EmpAccountNumber = x.EmpAccountNumber,
+                    EmpEntityid = x.EmpEntityid,
+                    EmpEntity = new User
+                    {
+                        UserEmail = x.EmpEntity.UserEmail,
+                        UserNationalId = x.EmpEntity.UserNationalId,
+                        UserNpwp = x.EmpEntity.UserNpwp,
+                        UserAddresses = x.EmpEntity.UserAddresses,
+                        UserPhones = x.EmpEntity.UserPhones,
+                    }
+                }).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<Employee>> GetAllEntity(bool trackChanges)
+        {
+            return await _dbContext.Employees.Where(x => x.SoftDelete == "ACTIVE").Include(x => x.EmpJobCodeNavigation).Select(x => new Employee
             {
                 EmpName = x.EmpName,
                 EmpJoinDate = x.EmpJoinDate,
@@ -50,23 +84,33 @@ namespace Persistence.Repositories.HR
                 EmpAccountNumber = x.EmpAccountNumber,
                 EmpEntityid = x.EmpEntityid,
             }).OrderBy(x => x.EmpName).ToListAsync();
-        }
 
-        public async Task<IEnumerable<Employee>> GetAllEntity(bool trackChanges)
-        {
-            return await _dbContext.Employees.Where(x => x.SoftDelete == "ACTIVE").Include(x => x.EmpJobCodeNavigation).Select(x => new Employee
-            {
-                EmpName = x.EmpName, 
-                EmpJoinDate = x.EmpJoinDate,
-                EmpGraduate = x.EmpGraduate,
-                EmpJobCodeNavigation = new JobType
-                {
-                    JobDesc = x.EmpJobCodeNavigation.JobDesc,
-                },
-                EmpNetSalary = x.EmpNetSalary,
-                EmpAccountNumber = x.EmpAccountNumber,
-                EmpEntityid = x.EmpEntityid,
-            }).OrderBy(x => x.EmpName).ToListAsync();
+            /*     return await _dbContext.Employees.Where(x => x.SoftDelete == "ACTIVE").Include(y => y.EmpJobCodeNavigation).
+                    Include(z => z.EmpEntity).
+                    ThenInclude(a => a.UserAddresses).
+                    Include(z => z.EmpEntity).
+                    ThenInclude(a => a.UserPhones).
+                    Select(x => new Employee
+                    {
+                        EmpName = x.EmpName,
+                        EmpJoinDate = x.EmpJoinDate,
+                        EmpGraduate = x.EmpGraduate,
+                        EmpJobCodeNavigation = new JobType
+                        {
+                            JobDesc = x.EmpJobCodeNavigation.JobDesc
+                        },
+                        EmpNetSalary = x.EmpNetSalary,
+                        EmpAccountNumber = x.EmpAccountNumber,
+                        EmpEntityid = x.EmpEntityid,
+                        EmpEntity = new User
+                        {
+                            UserEmail = x.EmpEntity.UserEmail,
+                            UserNationalId = x.EmpEntity.UserNationalId,
+                            UserNpwp = x.EmpEntity.UserNpwp,
+                            UserAddresses = x.EmpEntity.UserAddresses,
+                            UserPhones = x.EmpEntity.UserPhones,
+                        }
+                    }).OrderBy(x=>x.EmpName).ToListAsync();*/
         }
 
 

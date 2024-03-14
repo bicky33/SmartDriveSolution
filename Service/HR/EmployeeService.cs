@@ -42,32 +42,77 @@ namespace Service.HR
                 await _userRepositoryManager.UnitOfWork.SaveChangesAsync();
 
                 var emp = entity.Adapt<Employee>();
-                emp.SoftDelete = "ACTIVE";
-                var phone = entity.UserComposite.UserPhoneCompositeDto.Adapt<UserPhone>();
-                var address = entity.UserComposite.UserAddressCompositeDto.Adapt<UserAddress>();
-                var role = entity.UserComposite.UserRoleCompositeDto.Adapt<UserRole>();
+               
+                var phone = entity.EmpEntity.UserPhones.FirstOrDefault().Adapt<UserPhone>();
+                var address = entity.EmpEntity.UserAddresses.FirstOrDefault().Adapt<UserAddress>();
+
+                var employee = new Employee()
+                {
+                    EmpEntityid = be.Entityid,
+                    EmpName = emp.EmpName,
+                    EmpJoinDate = emp.EmpJoinDate,
+                    EmpGraduate = emp.EmpGraduate,
+                    EmpType = emp.EmpType,
+                    EmpStatus = emp.EmpStatus,
+                    EmpAccountNumber = emp.EmpAccountNumber,
+                    EmpNetSalary = emp.EmpNetSalary,
+                    EmpJobCode = emp.EmpJobCode,
+                    SoftDelete = "ACTIVE",
+                };
+
+                
+
+
+                var role = new UserRole();
+                var useraddress = new UserAddress()
+                {
+                    UsdrEntityid = be.Entityid,
+                    UsdrAddress1 = address.UsdrAddress1,
+                    UsdrAddress2 = address.UsdrAddress2,
+                    UsdrCity = address.UsdrCity,    
+
+                };
+                
+                var userPhone = new UserPhone()
+                {
+                    UsphEntityid = be.Entityid,
+                    UsphPhoneNumber = phone.UsphPhoneNumber,
+                    UsphPhoneType = phone.UsphPhoneType,
+                };
 
                 emp.EmpEntityid = be.Entityid;
 
-                var user = entity.UserComposite.Adapt<User>();
-                user.UserEntityid = be.Entityid;
+                var user = entity.EmpEntity.Adapt<User>();
+                var userEmployee = new User()
+                {
+                    UserEntityid = be.Entityid,
+                    UserFullName = emp.EmpName,
+                  UserName = userPhone.UsphPhoneNumber,
+                  UserPassword = BCrypt.Net.BCrypt.HashPassword(userPhone.UsphPhoneNumber),
+                  UserEmail = user.UserEmail,
+                  UserNpwp = user.UserNpwp,
+                  UserNationalId = user.UserNationalId,
 
-                // address.UsdrId = be.Entityid;
-                address.UsdrEntityid = be.Entityid;
+                 };
+                //user.UserEntityid = be.Entityid;
+
+
+               // address.UsdrEntityid = be.Entityid;
                 role.UsroEntityid = be.Entityid;
-                phone.UsphEntityid = be.Entityid;
+               // phone.UsphEntityid = be.Entityid;
                 user.UserFullName = emp.EmpName;
 
                 //asign username dan password
-                user.UserName = phone.UsphPhoneNumber;
-                user.UserPassword = BCrypt.Net.BCrypt.HashPassword(phone.UsphPhoneNumber);
+               /* user.UserName = userPhone.UsphPhoneNumber;
+                user.UserPassword = BCrypt.Net.BCrypt.HashPassword(userPhone.UsphPhoneNumber);*/
 
-                _userRepositoryManager.UserRepository.CreateEntity(user);
+                _userRepositoryManager.UserRepository.CreateEntity(userEmployee);
                 await _userRepositoryManager.UnitOfWork.SaveChangesAsync();
 
                 if (entity.grantUser = true)
                 {
                     role.UsroRoleName = "EM";
+                    role.UsroModifiedDate = DateTime.Now;
                     role.UsroStatus = "ACTIVE";
                     _userRepositoryManager.UserRoleRepository.CreateEntity(role);
                     await _userRepositoryManager.UnitOfWork.SaveChangesAsync();
@@ -75,19 +120,20 @@ namespace Service.HR
                 else
                 {
                     role.UsroRoleName = "EM";
+                    role.UsroModifiedDate = DateTime.Now;
                     role.UsroStatus = "INACTIVE";
                     _userRepositoryManager.UserRoleRepository.CreateEntity(role);
                     await _userRepositoryManager.UnitOfWork.SaveChangesAsync();
                 }
 
-                _userRepositoryManager.UserAddressRepository.CreateEntity(address);
+                _userRepositoryManager.UserAddressRepository.CreateEntity(useraddress);
                 await _userRepositoryManager.UnitOfWork.SaveChangesAsync();
 
 
-                _userRepositoryManager.UserPhoneRepository.CreateEntity(phone);
+                _userRepositoryManager.UserPhoneRepository.CreateEntity(userPhone);
                 await _userRepositoryManager.UnitOfWork.SaveChangesAsync();
 
-                _repositoryManager.EmployeeRepository.CreateEntity(emp);
+                _repositoryManager.EmployeeRepository.CreateEntity(employee);
                 await _repositoryManager.UnitOfWorks.SaveChangesAsync();
 
                 transaction.Complete();
@@ -187,6 +233,7 @@ namespace Service.HR
                     throw new EntityNotFoundException(id, nameof(User));
                 }
 
+                user.UserModifiedDate = DateTime.Now;
                 user.UserFullName = data.EmpName;
                 await _userRepositoryManager.UnitOfWork.SaveChangesAsync();
 
@@ -221,10 +268,10 @@ namespace Service.HR
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<EmployeeShowDto>> FindEmployeeById(int id)
+        public async Task<EmployeeCreateDto> FindEmployeeById(int id)
         {
             var employee = await _repositoryManager.EmployeeRepository.FindEmployeeById(id);
-            var employeeDto = employee.Adapt<IEnumerable<EmployeeShowDto>>();
+            var employeeDto = employee.Adapt<EmployeeCreateDto>();
             return employeeDto;
         }
     }

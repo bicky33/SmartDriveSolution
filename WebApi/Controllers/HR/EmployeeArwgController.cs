@@ -1,4 +1,5 @@
 ﻿using Contract.DTO.HR;
+using Contract.DTO.HR.CreateEawg;
 using Domain.Entities.HR;
 using Domain.RequestFeatured;
 using Mapster;
@@ -38,37 +39,55 @@ namespace WebApi.Controllers.HR
                 }*/
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<EmployeeAreWorkgroup>> GetEmployeArwgById(int id)
+        public async Task<ActionResult<EawgShowDto>> GetEmployeArwgById(int id)
         {
-            var arwg = await _serviceManager.EmployeeArwgService.FindEmployeeById(id);
+            var arwg = await _serviceManager.EmployeeArwgService.FindEawgById(id);
             return Ok(arwg);
         }
 
         // POST api/<EmployeeArwgController>
-        [HttpPost]
-        public async Task<IActionResult> CreateEmployeeArwg([FromBody] EmployeeArwgCreateDto arwgDto)
-        {
-           
-           /* var arwg = new EmployeeAreaWorkGroupDto()
-            {
-                EawgId = arwgDto.EawgId,
-                EawgEntityid = arwgDto.EawgEntityid,    
-                EawgStatus = arwgDto.EawgStatus,
-                EawgArwgCode = arwgDto.EawgArwgCode,
-                EawgModifiedDate = arwgDto.EawgModifiedDate,    
-            };*/
-        var data = arwgDto.Adapt<EmployeeAreaWorkGroupDto>();
-        await _serviceManager.EmployeeArwgService.CreateAsync(data);
 
-            return CreatedAtAction(nameof(GetEmployeArwgById), new { id = data.EawgId }, data);
+        /*        public async Task<IActionResult> CreateEmployeeArwg([FromBody] EmployeeArwgCreateDto arwgDto)
+                {
+
+                  *//*  var arwg = new EmployeeAreaWorkGroupDto()
+                    {
+                        EawgId = arwgDto.EawgId,
+                        EawgEntityid = arwgDto.EawgEntityid,
+                        EawgStatus = arwgDto.EawgStatus,
+                        EawgArwgCode = arwgDto.EawgArwgCode,
+                        EawgModifiedDate = arwgDto.EawgModifiedDate,
+                    };*//*
+                    var data = arwgDto.Adapt<EmployeeAreaWorkGroupDto>();
+                    await _serviceManager.EmployeeArwgService.CreateAsync(data);
+
+                    return CreatedAtAction(nameof(GetEmployeArwgById), new { id = data.EawgId }, data);
+                }*/
+
+        [HttpPost]
+        public async Task<IActionResult> CreateEmployeeArwg([FromBody] ArwgEmployee arwgDto)
+        {
+
+            /*  var arwg = new EmployeeAreaWorkGroupDto()
+              {
+                  EawgId = arwgDto.EawgId,
+                  EawgEntityid = arwgDto.EawgEntityid,
+                  EawgStatus = arwgDto.EawgStatus,
+                  EawgArwgCode = arwgDto.EawgArwgCode,
+                  EawgModifiedDate = arwgDto.EawgModifiedDate,
+              };*/
+            var data = arwgDto.Adapt<ArwgEmployee>();
+            await _serviceManager.EmployeeArwgService.CreateArwg(data);
+           var eawg = arwgDto.EmployeeAreWorkgroups.FirstOrDefault().Adapt<CreateEawgDto>();
+            return CreatedAtAction(nameof(GetEmployeArwgById), new { id = eawg.EawgId }, data);
         }
 
         // PUT api/<EmployeeArwgController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEmployeeArwg(int id, [FromBody] EmployeeArwgCreateDto value)
+        public async Task<IActionResult> UpdateEmployeeArwg(int id, [FromBody] ArwgEmployeeUpdateDto value)
         {
-            var arwg = value.Adapt<EmployeeAreaWorkGroupDto>();
-            await _serviceManager.EmployeeArwgService.UpdateAsync(id, arwg);
+            var arwg = value.Adapt<ArwgEmployeeUpdateDto>();
+            await _serviceManager.EmployeeArwgService.UpdateArwg(id, arwg);
 
             return Ok(arwg);
         }
