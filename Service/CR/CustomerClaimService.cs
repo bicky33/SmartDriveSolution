@@ -1,5 +1,7 @@
-﻿using Contract.DTO.CR.Response;
+﻿using Contract.DTO.CR.Request;
+using Contract.DTO.CR.Response;
 using Domain.Entities.CR;
+using Domain.Enum;
 using Domain.Exceptions;
 using Domain.Repositories.CR;
 using Mapster;
@@ -19,6 +21,57 @@ namespace Service.CR
         public CustomerClaimService(IRepositoryCustomerManager repositoryCustomerManager)
         {
             _repositoryCustomerManager = repositoryCustomerManager;
+        }
+
+        public async Task<CustomerRequestDto> ClaimPolis(CustomerClaimRequestDto customerClaimDto)
+        {
+            var existRequest = await _repositoryCustomerManager.CustomerRequestRepository.GetById(customerClaimDto.CreqEntityid, true);
+            if (existRequest == null)
+                throw new EntityNotFoundException(customerClaimDto.CreqEntityid, "CustomerRequest");
+
+            if (existRequest.CreqType == "CLAIM")
+                throw new Exception("This POLIS is already claimed.");
+
+            if (existRequest.CreqType == "CLOSE")
+                throw new Exception("This POLIS is already claimed.");
+
+            var newCustomerClaim = new CustomerClaim()
+            {
+                CuclCreqEntityid = customerClaimDto.CreqEntityid
+            };
+
+            _repositoryCustomerManager.CustomerClaimRepository.CreateEntity(newCustomerClaim);
+            await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
+
+            existRequest.CreqType = EnumCustomerRequest.CREQTYPE.CLAIM.ToString();
+            existRequest.CreqModifiedDate = customerClaimDto.CreqModifiedDate;
+
+            await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
+            var customerResponseDto = existRequest.Adapt<CustomerRequestDto>();
+            return customerResponseDto;
+        }
+
+        public async Task<CustomerRequestDto> ClosePolis(CustomerCloseRequestDto customerCloseDto)
+        {
+            var existRequest = await _repositoryCustomerManager.CustomerRequestRepository.GetById(customerCloseDto.CreqEntityid, true);
+            if (existRequest == null)
+                throw new EntityNotFoundException(customerCloseDto.CreqEntityid, "CustomerClaim");         
+
+            if (existRequest.CreqType == "CLOSE")
+                throw new Exception("This POLIS is already close.");
+
+            if (existRequest.CreqType == "POLIS")
+                throw new Exception("This POLIS is not claimed yet.");
+
+            existRequest.CreqType = EnumCustomerRequest.CREQTYPE.CLOSE.ToString();
+
+            var customerClaim = await _repositoryCustomerManager.CustomerClaimRepository.GetEntityById(customerCloseDto.CreqEntityid, true);
+            customerClaim.CuclReason = customerCloseDto.CuclReason;
+            customerClaim.CuclCreateDate = customerCloseDto.CuclCreateDate;
+
+            await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
+            var customerResponseDto = existRequest.Adapt<CustomerRequestDto>();
+            return customerResponseDto;
         }
 
         public async Task<CustomerClaimDto> CreateAsync(CustomerClaimDto entity)
@@ -60,6 +113,16 @@ namespace Service.CR
 
             var customerClaimDto = customerClaim.Adapt<CustomerClaimDto>();
             return customerClaimDto;
+        }
+
+        public async Task<CustomerClaimResponseDto> GetClaimById(int cuclCreqEntityId)
+        {
+            var existClaim = await _repositoryCustomerManager.CustomerClaimRepository.GetEntityById(cuclCreqEntityId, false);
+            if (existClaim == null)
+                throw new EntityNotFoundException(cuclCreqEntityId, "CustomerClaim");
+
+            var customerClaimResponseDto = existClaim.Adapt<CustomerClaimResponseDto>();
+            return customerClaimResponseDto;
         }
 
         public async Task UpdateAsync(int id, CustomerClaimDto entity)

@@ -33,9 +33,9 @@ namespace Persistence.Repositories.CR
             Delete(entity);
         }
 
-        public CustomerInscAsset? FindByCiasPoliceNumber(string ciasPoliceNumber, bool trackChanges)
+        public async Task<CustomerInscAsset> FindByCiasPoliceNumber(string ciasPoliceNumber, bool trackChanges)
         {
-            return GetByCondition(x => x.CiasPoliceNumber.Equals(ciasPoliceNumber), trackChanges).SingleOrDefault();
+            return await GetByCondition(x => x.CiasPoliceNumber.Equals(ciasPoliceNumber), trackChanges).SingleOrDefaultAsync();
         }
 
         public async Task<IEnumerable<CustomerInscAsset>> GetAllEntity(bool trackChanges)

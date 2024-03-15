@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Entities.CR;
-using Domain.Entities.Users;
-using Domain.Entities.SO;
+﻿using Contract.DTO.CR.Response;
 using Contract.DTO.UserModule;
-using Contract.DTO.CR.Response;
+using System.ComponentModel.DataAnnotations;
 
 namespace Contract.DTO.SO
 {
@@ -42,7 +33,7 @@ namespace Contract.DTO.SO
         [Required]
         public int? ServCreqEntityid { get; init; }
 
-        public ICollection<ServiceDto> InverseServServ { get; set; } = new List<ServiceDto>();
+        public ICollection<ServiceDto>? InverseServServ { get; set; } = new List<ServiceDto>();
 
         public CustomerRequestDto? ServCreqEntity { get; set; }
 
@@ -50,10 +41,10 @@ namespace Contract.DTO.SO
 
         public ServiceDto? ServServ { get; set; }
 
-        public List<ServiceOrderDto> Seros { get; set; } = new List<ServiceOrderDto>();
+        public List<ServiceOrderDto>? Seros { get; set; } = new List<ServiceOrderDto>();
 
         public ServicePremiDto? ServicePremi { get; set; }
 
-        public ICollection<ServicePremiCreditDto> Secrs { get; set; } = new List<ServicePremiCreditDto>();
+        public ICollection<ServicePremiCreditDto>? Secrs { get; set; } = new List<ServicePremiCreditDto>();
     }
 }

@@ -29,6 +29,7 @@ namespace Service.Partners
 
         public async Task<PartnerDTO> CreateAsync(PartnerDTO entity)
         {
+
             BusinessEntity business = _partnerManagerRepository.RepositoryBusinessEntity.CreateEntity();
             await _partnerManagerRepository.UnitOfWorks.SaveChangesAsync();
             Partner partner = entity.Adapt<Partner>();

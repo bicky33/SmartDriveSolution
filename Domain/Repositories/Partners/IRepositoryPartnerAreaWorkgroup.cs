@@ -13,7 +13,7 @@ namespace Domain.Repositories.Partners
     {
         Task<PartnerAreaWorkgroup> GetEntityById(bool trackChanges, int partnerId, int userId, string areaWorkgroupCode);
         Task<PagedList<PartnerAreaWorkgroup>> GetAllPaging(bool trackChanges, EntityParameter parameter);
-
+        Task<IEnumerable<PartnerAreaWorkgroup>> GetByPartnerAndUserId(int pawoUserId, int pawoPatrId, bool trackChanges);
 
     }
 }

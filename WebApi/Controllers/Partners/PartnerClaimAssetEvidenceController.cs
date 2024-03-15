@@ -72,5 +72,14 @@ namespace WebApi.Controllers.Partners
             await _servicePartnerManager.ServicePartnerClaimAssetEvidence.DeleteBatch(caspPartEntityid, caspSeroId);
             return NoContent();
         }
+
+        [HttpGet("{caspPartEntityid:int}/{caspSeroId}")]
+        public async Task<ActionResult> GetByParameter(int caspPartEntityid, string caspSeroId)
+        {
+            IEnumerable<ClaimAssetEvidenceDto> claims = await _servicePartnerManager.ServicePartnerClaimAssetEvidence
+                .GetByParameter(caspPartEntityid, caspSeroId);
+            return Ok(claims);
+        }
+
     }
 }

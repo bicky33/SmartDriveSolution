@@ -1,4 +1,6 @@
-﻿using Contract.DTO.CR.Response;
+﻿using Contract.DTO.CR.Request;
+using Contract.DTO.CR.Response;
+using Domain.RequestFeatured;
 using Service.Abstraction.Base;
 using System;
 using System.Collections.Generic;
@@ -10,8 +12,11 @@ namespace Service.Abstraction.CR
 {
     public interface ICustomerRequestService : IServiceEntityBase<CustomerRequestDto>
     {
-        Task<IEnumerable<CustomerRequestDto>> GetAllByUser(int userId, bool trackChanges);
+        Task<IEnumerable<CustomerRequestDto>> GetAllByCustomer(int userId, bool trackChanges);
         Task<IEnumerable<CustomerRequestDto>> GetAllByEmployee(string eawgCode, bool trackChanges);
-        Task<CustomerRequestDto> CreateCustomerRequest(CustomerRequestDto entity);
+        Task<CustomerRequestDto> CreateRequestByAgen(CreateRequestByAgenDto entity);
+        Task<CustomerRequestDto> CreateRequestByCustomer(CreateRequestByCustomerDto entity);
+        Task<CustomerRequestDto> CreatePolis(CustomerPolisRequestDto entity);
+        Task<IEnumerable<CustomerRequestDto>> GetAllPagingAsync(EntityParameter entityParameters, bool trackChanges);
     }
 }

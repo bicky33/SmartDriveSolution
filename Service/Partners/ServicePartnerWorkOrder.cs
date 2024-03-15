@@ -1,13 +1,10 @@
 ﻿using Contract.DTO.Partners;
+using Contract.Records;
 using Domain.Entities.SO;
 using Domain.Repositories.Partners;
+using Domain.RequestFeatured;
 using Mapster;
 using Service.Abstraction.Partners;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.Partners
 {
@@ -24,6 +21,14 @@ namespace Service.Partners
         {
             IEnumerable<ServiceOrderWorkorder> data = await _repositoryPartnerManager.RepositoryPartnerWorkOrder.GetAllAsync(seroPartId, seotArwgCode);
             return data.Adapt<IEnumerable<PartnerWorkOrderResponse>>();
+        }
+
+        public async Task<PaginationDTO<PartnerWorkOrderResponse>> GetAllPaging(int seroPartId, string seotArwgCode, EntityParameter parameter)
+        {
+            PagedList<ServiceOrderWorkorder> workOrders = await _repositoryPartnerManager.RepositoryPartnerWorkOrder.GetAllAsyncPaging(seroPartId, seotArwgCode, parameter);
+            var workOrderDTO = workOrders.Adapt<IEnumerable<PartnerWorkOrderResponse>>().ToList();
+            PaginationDTO<PartnerWorkOrderResponse> pagination = new(workOrders.TotalPages, workOrders.CurrentPage, workOrderDTO);
+            return pagination;
         }
     }
 }

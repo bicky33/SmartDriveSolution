@@ -30,5 +30,11 @@ namespace Service.Partners
         {
             await _repositoryPartnerManager.RepositoryClaimAssetSparepartBatch.DeleteBatch(caspPartEntityid, caspSeroId);
         }
+
+        public async Task<IEnumerable<ClaimAssetSparepartDto>> GetByParameter(int caspPartEntityid, string caspSeroId)
+        {
+            IEnumerable<ClaimAssetSparepart> claims = await _repositoryPartnerManager.RepositoryClaimAssetSparepartBatch.GetByParameter(caspPartEntityid, caspSeroId);
+            return claims.Adapt<IEnumerable<ClaimAssetSparepartDto>>();
+        }
     }
 }

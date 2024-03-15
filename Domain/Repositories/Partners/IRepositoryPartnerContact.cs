@@ -13,5 +13,6 @@ namespace Domain.Repositories.Partners
     {
         Task<PagedList<PartnerContact>> GetAllPagingAsync(bool trackChanges, EntityParameter parameter);
         Task<PartnerContact> GetEntityById(int pacoPatrnEntityid, int pacoUserEntityid, bool trackChanges);
+        Task<IEnumerable<PartnerContact>> GetByUserId(int pacoUserEntityid, bool trackChanges);
     }
 }

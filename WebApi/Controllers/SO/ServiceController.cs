@@ -1,7 +1,7 @@
 ﻿using Contract.DTO.SO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.SO;
-using System.Formats.Asn1;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -9,6 +9,7 @@ namespace WebApi.Controllers.SO
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "EM")]
     public class ServiceController : ControllerBase
     {
         private readonly IServiceSOManager _serviceManager;
@@ -24,7 +25,12 @@ namespace WebApi.Controllers.SO
             var service = await _serviceManager.ServiceService.GetAllAsync(false);
             return Ok(service);
         }
-
+        [AllowAnonymous]
+        [HttpGet("debug")]
+        public async Task<IActionResult> Debugging()
+        {
+            return Ok(await _serviceManager.ServiceService.Debugging());
+        }
         // GET api/<ServiceController>/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetServiceById(int id)
@@ -117,7 +123,7 @@ namespace WebApi.Controllers.SO
         {
             if (reason == null)
                 return BadRequest("Reason Required");
-            var service = await _serviceManager.ServiceService.ClosePolis(servId,reason);
+            var service = await _serviceManager.ServiceService.ClosePolis(servId, reason);
 
             return CreatedAtAction(nameof(GetServiceById), new { id = service.ServId }, service);
         }

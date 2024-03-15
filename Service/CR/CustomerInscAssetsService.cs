@@ -92,95 +92,50 @@ namespace Service.CR
             await _repositoryCustomerManager.CustomerUnitOfWork.SaveChangesAsync();
         }
 
-        //public CustomerInscAsset CreateCustomerInscAssets(
-        //    int entityId,
-        //    CustomerInscAssetRequestDto customerInscAssetRequestDto,
-        //    CarSeries carSeries,
-        //    City existCity,
-        //    InsuranceType existInty,
-        //    CustomerRequest newCustomerRequest)
-        //{
+        public async Task<decimal> GetPremiPrice(string insuranceType, int carSeriesId, int cityId, decimal currentPrice)
+        {
+            List<string> carBrandRateMax = new List<string> { "BMW", "MERCEDEZ BENZ", "AUDI", "VOLKSWAGEN", "LAND ROVER", "JAGUAR", "PEUGOT", "RENAULT", "SMART", "VOLVO", "MINI", "FLAT", "OPEN", "MAZDA" };
 
-        //    DateTime ciasStartdate = DateTime.Now;
+            var carSeries = await _repositoryManagerMaster.CarSeriesRepository.GetEntityById(carSeriesId, false);
+            var carModel = await _repositoryManagerMaster.CarModelRepository.GetEntityById((int)carSeries.CarsCarmId, false);
+            var carBrand = await _repositoryManagerMaster.CarBrandRepository.GetEntityById((int)carModel.CarmCabrId, false);
 
-        //    // new cias
-        //    var customrInscAsset = new CustomerInscAsset()
-        //    {
-        //        CiasCreqEntityid = entityId,
-        //        CiasPoliceNumber = customerInscAssetRequestDto.CiasPoliceNumber,
-        //        CiasYear = customerInscAssetRequestDto.CiasYear,
-        //        CiasStartdate = ciasStartdate,
-        //        CiasEnddate = ciasStartdate.AddYears(1),
-        //        CiasCurrentPrice = customerInscAssetRequestDto.CiasCurrentPrice,
-        //        CiasInsurancePrice = customerInscAssetRequestDto.CiasCurrentPrice,
-        //        CiasPaidType = customerInscAssetRequestDto.CiasPaidType,
-        //        CiasIsNewChar = customerInscAssetRequestDto.CiasIsNewChar,
-        //        CiasCars = carSeries,
-        //        CiasCity = existCity,
-        //        CiasIntyNameNavigation = existInty,
-        //        CiasCreqEntity = newCustomerRequest
-        //    };
+            var cities = await _repositoryManagerMaster.CityRepository.GetEntityById(cityId, false);
+            var province = await _repositoryManagerMaster.ProvinsiRepository.GetEntityById((int)cities.CityProvId, false);
+            var zones = await _repositoryManagerMaster.ZoneRepository.GetEntityById((int)province.ProvZonesId, false);
 
-        //    return customrInscAsset;
-        //}
+            var templateInsurancePremi = await _repositoryManagerMaster.TemplateInsurancePremiRepository.GetTemiByCateIDIntyNameZoneID(1, insuranceType, zones.ZonesId, false) ?? throw new Exception("Template Insurance Premi is not found");
 
-        //public decimal? GetPremiPrice(string insuraceType, string carBrand, int zonesId, decimal currentPrice, int ageOfBirth, List<CustomerInscExtend> cuexs)
-        //{
-        //    List<string> carBrandRateMax = new List<string> { "BMW", "MERCEDEZ BENZ", "AUDI", "VOLKSWAGEN", "LAND ROVER", "JAGUAR", "PEUGOT", "RENAULT", "SMART", "VOLVO", "MINI", "FLAT", "OPEN", "MAZDA" };
+            double temiRate;
 
-        //    var temiMain = _repositoryManagerMaster.TemplateInsurancePremiRepository.GetTemiByCateIDIntyNameZoneID(1, insuraceType, zonesId, false) ?? throw new Exception("Template Insurance Premi is not found");
-        //    var templateInsuracePremi = temiMain.Adapt<TemplateInsurancePremi>();
+            if (carBrandRateMax.Contains(carBrand.CabrName))
+            {
+                temiRate = (double)templateInsurancePremi.TemiRateMax;
+            }
+            else
+            {
+                temiRate = (double)templateInsurancePremi.TemiRateMin;
+            }
+        
+            double rate = temiRate / 100;
+            decimal rateBig = (decimal)rate;
+            decimal premiMain = currentPrice * rateBig;
 
-        //    int yearsNow = DateTime.Now.Year;
-        //    int userAge = yearsNow - ageOfBirth;
+            decimal materai = 10000;
 
-        //    double? temiRate;
+            decimal totalPremi = premiMain + materai;
 
-        //    if (userAge >= 17 && userAge <= 27)
-        //    {
-        //        temiRate = templateInsuracePremi.TemiRateMax;
-        //    }
-        //    else
-        //    {
-        //        if (carBrandRateMax.Contains(carBrand))
-        //        {
-        //            temiRate = templateInsuracePremi.TemiRateMax;
-        //        }
-        //        else
-        //        {
-        //            temiRate = templateInsuracePremi.TemiRateMin;
-        //        }
-        //    }
+            return totalPremi;
+        }
 
-        //    double? rate = temiRate / 100;
-        //    decimal rateBig = (decimal)rate;
-        //    decimal premiMain = currentPrice * rateBig;
-
-        //    decimal? premiExtend = 0;
-        //    decimal materai = 10000;
-
-        //    if (cuexs != null && cuexs.Any())
-        //    {
-        //        foreach (CustomerInscExtend cuex in cuexs)
-        //        {
-        //            premiExtend = premiExtend + (cuex.CuexNominal);
-        //        }
-        //    }
-
-        //    decimal? totalPremi = premiMain + premiExtend;
-        //    decimal? result = totalPremi + materai;
-
-        //    return result;
-        //}
-
-        //public void ValidatePoliceNumber(string policeNumber)
-        //{
-        //    var existingCustomerInscAssets = _repositoryCustomerManager.CustomerInscAssetRepository.FindByCiasPoliceNumber(policeNumber, false);
-        //    if (existingCustomerInscAssets != null)
-        //    {
-        //        throw new Exception($"Customer Request with police number {policeNumber} is already exist");
-        //    }
-        //}
+        public async Task ValidatePoliceNumber(string policeNumber)
+        {
+            var existingCustomerInscAssets = await _repositoryCustomerManager.CustomerInscAssetRepository.FindByCiasPoliceNumber(policeNumber, false);
+            if (existingCustomerInscAssets != null)
+            {
+                throw new Exception($"Customer Request with police number {policeNumber} is already exist");
+            }
+        }
 
 
     }

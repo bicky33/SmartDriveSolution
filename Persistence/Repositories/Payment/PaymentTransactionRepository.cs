@@ -8,6 +8,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Base;
 using System;
+using System.Reflection.Metadata;
 
 namespace Persistence.Repositories.Payment
 {
@@ -35,7 +36,6 @@ namespace Persistence.Repositories.Payment
         public async Task<PagedList<PaymentTransaction>> GetAllPaging(bool trackChanges, EntityPaymentTransactionParameter parameter)
         {
             var transactions = new List<PaymentTransaction>();
-            IQueryable<PaymentTransaction> partners = string.IsNullOrEmpty(parameter.SearchBy) ? GetAll(trackChanges) : GetByCondition(c => c.PatrTrxno.StartsWith(parameter.SearchBy), trackChanges);
 
             var resultOLD = _dbContext.UserAccounts
               .Join(_dbContext.Users,
@@ -115,8 +115,7 @@ namespace Persistence.Repositories.Payment
 
             transactions.AddRange(resultOLD);
             transactions.AddRange(resultNEW);
-
-            return PagedList<PaymentTransaction>.ToPagedList(transactions.AsQueryable(), parameter.PageNumber, parameter.PageSize);
+            return PagedList<PaymentTransaction>.ToPagedList(transactions.AsQueryable().OrderBy(x => x.PatrCreatedOn), parameter.PageNumber, parameter.PageSize);
         }
 
         public async Task<PaymentTransaction> GetEntityById(int id, bool trackChanges)

@@ -1,4 +1,5 @@
 ﻿using Contract.DTO.Partners;
+using Contract.Records;
 using Domain.RequestFeatured;
 using Service.Abstraction.Base;
 using System;
@@ -11,7 +12,7 @@ namespace Service.Abstraction.Partners
 {
     public interface IServicePartnerAreaWorkgroup
     {
-        Task<IEnumerable<PartnerAreaWorkgroupResponse>> GetAllPagingAsync(EntityParameter parameter, bool trackChanges);
+        Task<PaginationDTO<PartnerAreaWorkgroupResponse>> GetAllPagingAsync(EntityParameter parameter, bool trackChanges);
         Task<IEnumerable<PartnerAreaWorkgroupResponse>> GetAllAsync(bool trackChanges);
         Task UpdateAsync(
             int PawoPatrEntityid,
@@ -32,5 +33,6 @@ namespace Service.Abstraction.Partners
             string PawoArwgCode,
             int PawoUserEntityid,
             bool trackChanges);
+        Task<IEnumerable<PartnerAreaWorkgroupDTO>> GetByPartnerAndUserId(int pawoUserId, int pawoPatrId, bool trackChanges);
     }
 }

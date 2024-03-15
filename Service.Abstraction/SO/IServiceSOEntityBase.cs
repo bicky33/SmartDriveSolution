@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Service.Abstraction.SO
+﻿namespace Service.Abstraction.SO
 {
-    public interface IServiceSOEntityBase<TEntityDto, TEntityDtoCreate, TID> 
+    public interface IServiceSOEntityBase<TEntityDto, TEntityDtoCreate, TID>
     {
         Task<IEnumerable<TEntityDto>> GetAllAsync(bool trackChanges);
         Task<TEntityDto> GetByIdAsync(TID id, bool trackChanges);

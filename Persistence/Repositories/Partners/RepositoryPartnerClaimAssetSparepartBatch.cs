@@ -1,4 +1,5 @@
-﻿using Domain.Entities.SO;
+﻿using Contract.DTO.SO;
+using Domain.Entities.SO;
 using Domain.Repositories.Partners;
 using Microsoft.EntityFrameworkCore;
 using System.Transactions;
@@ -50,6 +51,15 @@ namespace Persistence.Repositories.Partners
                 transaction.Rollback();
                 throw;
             }
+        }
+
+        public async Task<IEnumerable<ClaimAssetSparepart>> GetByParameter(int CaspPartEntityid, string CaspSeroId)
+        {
+            return await _context.ClaimAssetSpareparts
+                .Where(x =>
+                x.CaspPartEntityid.Equals(CaspPartEntityid) &&
+                x.CaspSeroId.Equals(CaspSeroId))
+                .ToListAsync();
         }
 
     }
