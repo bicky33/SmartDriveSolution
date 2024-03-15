@@ -34,6 +34,18 @@ using Service.SO.BackgroundService;
 using Service.UserModule;
 using System.Reflection;
 using System.Text;
+using Persistence.Repositories.SO;
+using Persistence.Repositories.CR;
+using Service.Abstraction.Payment;
+using Service.Base;
+using Service.HR;
+using Domain.Repositories.HR;
+using Persistence.Repositories.HR;
+using Service.Abstraction.HR;
+using Service.Abstraction.CR;
+using Service.CR;
+using Service.Abstraction.Payment;
+using Service.Base;
 
 namespace WebApi.Extensions
 {
@@ -74,10 +86,11 @@ namespace WebApi.Extensions
         public static void ConfigureService(this IServiceCollection services)
         {
             services.AddScoped<IServiceManagerMaster, ServiceManagerMaster>();
+            services.AddScoped<IServicePaymentManager, ServicePaymentManager>();
             services.AddScoped<IServiceManagerUser, ServiceManagerUser>();
             services.AddScoped<IServiceSOManager, ServiceSOManager>();
             services.AddScoped<IServicePartnerManager, ServicePartnerManager>();
-            services.AddScoped<IServicePaymentManager, ServicePaymentManager>();
+            services.AddScoped<IServiceCustomerManager, ServiceCustomerManager>();
             services.AddScoped<IServiceHRManager, ServiceHRManager>();
             services.AddScoped<IMailService, MailService>();
         }

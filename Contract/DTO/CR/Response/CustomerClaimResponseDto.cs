@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Contract.DTO.CR.Request
+namespace Contract.DTO.CR.Response
 {
-    public class CustomerClaimCreateDto
+    public class CustomerClaimResponseDto
     {
         public int CuclCreqEntityid { get; set; }
         public int? CuclEvents { get; set; }

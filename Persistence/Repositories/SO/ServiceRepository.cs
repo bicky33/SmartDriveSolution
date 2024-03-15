@@ -55,6 +55,7 @@ namespace Persistence.Repositories.SO
                         ServicePremi = c.ServicePremi,
                         ServicePremiCredits = c.ServicePremiCredits,
                         ServInsuranceNo = c.ServInsuranceNo,
+                        ServVehicleNo=c.ServVehicleNo,
                         ServServId = c.ServServId,
                         ServCustEntity = new User
                         {

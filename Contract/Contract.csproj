@@ -21,7 +21,6 @@
   </ItemGroup>
 
 	<ItemGroup>
-    <Folder Include="DTO\CR\" />
     <Folder Include="DTO\Master\" />
     <Folder Include="DTO\Partner\" />
     <Folder Include="DTO\Master\" />

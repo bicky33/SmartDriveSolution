@@ -33,7 +33,7 @@ namespace Contract.DTO.SO
         [Required]
         public int? ServCreqEntityid { get; init; }
 
-        public ICollection<ServiceDto> InverseServServ { get; set; } = new List<ServiceDto>();
+        public ICollection<ServiceDto>? InverseServServ { get; set; } = new List<ServiceDto>();
 
         public CustomerRequestDto? ServCreqEntity { get; set; }
 
@@ -41,10 +41,10 @@ namespace Contract.DTO.SO
 
         public ServiceDto? ServServ { get; set; }
 
-        public List<ServiceOrderDto> Seros { get; set; } = new List<ServiceOrderDto>();
+        public List<ServiceOrderDto>? Seros { get; set; } = new List<ServiceOrderDto>();
 
         public ServicePremiDto? ServicePremi { get; set; }
 
-        public ICollection<ServicePremiCreditDto> Secrs { get; set; } = new List<ServicePremiCreditDto>();
+        public ICollection<ServicePremiCreditDto>? Secrs { get; set; } = new List<ServicePremiCreditDto>();
     }
 }

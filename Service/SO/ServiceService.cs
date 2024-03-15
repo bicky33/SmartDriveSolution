@@ -279,7 +279,18 @@ namespace Service.SO
             });
 
             // return service
-            return service.Adapt<ServiceDto>();
+            var ret = new ServiceDto
+            {
+                ServId=service.ServId,
+                ServCreatedOn=service.ServCreatedOn,
+                ServCreqEntityid=service.ServCreqEntityid,
+                ServCustEntityid=service.ServCustEntityid,
+                ServStartdate=service.ServStartdate,
+                ServEnddate=service.ServEnddate,
+                ServStatus= service.ServStatus,
+                ServVehicleNo=service.ServVehicleNo,
+            };
+            return ret;
         }
 
         public async Task<ServiceDto> CreateServicePolis(CreateServicePolisDto createServicePolisDto)
