@@ -4,6 +4,7 @@ using Domain.Enum;
 using Domain.Exceptions;
 using Domain.Repositories.UserModule;
 using Mapster;
+using Mapster.Utils;
 using Service.Abstraction.Base;
 using Service.Abstraction.User;
 using System;
@@ -116,6 +117,31 @@ namespace Service.UserModule
             var userRoleDto = userRole.Adapt<UserRoleDto>();
 
             return userRoleDto;
+        }
+
+        public async Task UpdateStatusAsync(int id, string roleName)
+        {
+
+            var userRole = await _repositoryManager.UserRoleRepository.GetSingleUserRoleByIdAndUserRole(id, roleName, true);
+
+            if (userRole == null)
+            {
+                throw new EntityNotFoundException(id, "User Role");
+            }
+
+            if(userRole.UsroStatus == EnumRoleActiveStatus.ACTIVE)
+            {
+                userRole.UsroStatus = EnumRoleActiveStatus.INACTIVE;
+            } else if (userRole.UsroStatus == EnumRoleActiveStatus.INACTIVE)
+            {
+                userRole.UsroStatus = EnumRoleActiveStatus.ACTIVE;
+            } else
+            {
+                throw new EntityBadRequestException($"Invalid Status");
+            }
+
+
+            await _repositoryManager.UnitOfWork.SaveChangesAsync();
         }
     }
 }

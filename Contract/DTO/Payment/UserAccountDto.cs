@@ -1,4 +1,5 @@
 ﻿using Contract.Attributes;
+using Contract.DTO.Master;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
@@ -19,6 +20,8 @@ namespace Contract.DTO.Payment
         public int? UsacBankEntityid { get; set; } = null;
         public int? UsacFintEntityid { get; set; } = null;
         public int? UsacUserEntityid { get; set; }
+        public BankDto? UsacBankEntity { get; set; }
+        public FintechDto? UsacFintEntity { get; set; }
     }
 
 }
