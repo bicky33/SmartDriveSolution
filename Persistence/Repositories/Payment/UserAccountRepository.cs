@@ -24,12 +24,18 @@ namespace Persistence.Repositories.Payment
 
         public async Task<IEnumerable<UserAccount>> GetAllEntity(bool trackChanges)
         {
-            return await GetAll(trackChanges).OrderBy(x => x.UsacId).ToListAsync();
+            return await GetAll(trackChanges).OrderBy(x => x.UsacId)
+                .Include(v => v.UsacBankEntity)
+                .Include(v => v.UsacFintEntity)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<UserAccount>> GetAllUserAccountByUserId(int id, bool trackChanges)
         {
-            var data = await GetAll(trackChanges).OrderBy(x => x.UsacId).Where(x => x.UsacUserEntityid == id).ToListAsync();
+            var data = await GetAll(trackChanges).OrderBy(x => x.UsacId).Where(x => x.UsacUserEntityid == id)
+                .Include(v => v.UsacBankEntity)
+                .Include(v => v.UsacFintEntity)
+                .ToListAsync();
             return data;
         }
 
