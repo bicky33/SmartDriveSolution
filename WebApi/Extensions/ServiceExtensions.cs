@@ -8,7 +8,6 @@ using Mapster;
 using Domain.Repositories.SO;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Base;
 using Microsoft.IdentityModel.Tokens;
 using Persistence.Repositories;
 using Persistence.Repositories.Partners;
@@ -32,6 +31,7 @@ using Service.HR;
 using Domain.Repositories.HR;
 using Persistence.Repositories.HR;
 using Service.Abstraction.HR;
+using Persistence.Repositories.Payment;
 
 namespace WebApi.Extensions
 {
