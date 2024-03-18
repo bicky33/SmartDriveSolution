@@ -43,6 +43,13 @@ namespace WebApi.Controllers.Partners
             return Ok(partnerContact);
         }
 
+        [HttpGet("partner/{pacoUserEntityid:int}")]
+        public async Task<ActionResult> GetPartner(int pacoUserEntityid, bool trackChanges)
+        {
+            IEnumerable<PartnerContactDTO> partnerContacts = await _servicePartnerManager.ServicePartnerContact.GetByUserId(pacoUserEntityid, trackChanges);
+            return Ok(partnerContacts);
+        }
+
         // POST api/<PartnerContactController>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] PartnerContactDTO request)

@@ -1,7 +1,12 @@
 ﻿using Contract.DTO.SO;
+using Domain.Entities.Master;
+using Domain.Entities.SO;
+using Domain.RequestFeatured;
+using Domain.RequestFeatured.SO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using Service.Abstraction.SO;
-using System.Formats.Asn1;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -9,6 +14,7 @@ namespace WebApi.Controllers.SO
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "EM")]
     public class ServiceOrderController : ControllerBase
     {
         private readonly IServiceSOManager _serviceManager;
@@ -31,6 +37,27 @@ namespace WebApi.Controllers.SO
         {
             var serviceOrderDto = await _serviceManager.ServiceOrderService.GetByIdAsync(id, false);
             return Ok(serviceOrderDto);
+        }
+        // GET api/<ServiceControlle>/5
+        [HttpGet("agent/{id}")]
+        public async Task<IActionResult> GetServiceOrderByAgentId(int id)
+        {
+            var serviceOrderDto = await _serviceManager.ServiceOrderService.GetAllByAgentId(id, false);
+            return Ok(serviceOrderDto);
+        }
+
+        [HttpGet("paginate")]
+        public async Task<ActionResult<IEnumerable<ServiceOrderDto>>> GetServiceOrderWithPagination([FromQuery] EntityParameterSO entityParameter)
+        {
+            var serviceOrders = await _serviceManager.ServiceOrderService.GetAllWithPagingAsync(entityParameter, false);
+
+            Response.Headers.Add("X-Total-Pages", $"{serviceOrders.TotalPages}");
+            Response.Headers.Add("X-Current-Pages", $"{serviceOrders.CurrentPage}");
+            Response.Headers.Add("X-HasNext", $"{serviceOrders.HasNext}");
+            Response.Headers.Add("X-HasPrevious", $"{serviceOrders.HasPrevious}");
+            Response.Headers.Add("X-Total-Count", $"{serviceOrders.TotalCount}");
+
+            return Ok(serviceOrders);
         }
         // POST api/<ServiceControlle>
         [HttpPost]

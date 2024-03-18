@@ -18,22 +18,12 @@ namespace Contract.DTO.HR
     {
 
         public int EawgId { get; set; }
-
-
         public int EawgEntityid { get; set; }
-
-
         public string? EawgStatus { get; set; }
-
-
         public string? EawgArwgCode { get; set; }
-
         public DateTime? EawgModifiedDate { get; set; }
         public ArwgCompositeDto? EawgArwgCodeNavigation { get; set; }
-
-
         public string? SoftDelete {get; set; }
-
         //public AreaWorkgroup? EawgArwgCodeNavigation { get; set; }
         public EmployeeDto EawgEntity { get; set; } = null!;
 

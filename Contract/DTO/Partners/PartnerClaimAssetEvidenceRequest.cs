@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Contract.DTO.Partners
 {
@@ -21,7 +16,6 @@ namespace Contract.DTO.Partners
         [Required(ErrorMessage = "CaevSeroId cannot be null or empty.")]
         List<string> CaevSeroId,
 
-        [Required(ErrorMessage = "Photo cannot be null or empty.")]
         List<IFormFile> Photo
     );
 

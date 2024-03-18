@@ -15,6 +15,7 @@ namespace Contract.DTO.Partners
         string ServiceType,
         string WorkOrder,
         string Status,
-        int SeroPartId
+        int SeroPartId,
+        string SeroId
     );
 }

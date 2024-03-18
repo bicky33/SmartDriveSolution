@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Contract.DTO.Partners;
 using Domain.Entities.Partners;
-using Domain.Entities.HR;
-using Contract.DTO.Partners;
+using System.ComponentModel.DataAnnotations;
 
 namespace Contract.DTO.SO
 {
@@ -42,7 +35,7 @@ namespace Contract.DTO.SO
 
         public int? SeroPartId { get; init; }
 
-        public  ICollection<BatchPartnerInvoice> BatchPartnerInvoices { get; set; } = new List<BatchPartnerInvoice>();
+        public ICollection<BatchPartnerInvoice> BatchPartnerInvoices { get; set; } = new List<BatchPartnerInvoice>();
 
         public ICollection<ClaimAssetEvidenceDto> Caevs { get; set; } = new List<ClaimAssetEvidenceDto>();
 
@@ -54,10 +47,10 @@ namespace Contract.DTO.SO
 
         public PartnerDTO? SeroPart { get; set; }
 
-        public  ServiceOrderDto? SeroSero { get; set; }
+        public ServiceOrderDto? SeroSero { get; set; }
 
-        public  ServiceDto? SeroServ { get; set; }
+        public ServiceDto? SeroServ { get; set; }
 
-        public  List<ServiceOrderTaskDto> Seots { get; set; } = new List<ServiceOrderTaskDto>();
+        public List<ServiceOrderTaskDto> Seots { get; set; } = new List<ServiceOrderTaskDto>();
     }
 }

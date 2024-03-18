@@ -1,5 +1,4 @@
-﻿using Domain.Enum;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Contract.DTO.SO
 {

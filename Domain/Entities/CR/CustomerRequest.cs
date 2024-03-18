@@ -1,4 +1,5 @@
-﻿using Domain.Entities.HR;
+﻿
+using Domain.Entities.HR;
 using Domain.Entities.SO;
 using Domain.Entities.Users;
 using Microsoft.EntityFrameworkCore;

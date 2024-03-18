@@ -35,5 +35,6 @@ namespace Persistence.Repositories.UserModule
         {
             return await GetByCondition(v => v.RoleName == roleName, trackChanges).SingleOrDefaultAsync();
         }
+
     }
 }

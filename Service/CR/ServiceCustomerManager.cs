@@ -22,16 +22,16 @@ namespace Service.CR
         private readonly Lazy<IServiceEntityBase<CustomerInscDocDto>> _customerInscDocService;
         private readonly Lazy<ICustomerInscExtendService> _customerInscExtendService;
         public ServiceCustomerManager(
-            IRepositoryCustomerManager customerRepositoryManager,
+            IRepositoryCustomerManager repositoryCustomerManager,
             IRepositoryManagerUser repositoryManagerUser,
             IRepositoryManagerMaster repositoryManagerMaster
             )
         {
-            _customerRequestService = new Lazy<ICustomerRequestService>(() => new CustomerRequestService(customerRepositoryManager, repositoryManagerUser));
-            _customerInscAssetService = new Lazy<ICustomerInscAssetService>(() => new CustomerInscAssetsService(customerRepositoryManager, repositoryManagerMaster));
-            _customerClaimService = new Lazy<ICustomerClaimService>(() => new CustomerClaimService(customerRepositoryManager));
-            _customerInscDocService = new Lazy<IServiceEntityBase<CustomerInscDocDto>>(() => new CustomerInscDocService(customerRepositoryManager));
-            _customerInscExtendService = new Lazy<ICustomerInscExtendService>(() => new CustomerInscExtendService(customerRepositoryManager));
+            _customerRequestService = new Lazy<ICustomerRequestService>(() => new CustomerRequestService(repositoryCustomerManager, repositoryManagerUser, repositoryManagerMaster));
+            _customerInscAssetService = new Lazy<ICustomerInscAssetService>(() => new CustomerInscAssetsService(repositoryCustomerManager, repositoryManagerMaster));
+            _customerClaimService = new Lazy<ICustomerClaimService>(() => new CustomerClaimService(repositoryCustomerManager));
+            _customerInscDocService = new Lazy<IServiceEntityBase<CustomerInscDocDto>>(() => new CustomerInscDocService(repositoryCustomerManager));
+            _customerInscExtendService = new Lazy<ICustomerInscExtendService>(() => new CustomerInscExtendService(repositoryCustomerManager));
         }
         public ICustomerRequestService CustomerRequestService => _customerRequestService.Value;
         public ICustomerInscAssetService CustomerInscAssetService => _customerInscAssetService.Value;

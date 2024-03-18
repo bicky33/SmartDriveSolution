@@ -14,6 +14,7 @@ namespace Service.Abstraction.User
         Task<IEnumerable<UserRoleDto>> GetAllByIdAsync(int id, bool trackChanges);
         Task<UserRoleDto> GetByIdAsync(int id, bool trackChanges);
         Task<UserRoleDto> CreateAsync(UserRoleDto entity);
+        Task UpdateStatusAsync(int id, string roleName);
         Task DeleteAsync(int id, string roleName);
     }
 }

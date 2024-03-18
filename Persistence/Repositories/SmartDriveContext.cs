@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Domain.Entities.CR;
+﻿using Domain.Entities.CR;
 using Domain.Entities.HR;
 using Domain.Entities.Master;
 using Domain.Entities.Partners;
@@ -84,7 +82,7 @@ public partial class SmartDriveContext : DbContext
 
     public virtual DbSet<Role> Roles { get; set; }
 
-    public virtual DbSet<Service> Services { get; set; }
+    public virtual DbSet<Domain.Entities.SO.Service> Services { get; set; }
 
     public virtual DbSet<ServiceOrder> ServiceOrders { get; set; }
 
@@ -396,7 +394,7 @@ public partial class SmartDriveContext : DbContext
             entity.Property(e => e.RoleName).IsFixedLength();
         });
 
-        modelBuilder.Entity<Service>(entity =>
+        modelBuilder.Entity<Domain.Entities.SO.Service>(entity =>
         {
             entity.HasKey(e => e.ServId).HasName("pk_serv_id");
 
@@ -454,7 +452,7 @@ public partial class SmartDriveContext : DbContext
         {
             entity.HasKey(e => new { e.SecrId, e.SecrServId }).HasName("pk_secr");
 
-            entity.Property(e=>e.SecrId).HasColumnName("secr_id").ValueGeneratedOnAdd();
+            entity.Property(e => e.SecrId).HasColumnName("secr_id").ValueGeneratedOnAdd();
 
             entity.HasOne(d => d.SecrPatrTrxnoNavigation).WithMany(p => p.ServicePremiCredits).HasConstraintName("fk_secr_patr_trxno");
 

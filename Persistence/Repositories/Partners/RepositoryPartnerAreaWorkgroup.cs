@@ -1,5 +1,6 @@
 ﻿using Domain.Entities.Master;
 using Domain.Entities.Partners;
+using Domain.Entities.Users;
 using Domain.Exceptions;
 using Domain.Repositories.Base;
 using Domain.Repositories.Partners;
@@ -71,6 +72,11 @@ namespace Persistence.Repositories.Partners
                     {
                         PartEntityid = c.Pawo.PacoPatrnEntity.PartEntityid,
                         PartName = c.Pawo.PacoPatrnEntity.PartName,
+                    },
+                    PacoUserEntity = new User
+                    {
+                        UserFullName = c.Pawo.PacoUserEntity.UserFullName,
+                        UserName = c.Pawo.PacoUserEntity.UserName,
                     }
                 }
             });
@@ -80,13 +86,10 @@ namespace Persistence.Repositories.Partners
 
         public async Task<PagedList<PartnerAreaWorkgroup>> GetAllPaging(bool trackChanges, EntityParameter parameter)
         {
-            IQueryable<PartnerAreaWorkgroup> result = _dbContext.PartnerAreaWorkgroups
-                .Include(c => c.PawoArwgCodeNavigation)
-                    .ThenInclude(d => d.ArwgCity)
-                        .ThenInclude(e => e.CityProv)
-                            .ThenInclude(f => f.ProvZones)
-                .Include(g => g.Pawo)
-                    .ThenInclude(h => h.PacoPatrnEntity)
+            IQueryable<PartnerAreaWorkgroup> result;
+            if (string.IsNullOrWhiteSpace(parameter.SearchBy))
+            {
+                result = _dbContext.PartnerAreaWorkgroups.AsNoTracking()
                 .Select(c => new PartnerAreaWorkgroup
                 {
                     PawoArwgCode = c.PawoArwgCode,
@@ -95,6 +98,7 @@ namespace Persistence.Repositories.Partners
                     PawoArwgCodeNavigation = new AreaWorkgroup
                     {
                         ArwgCode = c.PawoArwgCodeNavigation.ArwgCode,
+                        ArwgDesc = c.PawoArwgCodeNavigation.ArwgDesc,
                         ArwgCity = new City
                         {
                             CityId = c.PawoArwgCodeNavigation.ArwgCity.CityId,
@@ -118,9 +122,62 @@ namespace Persistence.Repositories.Partners
                         {
                             PartEntityid = c.Pawo.PacoPatrnEntity.PartEntityid,
                             PartName = c.Pawo.PacoPatrnEntity.PartName,
+                        },
+                        PacoUserEntity = new User
+                        {
+                            UserFullName = c.Pawo.PacoUserEntity.UserFullName,
+                            UserName = c.Pawo.PacoUserEntity.UserName,
                         }
                     }
                 });
+            } else
+            {
+                result = _dbContext.PartnerAreaWorkgroups.AsNoTracking()
+                    .Where(x => 
+                        EF.Functions.Like(x.PawoArwgCodeNavigation.ArwgCity.CityName, $"%{parameter.SearchBy}%") ||
+                        EF.Functions.Like(x.Pawo.PacoPatrnEntity.PartName, $"%{parameter.SearchBy}%")
+                    )
+               .Select(c => new PartnerAreaWorkgroup
+               {
+                   PawoArwgCode = c.PawoArwgCode,
+                   PawoPatrEntityid = c.PawoPatrEntityid,
+                   PawoUserEntityid = c.PawoUserEntityid,
+                   PawoArwgCodeNavigation = new AreaWorkgroup
+                   {
+                       ArwgCode = c.PawoArwgCodeNavigation.ArwgCode,
+                       ArwgDesc = c.PawoArwgCodeNavigation.ArwgDesc,
+                       ArwgCity = new City
+                       {
+                           CityId = c.PawoArwgCodeNavigation.ArwgCity.CityId,
+                           CityName = c.PawoArwgCodeNavigation.ArwgCity.CityName,
+                           CityProv = new Provinsi
+                           {
+                               ProvId = c.PawoArwgCodeNavigation.ArwgCity.CityProv.ProvId,
+                               ProvName = c.PawoArwgCodeNavigation.ArwgCity.CityProv.ProvName,
+                               ProvZones = new Zone
+                               {
+                                   ZonesId = c.PawoArwgCodeNavigation.ArwgCity.CityProv.ProvZones.ZonesId,
+                                   ZonesName = c.PawoArwgCodeNavigation.ArwgCity.CityProv.ProvZones.ZonesName,
+                               }
+                           }
+                       }
+                   },
+                   Pawo = new PartnerContact
+                   {
+                       PacoPatrnEntityid = c.Pawo.PacoPatrnEntityid,
+                       PacoPatrnEntity = new Partner
+                       {
+                           PartEntityid = c.Pawo.PacoPatrnEntity.PartEntityid,
+                           PartName = c.Pawo.PacoPatrnEntity.PartName,
+                       },
+                       PacoUserEntity = new User
+                       {
+                           UserFullName = c.Pawo.PacoUserEntity.UserFullName,
+                           UserName = c.Pawo.PacoUserEntity.UserName,
+                       }
+                   }
+               });
+            }
             return PagedList<PartnerAreaWorkgroup>.ToPagedList(result, parameter.PageNumber, parameter.PageSize);
         }
         public async Task<PartnerAreaWorkgroup> GetEntityById(bool trackChanges, int partnerId, int userId, string areaWorkgroupCode)
@@ -128,7 +185,7 @@ namespace Persistence.Repositories.Partners
             PartnerAreaWorkgroup result = await GetByCondition(c =>
                 c.PawoPatrEntityid.Equals(partnerId)
                 && c.PawoUserEntityid.Equals(userId) &&
-                c.PawoArwgCode.Equals(areaWorkgroupCode), trackChanges).FirstOrDefaultAsync() 
+                c.PawoArwgCode.Equals(areaWorkgroupCode), trackChanges).FirstOrDefaultAsync()
                 ?? throw new EntityNotFoundException(partnerId, nameof(PartnerAreaWorkgroup));
             return result;
         }
@@ -136,6 +193,11 @@ namespace Persistence.Repositories.Partners
         public Task<PartnerAreaWorkgroup> GetEntityById(int id, bool trackChanges)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<PartnerAreaWorkgroup>> GetByPartnerAndUserId(int pawoUserId, int pawoPatrId, bool trackChanges)
+        {
+            return await GetByCondition(c => c.PawoUserEntityid.Equals(pawoUserId) && c.PawoPatrEntityid.Equals(pawoPatrId), trackChanges).ToListAsync();
         }
     }
 }

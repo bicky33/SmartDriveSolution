@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Contract.DTO.CR.Request
 {
-    public class CustomerInscExtendUpdateDto
+    public class CustomerInscExtendRequestDto
     {
         public int CuexId { get; set; }
         public int CuexCreqEntityid { get; set; }

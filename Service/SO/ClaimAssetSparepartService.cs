@@ -6,7 +6,7 @@ using Service.Abstraction.SO;
 
 namespace Service.SO
 {
-    public class ClaimAssetSparepartService : IServiceSOEntityBase<ClaimAssetSparepartDto,ClaimAssetSparepartDtoCreate, int>
+    public class ClaimAssetSparepartService : IServiceSOEntityBase<ClaimAssetSparepartDto, ClaimAssetSparepartDtoCreate, int>
     {
         private readonly IRepositorySOManager _repositoryManager;
 
@@ -15,7 +15,7 @@ namespace Service.SO
             _repositoryManager = repositoryManager;
         }
 
-       public  async Task<ClaimAssetSparepartDtoCreate> CreateAsync(ClaimAssetSparepartDtoCreate entity)
+        public async Task<ClaimAssetSparepartDtoCreate> CreateAsync(ClaimAssetSparepartDtoCreate entity)
         {
             var claimAssetSparepart = entity.Adapt<Domain.Entities.SO.ClaimAssetSparepart>();
             _repositoryManager.ClaimAssetSparepartRepository.CreateEntity(claimAssetSparepart);
@@ -25,9 +25,9 @@ namespace Service.SO
 
         public async Task DeleteAsync(int id)
         {
-            var claimAssetSparepart = await _repositoryManager.ClaimAssetSparepartRepository.GetEntityById(id,false);
+            var claimAssetSparepart = await _repositoryManager.ClaimAssetSparepartRepository.GetEntityById(id, false);
             if (claimAssetSparepart == null)
-                throw new EntityNotFoundExceptionSO(id,"Claim Asset Sparepart");
+                throw new EntityNotFoundExceptionSO(id, "Claim Asset Sparepart");
             _repositoryManager.ClaimAssetSparepartRepository.DeleteEntity(claimAssetSparepart);
             await _repositoryManager.UnitOfWork.SaveChangesAsync();
         }
@@ -41,9 +41,9 @@ namespace Service.SO
 
         public async Task<ClaimAssetSparepartDto> GetByIdAsync(int id, bool trackChanges)
         {
-            var claimAssetSparepart = await _repositoryManager.ClaimAssetSparepartRepository.GetEntityById(id, trackChanges); 
+            var claimAssetSparepart = await _repositoryManager.ClaimAssetSparepartRepository.GetEntityById(id, trackChanges);
             if (claimAssetSparepart == null)
-                throw new EntityNotFoundExceptionSO(id,"Claim Asset Sparepart");
+                throw new EntityNotFoundExceptionSO(id, "Claim Asset Sparepart");
 
             var ClaimAssetSparepartDtos = claimAssetSparepart.Adapt<ClaimAssetSparepartDto>();
             return ClaimAssetSparepartDtos;
@@ -53,7 +53,7 @@ namespace Service.SO
         {
             var claimAssetSparepart = await _repositoryManager.ClaimAssetSparepartRepository.GetEntityById(id, true);
             if (claimAssetSparepart == null)
-                throw new EntityNotFoundExceptionSO(id,"Claim Asset Sparepart");
+                throw new EntityNotFoundExceptionSO(id, "Claim Asset Sparepart");
 
             claimAssetSparepart.CaspId = id;
             claimAssetSparepart.CaspItemName = entity.CaspItemName;

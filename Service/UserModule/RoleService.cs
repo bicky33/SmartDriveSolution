@@ -87,11 +87,16 @@ namespace Service.UserModule
                 throw new EntityBadRequestException($"Max role name length is 2");
             }
 
+            if (roleName != entity.RoleName)
+            {
+                throw new EntityBadRequestException($"Only description that can be change");
+            }
+
             var role = await _repositoryManager.RoleRepository.GetRole(roleName, true);
 
             if (role == null)
             {
-                throw new EntityNotFoundException(roleName, "User Address");
+                throw new EntityNotFoundException(roleName, "Role");
             }
 
             var checkRole = await _repositoryManager.RoleRepository.GetRole(entity.RoleName, false);

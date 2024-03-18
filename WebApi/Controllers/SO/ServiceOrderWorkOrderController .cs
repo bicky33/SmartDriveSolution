@@ -1,7 +1,7 @@
 ﻿using Contract.DTO.SO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstraction.SO;
-using System.Formats.Asn1;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -9,6 +9,7 @@ namespace WebApi.Controllers.SO
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "EM")]
     public class ServiceOrderWorkorderController : ControllerBase
     {
         private readonly IServiceSOManager _serviceManager;

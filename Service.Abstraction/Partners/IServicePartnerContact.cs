@@ -18,5 +18,6 @@ namespace Service.Abstraction.Partners
         Task<PartnerContactDTO> CreateAsync(PartnerContactDTO entity);
         Task UpdateAsync(int pacoPatrnEntityid, int pacoUserEntityid, PartnerContactDTO entity);
         Task DeleteAsync(int pacoPatrnEntityid, int pacoUserEntityid);
+        Task<IEnumerable<PartnerContactDTO>> GetByUserId(int pacoUserEntityid, bool trackChanges);
     }
 }
